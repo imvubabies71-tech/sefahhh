@@ -1,0 +1,48 @@
+{
+  "bot-account": {
+    "username": "ScriptedByDana", 
+    "password": "",
+    "type": "mojang"
+  },
+
+  "server": {
+    "ip": "ServerAnalTarfe.aternos.me", 
+    "port": 52829,   
+    "version": "1.12.1"   
+  },
+  
+  "position": {
+    "enabled": false,
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+
+  "utils": {
+    "auto-auth": {
+      "enabled": false,
+      "password": ""
+    },
+
+    "anti-afk": {
+      "enabled": true,
+      "sneak": true
+    },
+
+    "chat-messages": {
+      "enabled": true,
+      "repeat": true,
+      "repeat-delay": 60,
+
+      "messages": [
+        "fa fa fa si a dat astridt tp la mine fa fa e grav",
+        "taci fa! dar tu mai esti virgin/virgina? ai gagic/gagica?",
+        "dana vede tot"
+      ]
+    },
+
+    "chat-log": true,
+    "auto-reconnect": true,
+    "auto-recconect-delay": 5000
+  }
+}
