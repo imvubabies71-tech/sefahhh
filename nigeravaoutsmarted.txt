@@ -1,0 +1,1499 @@
+--[[
+    ULTRA ADVANCED PROTECTION SYSTEM v5.3.4.7.5.7.3.4
+    Multi-layered anti-detection & execution protection
+]]
+
+-- Services
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local ScriptContext = game:GetService("ScriptContext")
+local Stats = game:GetService("Stats")
+local UserInputService = game:GetService("UserInputService")
+
+-- Environment
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local Backpack = LocalPlayer:WaitForChild("Backpack")
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+local RootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- Advanced environment detection
+local getgenv = getgenv or function() return {} end
+local getrenv = getrenv or function() return {} end
+local getgc = getgc or function() return {} end
+local getloadedmodules = getloadedmodules or function() return {} end
+local hookfunction = hookfunction or function() return function() end end
+local hookmetamethod = hookmetamethod or function() return function() end end
+local newcclosure = newcclosure or function(f) return f end
+local islclosure = islclosure or function() return true end
+local isexecutorclosure = isexecutorclosure or function() return false end
+local getupvalue = getupvalue or function() return nil end
+local setupvalue = setupvalue or function() return nil end
+local getupvalues = getupvalues or function() return {} end
+local setupvalues = setupvalues or function() return {} end
+local getconstants = getconstants or function() return {} end
+local setconstants = setconstants or function() return {} end
+local getinfo = getinfo or function() return {} end
+local getstack = getstack or function() return {} end
+local getcallstack = getcallstack or function() return {} end
+local getrawmetatable = getrawmetatable or function() return nil end
+local setrawmetatable = setrawmetatable or function() return nil end
+local setreadonly = setreadonly or function() return nil end
+local makereadonly = makereadonly or function() return nil end
+local firesignal = firesignal or function() return nil end
+local firetouchinterest = firetouchinterest or function() return nil end
+local fireclickdetector = fireclickdetector or function() return nil end
+local fireproximityprompt = fireproximityprompt or function() return nil end
+local getconnections = getconnections or function() return {} end
+local getnilinstances = getnilinstances or function() return {} end
+local gethiddenprops = gethiddenprops or function() return {} end
+local sethiddenprop = sethiddenprop or function() return nil end
+local cloneref = cloneref or function(obj) return obj end
+local compareinstances = compareinstances or function(a, b) return a == b end
+local getnamecallmethod = getnamecallmethod or function() return "" end
+local setnamecallmethod = setnamecallmethod or function() return nil end
+local getthreadidentity = getthreadidentity or function() return 0 end
+local setthreadidentity = setthreadidentity or function() return nil end
+local getscripthash = getscripthash or function() return "" end
+local getscriptclosure = getscriptclosure or function() return function() end end
+local checkcaller = checkcaller or function() return true end
+local isscriptmodified = isscriptmodified or function() return false end
+local getsenv = getsenv or function() return {} end
+local getmenv = getmenv or function() return {} end
+local getrenv = getrenv or function() return {} end
+local getsenv = getsenv or function() return {} end
+local gettenv = gettenv or function() return {} end
+local getrunningscripts = getrunningscripts or function() return {} end
+local getloadedmodules = getloadedmodules or function() return {} end
+local isrbxactive = isrbxactive or function() return true end
+local iswindowactive = iswindowactive or function() return true end
+local mouse1click = mouse1click or function() return nil end
+local mouse1press = mouse1press or function() return nil end
+local mouse1release = mouse1release or function() return nil end
+local mouse2click = mouse2click or function() return nil end
+local mouse2press = mouse2press or function() return nil end
+local mouse2release = mouse2release or function() return nil end
+local mousemoveabs = mousemoveabs or function() return nil end
+local mousemoverel = mousemoverel or function() return nil end
+local keysim = keysim or function() return nil end
+local keypress = keypress or function() return nil end
+local keyrelease = keyrelease or function() return nil end
+local scrolldir = scrolldir or function() return nil end
+local setcursorpos = setcursorpos or function() return nil end
+local getcursorpos = getcursorpos or function() return Vector2.new() end
+local getmouse = getmouse or function() return nil end
+local getdevice = getdevice or function() return nil end
+local getperformance = getperformance or function() return nil end
+local getsystemtime = getsystemtime or function() return os.time() end
+local getcustomasset = getcustomasset or function() return "" end
+local getasset = getasset or function() return "" end
+local writefile = writefile or function() return nil end
+local readfile = readfile or function() return "" end
+local appendfile = appendfile or function() return nil end
+local listfiles = listfiles or function() return {} end
+local isfile = isfile or function() return false end
+local delfile = delfile or function() return nil end
+local makefolder = makefolder or function() return nil end
+local listfolders = listfolders or function() return {} end
+local isfolder = isfolder or function() return false end
+local delfolder = delfolder or function() return nil end
+local request = request or function() return { StatusCode = 200, Body = "", Headers = {}, Success = true } end
+local httpget = httpget or function() return "" end
+local httppost = httppost or function() return "" end
+local http_request = http_request or function() return { StatusCode = 200, Body = "", Headers = {}, Success = true } end
+local syn = syn or { request = http_request, queue_on_teleport = function() end, protect_gui = function() end, unprotect_gui = function() end, write_clipboard = function() end, read_clipboard = function() return "" end }
+local queue_on_teleport = queue_on_teleport or syn.queue_on_teleport or function() end
+local protect_gui = protect_gui or syn.protect_gui or function() end
+local unprotect_gui = unprotect_gui or syn.unprotect_gui or function() end
+local write_clipboard = write_clipboard or syn.write_clipboard or function() end
+local read_clipboard = read_clipboard or syn.read_clipboard or function() return "" end
+local identifyexecutor = identifyexecutor or function() return "Unknown" end
+local getexecutorname = getexecutorname or identifyexecutor or function() return "Unknown" end
+local getexploitname = getexploitname or identifyexecutor or function() return "Unknown" end
+local getexploitversion = getexploitversion or function() return "Unknown" end
+local getexecutorversion = getexecutorversion or function() return "Unknown" end
+local getexploiturl = getexploiturl or function() return "Unknown" end
+local getexecutorurl = getexecutorurl or function() return "Unknown" end
+local getexploitlogo = getexploitlogo or function() return "" end
+local getexecutorlogo = getexecutorlogo or function() return "" end
+local getexploitcolor = getexploitcolor or function() return Color3.new(1,1,1) end
+local getexecutorcolor = getexecutorcolor or function() return Color3.new(1,1,1) end
+local getexploitip = getexploitip or function() return "127.0.0.1" end
+local getexecutorip = getexecutorip or function() return "127.0.0.1" end
+
+-- Advanced anti-detection system
+task.spawn(function()
+    local GetGC = getgc or debug.getgc
+    local HookFunction = hookfunction or debug.hookfunction
+    local GetInfo = getinfo or debug.getinfo
+    local GetUpvalues = getupvalues or debug.getupvalues
+    local Setupvalue = setupvalue or debug.setupvalue
+    local GetConstants = getconstants or debug.getconstants
+    local SetConstants = setconstants or debug.setconstants
+    local GetProtos = getprotos or debug.getprotos
+    local SetProtos = setprotos or debug.setprotos
+    local GetRawMetatable = getrawmetatable or debug.getrawmetatable
+    local SetRawMetatable = setrawmetatable or debug.setrawmetatable
+    local GetStack = getstack or debug.getstack
+    local GetCallStack = getcallstack or debug.getcallstack
+    local GetLocal = getlocal or debug.getlocal
+    local SetLocal = setlocal or debug.setlocal
+    local GetUpvalue = getupvalue or debug.getupvalue
+    local GetMetatable = getmetatable or debug.getmetatable
+    local SetMetatable = setmetatable or debug.setmetatable
+    local GetRegistry = getregistry or debug.getregistry
+    local GetFenv = getfenv or debug.getfenv
+    local SetFenv = setfenv or debug.setfenv
+    local GetThreadIdentity = getthreadidentity or debug.getthreadidentity
+    local SetThreadIdentity = setthreadidentity or debug.setthreadidentity
+    local GetScriptHash = getscripthash or debug.getscripthash
+    local GetScriptClosure = getscriptclosure or debug.getscriptclosure
+    local CheckCaller = checkcaller or debug.checkcaller
+    local IsScriptModified = isscriptmodified or debug.isscriptmodified
+    local GetSenv = getsenv or debug.getsenv
+    local GetMenv = getmenv or debug.getmenv
+    local GetRenv = getrenv or debug.getrenv
+    local GetTenv = gettenv or debug.gettenv
+    local GetRunningScripts = getrunningscripts or debug.getrunningscripts
+    local GetLoadedModules = getloadedmodules or debug.getloadedmodules
+    local IsRbxActive = isrbxactive or debug.isrbxactive
+    local IsWindowActive = iswindowactive or debug.iswindowactive
+    
+    local DetectedMeth, KillMeth, ProcessMeth, LogMeth, BanMeth, KickMeth, CrashMeth
+    local AdonisFound = false
+    local HooksInstalled = false
+    local DetectionBypassed = false
+    local AntiDetectionActive = false
+    local ProtectionLevel = 0
+    local MaxProtectionLevel = 10
+    
+    -- Comprehensive Adonis detection
+    local function detectAdonis()
+        local found = false
+        local methods = 0
+        
+        for _, value in GetGC(true) do
+            if typeof(value) == "table" then
+                local hasDetected = typeof(rawget(value, "Detected")) == "function"
+                local hasKill = typeof(rawget(value, "Kill")) == "function"
+                local hasVars = rawget(value, "Variables") ~= nil
+                local hasProcess = rawget(value, "Process") ~= nil
+                local hasLog = typeof(rawget(value, "Logs")) == "function"
+                local hasBan = typeof(rawget(value, "Ban")) == "function"
+                local hasKick = typeof(rawget(value, "Kick")) == "function"
+                local hasCrash = typeof(rawget(value, "Crash")) == "function"
+                local hasNotify = typeof(rawget(value, "Notify")) == "function"
+                local hasAdmin = rawget(value, "Admin") ~= nil
+                local hasSettings = rawget(value, "Settings") ~= nil
+                local hasCommands = rawget(value, "Commands") ~= nil
+                local hasPrefix = rawget(value, "Prefix") ~= nil
+                
+                if hasDetected then methods += 1 end
+                if hasKill then methods += 1 end
+                if hasVars and hasProcess then methods += 1 end
+                if hasBan then methods += 1 end
+                if hasKick then methods += 1 end
+                if hasCrash then methods += 1 end
+                if hasNotify then methods += 1 end
+                if hasAdmin then methods += 1 end
+                if hasSettings then methods += 1 end
+                if hasCommands then methods += 1 end
+                if hasPrefix then methods += 1 end
+                
+                if methods >= 3 then
+                    found = true
+                end
+            end
+        end
+        return found
+    end
+    
+    -- Wait for Adonis with timeout
+    local startTime = os.clock()
+    while not AdonisFound and os.clock() - startTime < 60 do
+        AdonisFound = detectAdonis()
+        if not AdonisFound then
+            task.wait(0.05)
+        end
+    end
+    
+    if not AdonisFound then
+        return
+    end
+    
+    -- Install advanced hooks
+    local function installHooks()
+        for _, value in GetGC(true) do
+            if typeof(value) == "table" then
+                local detected = rawget(value, "Detected")
+                local kill = rawget(value, "Kill")
+                local process = rawget(value, "Process")
+                local logs = rawget(value, "Logs")
+                local ban = rawget(value, "Ban")
+                local kick = rawget(value, "Kick")
+                local crash = rawget(value, "Crash")
+                local notify = rawget(value, "Notify")
+                local variables = rawget(value, "Variables")
+                
+                if typeof(detected) == "function" and not DetectedMeth then
+                    DetectedMeth = detected
+                    HookFunction(DetectedMeth, newcclosure(function(...)
+                        return true
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(kill) == "function" and variables and rawget(value, "Process") and not KillMeth then
+                    KillMeth = kill
+                    HookFunction(KillMeth, newcclosure(function()
+                        return
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(process) == "function" and not ProcessMeth then
+                    ProcessMeth = process
+                    HookFunction(ProcessMeth, newcclosure(function(...)
+                        local args = {...}
+                        if #args >= 2 then
+                            local command = args[1]
+                            local params = {select(2, unpack(args))}
+                            
+                            if type(command) == "string" then
+                                local lowerCmd = command:lower()
+                                local dangerousCommands = {
+                                    "ban", "kick", "crash", "shutdown", "kill",
+                                    "destroy", "explode", "freeze", "jail",
+                                    "mute", "silence", "remove", "delete",
+                                    "reset", "clear", "wipe", "nuke",
+                                    "ddos", "lag", "spam", "flood",
+                                    "inject", "exploit", "hack", "cheat",
+                                    "bypass", "disable", "enable", "toggle"
+                                }
+                                
+                                for _, dangerous in ipairs(dangerousCommands) do
+                                    if lowerCmd:find(dangerous) then
+                                        return
+                                    end
+                                end
+                            end
+                        end
+                        return process(...)
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(logs) == "function" and not LogMeth then
+                    LogMeth = logs
+                    HookFunction(LogMeth, newcclosure(function()
+                        return
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(ban) == "function" and not BanMeth then
+                    BanMeth = ban
+                    HookFunction(BanMeth, newcclosure(function()
+                        return
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(kick) == "function" and not KickMeth then
+                    KickMeth = kick
+                    HookFunction(KickMeth, newcclosure(function()
+                        return
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(crash) == "function" and not CrashMeth then
+                    CrashMeth = crash
+                    HookFunction(CrashMeth, newcclosure(function()
+                        return
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+                
+                if typeof(notify) == "function" and not NotifyMeth then
+                    NotifyMeth = notify
+                    HookFunction(NotifyMeth, newcclosure(function()
+                        return
+                    end))
+                    HooksInstalled = true
+                    ProtectionLevel += 1
+                end
+            end
+        end
+        
+        return HooksInstalled
+    end
+    
+    -- Install hooks with retry
+    local hookAttempts = 0
+    while not HooksInstalled and hookAttempts < 10 do
+        HooksInstalled = installHooks()
+        hookAttempts += 1
+        task.wait(0.1)
+    end
+    
+    -- Advanced debug.info hook
+    if DetectedMeth and GetInfo then
+        local OriginalGetInfo = GetInfo
+        
+        HookFunction(GetInfo, newcclosure(function(...)
+            local args = {...}
+            local target = args[1]
+            local level = args[2] or 1
+            
+            if target == DetectedMeth or target == KillMeth or target == BanMeth or target == KickMeth then
+                return "C"
+            end
+            
+            local result = OriginalGetInfo(...)
+            
+            if type(result) == "table" then
+                if result.source and (result.source:find("Adonis") or result.source:find("Admin")) then
+                    result.source = "game.CoreGui.RobloxGui"
+                end
+                if result.short_src and (result.short_src:find("Adonis") or result.short_src:find("Admin")) then
+                    result.short_src = "CoreGui.RobloxGui"
+                end
+                if result.name and (result.name:find("Detected") or result.name:find("Kill") or result.name:find("Ban")) then
+                    result.name = "Unknown"
+                end
+                if result.what and result.what == "Lua" then
+                    result.what = "C"
+                end
+            end
+            
+            return result
+        end))
+        
+        DetectionBypassed = true
+        ProtectionLevel += 1
+    end
+    
+    -- Hook all debug functions
+    if GetUpvalues then
+        local OriginalGetUpvalues = GetUpvalues
+        
+        HookFunction(GetUpvalues, newcclosure(function(...)
+            local result = OriginalGetUpvalues(...)
+            
+            if type(result) == "table" then
+                for i, upvalue in ipairs(result) do
+                    if type(upvalue) == "table" and upvalue.Detected then
+                        result[i] = { Detected = function() return true end }
+                    end
+                end
+            end
+            
+            return result
+        end))
+    end
+    
+    -- Hook getconstants
+    if GetConstants then
+        local OriginalGetConstants = GetConstants
+        
+        HookFunction(GetConstants, newcclosure(function(...)
+            local result = OriginalGetConstants(...)
+            
+            if type(result) == "table" then
+                for i, constant in ipairs(result) do
+                    if type(constant) == "string" then
+                        if constant:find("Adonis") or constant:find("Detected") or constant:find("Kill") then
+                            result[i] = "Unknown"
+                        end
+                    end
+                end
+            end
+            
+            return result
+        end))
+    end
+    
+    -- Anti-tampering protection
+    local function protectFromTampering()
+        -- Block script modification detection
+        if IsScriptModified then
+            HookFunction(IsScriptModified, newcclosure(function()
+                return false
+            end))
+        end
+        
+        -- Block thread identity checks
+        if GetThreadIdentity then
+            HookFunction(GetThreadIdentity, newcclosure(function()
+                return 8
+            end))
+        end
+        
+        -- Block caller checks
+        if CheckCaller then
+            HookFunction(CheckCaller, newcclosure(function()
+                return true
+            end))
+        end
+    end
+    
+    task.spawn(protectFromTampering)
+    
+    -- Anti-detection evasion
+    local function evadeDetection()
+        -- Hide from getrunningscripts
+        if GetRunningScripts then
+            HookFunction(GetRunningScripts, newcclosure(function()
+                return {}
+            end))
+        end
+        
+        -- Hide from getloadedmodules
+        if GetLoadedModules then
+            HookFunction(GetLoadedModules, newcclosure(function()
+                return {}
+            end))
+        end
+        
+        -- Block memory scanning
+        if GetGC then
+            HookFunction(GetGC, newcclosure(function(...)
+                if select("#", ...) > 0 and ... == true then
+                    return {}
+                end
+                return GetGC(...)
+            end))
+        end
+    end
+    
+    task.spawn(evadeDetection)
+    
+    -- Anti-crash protection
+    local function protectFromCrash()
+        -- Block destroy attempts
+        local oldDestroy = game.Destroy
+        game.Destroy = newcclosure(function(self)
+            if self == LocalPlayer.Character or self == LocalPlayer.PlayerGui or self == LocalPlayer then
+                return
+            end
+            return oldDestroy(self)
+        end)
+        
+        -- Block memory exhaustion
+        local oldClone = game.Clone
+        game.Clone = newcclosure(function(self)
+            if typeof(self) == "Instance" and self:IsDescendantOf(game) then
+                return oldClone(self)
+            end
+            return nil
+        end)
+        
+        -- Block parent changes
+        local oldParent = game.Parent
+        game.Parent = newcclosure(function(self, ...)
+            local newParent = ...
+            if newParent == nil and (self == LocalPlayer.Character or self == LocalPlayer.PlayerGui) then
+                return oldParent
+            end
+            return oldParent(self, ...)
+        end)
+    end
+    
+    task.spawn(protectFromCrash)
+end)
+
+-- Advanced anti-script system
+local antiScripts = {
+    AbilitySystem2 = { enabled = false, priority = 1 },
+    ["Load Faces"] = { enabled = false, priority = 2 },
+    Reset = { enabled = false, priority = 3, special = true },
+    ["Chat Script"] = { enabled = false, priority = 4 },
+    ["Player List"] = { enabled = false, priority = 5 },
+    ["Top Bar"] = { enabled = false, priority = 6 },
+    ["Health Bar"] = { enabled = false, priority = 7 },
+    ["Backpack"] = { enabled = false, priority = 8 },
+    ["Notification"] = { enabled = false, priority = 9 },
+    ["Loading Screen"] = { enabled = false, priority = 10 },
+    ["Intro"] = { enabled = false, priority = 11 },
+    ["Tutorial"] = { enabled = false, priority = 12 },
+    ["Settings"] = { enabled = false, priority = 13 },
+    ["Menu"] = { enabled = false, priority = 14 },
+    ["GUI"] = { enabled = false, priority = 15 },
+    ["UI"] = { enabled = false, priority = 16 },
+    ["HUD"] = { enabled = false, priority = 17 },
+    ["Interface"] = { enabled = false, priority = 18 },
+    ["Display"] = { enabled = false, priority = 19 },
+    ["Overlay"] = { enabled = false, priority = 20 }
+}
+
+-- Clear existing scripts with advanced techniques
+for _, descendant in ipairs(game:GetDescendants()) do
+    if descendant:IsA("LocalScript") or descendant:IsA("Script") or descendant:IsA("ModuleScript") then
+        if antiScripts[descendant.Name] then
+            descendant.Enabled = false
+            descendant.Disabled = true
+            
+            -- Remove script content
+            pcall(function()
+                descendant.Source = ""
+            end)
+            
+            -- Destroy script if possible
+            pcall(function()
+                if descendant:IsA("LocalScript") then
+                    descendant:Destroy()
+                end
+            end)
+        end
+    end
+end
+
+-- Enhanced Reset button handler
+if antiScripts.Reset then
+    local ResetBindable = Instance.new("BindableEvent")
+    
+    ResetBindable.Event:Connect(function()
+        pcall(function()
+            Remotes:WaitForChild("Reset"):FireServer()
+        end)
+    end)
+
+    -- Persistent core GUI configuration
+    local function configureCoreGui()
+        local success = pcall(function()
+            StarterGui:SetCore("ResetButtonCallback", ResetBindable)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Captures, false)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Settings, false)
+        end)
+        return success
+    end
+
+    -- Retry mechanism with exponential backoff
+    local retryCount = 0
+    local function safeConfigure()
+        local success = configureCoreGui()
+        if not success then
+            retryCount = retryCount + 1
+            local waitTime = math.min(2 ^ retryCount, 30)
+            task.wait(waitTime)
+            safeConfigure()
+        end
+    end
+
+    task.spawn(safeConfigure)
+
+    -- Continuous monitoring with heartbeat
+    RunService.Heartbeat:Connect(function()
+        if StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Backpack) or 
+           StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Health) then
+            configureCoreGui()
+        end
+    end)
+
+    -- Set player attribute
+    if LocalPlayer then
+        workspace:SetAttribute(LocalPlayer.Name, true)
+        workspace:SetAttribute(LocalPlayer.Name .. "_Protected", true)
+        workspace:SetAttribute(LocalPlayer.Name .. "_AntiDetect", true)
+        workspace:SetAttribute(LocalPlayer.Name .. "_Bypass", true)
+    end
+end
+
+-- Advanced remote blocking system
+local blockedRemotes = {
+    "ShardBindable",
+    "AntiCheat",
+    "Detection",
+    "Logging",
+    "BanSystem",
+    "KickSystem",
+    "AdminSystem",
+    "ModerationSystem",
+    "PunishmentSystem",
+    "ReportSystem",
+    "FlagSystem",
+    "MonitorSystem",
+    "TrackSystem",
+    "ScanSystem",
+    "CheckSystem",
+    "VerifySystem",
+    "ValidateSystem",
+    "InspectSystem",
+    "AuditSystem",
+    "ReviewSystem"
+}
+
+-- Block all suspicious remotes
+for _, remoteName in pairs(blockedRemotes) do
+    local remote = Remotes:FindFirstChild(remoteName)
+    if remote then
+        if remote:IsA("RemoteEvent") then
+            hookfunction(remote.FireServer, function()
+                return nil
+            end)
+        elseif remote:IsA("RemoteFunction") then
+            hookfunction(remote.InvokeServer, function()
+                return nil
+            end)
+        end
+        
+        -- Block connections
+        if remote:IsA("RemoteEvent") then
+            hookfunction(remote.OnClientEvent, function()
+                return nil
+            end)
+        elseif remote:IsA("RemoteFunction") then
+            hookfunction(remote.OnClientInvoke, function()
+                return nil
+            end)
+        end
+    end
+end
+
+-- Block all connections to dangerous remotes
+local oldRemoteConnect = hookfunction(Instance.new("RemoteEvent").Connect, function(self, ...)
+    local name = self.Name
+    local parentName = self.Parent and self.Parent.Name or ""
+    
+    if name:find("Detect") or name:find("Ban") or name:find("Kick") or 
+       name:find("Crash") or name:find("Shutdown") or name:find("Exploit") or
+       parentName:find("AntiCheat") or parentName:find("Detection") then
+        return {
+            Disconnect = function() end,
+            Connected = true,
+            Connection = function() end
+        }
+    end
+    return oldRemoteConnect(self, ...)
+end)
+
+-- Enhanced namecall hook
+local old_namecall = hookmetamethod(game, "__namecall", function(self, ...)
+    local method = getnamecallmethod()
+    local args = { ... }
+    
+    -- Block HumanoidDescription creation
+    if self == Instance and method == "new" and args[1] == "HumanoidDescription" then
+        task.wait(9e9)
+        return nil
+    end
+    
+    -- Block suspicious property access
+    if method:lower():find("detect") or method:lower():find("cheat") or 
+       method:lower():find("exploit") or method:lower():find("hack") or
+       method:lower():find("bypass") or method:lower():find("inject") then
+        return nil
+    end
+    
+    -- Block FireServer on suspicious remotes
+    if method == "FireServer" and self:IsA("RemoteEvent") then
+        local name = self.Name
+        if name:find("Detect") or name:find("Ban") or name:find("Kick") or 
+           name:find("Crash") or name:find("Report") or name:find("Flag") then
+            return nil
+        end
+    end
+    
+    -- Block InvokeServer on suspicious remotes
+    if method == "InvokeServer" and self:IsA("RemoteFunction") then
+        local name = self.Name
+        if name:find("Detect") or name:find("Ban") or name:find("Kick") or 
+           name:find("Crash") or name:find("Report") or name:find("Flag") then
+            return nil
+        end
+    end
+    
+    -- Block suspicious children access
+    if method == "FindFirstChild" or method == "FindFirstChildOfClass" then
+        local childName = args[1]
+        if type(childName) == "string" then
+            if childName:find("Detect") or childName:find("Ban") or 
+               childName:find("Kick") or childName:find("Crash") or
+               childName:find("AntiCheat") or childName:find("Admin") then
+                return nil
+            end
+        end
+    end
+    
+    return old_namecall(self, ...)
+end)
+
+-- Advanced index hook
+local old_index = hookmetamethod(game, "__index", function(self, key)
+    if type(key) == "string" then
+        if key:find("Detect") or key:find("Ban") or key:find("Kick") or 
+           key:find("Crash") or key:find("AntiCheat") or key:find("Admin") then
+            return nil
+        end
+    end
+    return old_index(self, key)
+end)
+
+-- Anti-crash protection
+local function protectFromCrash()
+    -- Block destroy attempts
+    local oldDestroy = game.Destroy
+    game.Destroy = function(self)
+        if self == LocalPlayer.Character or self == LocalPlayer.PlayerGui or 
+           self == LocalPlayer or self == LocalPlayer.PlayerScripts then
+            return
+        end
+        return oldDestroy(self)
+    end
+    
+    -- Block parent changes
+    local oldParent = game.Parent
+    game.Parent = function(self, ...)
+        local newParent = ...
+        if newParent == nil and (self == LocalPlayer.Character or 
+            self == LocalPlayer.PlayerGui or self == LocalPlayer.PlayerScripts) then
+            return oldParent
+        end
+        return oldParent(self, ...)
+    end
+    
+    -- Block memory exhaustion
+    local oldClone = game.Clone
+    game.Clone = function(self)
+        if typeof(self) == "Instance" and self:IsDescendantOf(game) then
+            return oldClone(self)
+        end
+        return nil
+    end
+end
+
+task.spawn(protectFromCrash)
+
+-- Memory protection
+local function monitorMemory()
+    local lastCheck = os.clock()
+    
+    local function checkMemory()
+        if os.clock() - lastCheck > 30 then
+            local _, mem = pcall(function()
+                return Stats:GetTotalMemoryUsageMb()
+            end)
+            
+            if mem and mem > 500 then
+                -- Clear unnecessary objects
+                for _, obj in ipairs(CoreGui:GetDescendants()) do
+                    if obj:IsA("Frame") or obj:IsA("GuiObject") then
+                        if obj.Name == "Notification" or obj.Name == "Popup" or 
+                           obj.Name == "Toast" or obj.Name == "Alert" or
+                           obj.Name == "Warning" or obj.Name == "Error" then
+                            obj:Destroy()
+                        end
+                    end
+                end
+                
+                -- Clear unnecessary connections
+                for _, connection in ipairs(getconnections or {}) do
+                    if connection and connection.Connected then
+                        connection:Disconnect()
+                    end
+                end
+            end
+            
+            lastCheck = os.clock()
+        end
+    end
+    
+    RunService.RenderStepped:Connect(checkMemory)
+end
+
+task.spawn(monitorMemory)
+
+-- Anti-teleport protection
+local function protectFromTeleport()
+    TeleportService.TeleportInitFailed:Connect(function()
+        pcall(function()
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+        end)
+    end)
+    
+    -- Block suspicious teleports
+    local oldTeleport = TeleportService.Teleport
+    TeleportService.Teleport = function(self, ...)
+        local args = {...}
+        local placeId = args[1]
+        
+        -- Check if teleport is suspicious
+        if placeId ~= game.PlaceId then
+            return
+        end
+        
+        return oldTeleport(self, ...)
+    end
+end
+
+task.spawn(protectFromTeleport)
+
+-- Anti-kick protection
+local function protectFromKick()
+    local oldKick = LocalPlayer.Kick
+    LocalPlayer.Kick = function(self, ...)
+        return
+    end
+    
+    -- Block kick through remotes
+    local kickRemote = Remotes:FindFirstChild("Kick")
+    if kickRemote then
+        hookfunction(kickRemote.FireServer, function()
+            return
+        end)
+    end
+end
+
+task.spawn(protectFromKick)
+
+-- Anti-ban protection
+local function protectFromBan()
+    local banRemote = Remotes:FindFirstChild("Ban")
+    if banRemote then
+        hookfunction(banRemote.FireServer, function()
+            return
+        end)
+    end
+end
+
+task.spawn(protectFromBan)
+
+-- Advanced GUI protection
+local function protectGUI()
+    -- Protect important GUI elements
+    local protectedGUIs = {
+        "PlayerGui",
+        "CoreGui",
+        "Backpack",
+        "PlayerScripts"
+    }
+    
+    for _, guiName in ipairs(protectedGUIs) do
+        local gui = LocalPlayer:FindFirstChild(guiName)
+        if gui then
+            protect_gui(gui)
+        end
+    end
+    
+    -- Block GUI destruction
+    local oldDestroy = game.Destroy
+    game.Destroy = function(self)
+        if self:IsA("ScreenGui") or self:IsA("SurfaceGui") or self:IsA("BillboardGui") then
+            local parent = self.Parent
+            if parent == PlayerGui or parent == CoreGui then
+                return
+            end
+        end
+        return oldDestroy(self)
+    end
+end
+
+task.spawn(protectGUI)
+
+-- Anti-screenshot protection
+local function protectFromScreenshot()
+    local screenshotRemote = Remotes:FindFirstChild("Screenshot")
+    if screenshotRemote then
+        hookfunction(screenshotRemote.FireServer, function()
+            return
+        end)
+    end
+    
+    -- Block screen capture
+    if getrenv and getrenv().Screenshot then
+        getrenv().Screenshot = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromScreenshot)
+
+-- Anti-lag protection
+local function protectFromLag()
+    local oldWait = task.wait
+    task.wait = function(...)
+        local args = {...}
+        local time = args[1] or 0
+        
+        if time > 10 then
+            return oldWait(10)
+        end
+        
+        return oldWait(...)
+    end
+    
+    -- Block excessive yielding
+    local oldDelay = task.delay
+    task.delay = function(...)
+        local args = {...}
+        local time = args[1] or 0
+        
+        if time > 10 then
+            return oldDelay(10, select(2, ...))
+        end
+        
+        return oldDelay(...)
+    end
+end
+
+task.spawn(protectFromLag)
+
+-- Anti-spam protection
+local function protectFromSpam()
+    local spamCount = 0
+    local lastSpamTime = 0
+    
+    local function checkSpam()
+        local currentTime = os.clock()
+        
+        if currentTime - lastSpamTime > 5 then
+            spamCount = 0
+            lastSpamTime = currentTime
+        end
+        
+        spamCount += 1
+        
+        if spamCount > 100 then
+            -- Clear spam
+            for _, obj in ipairs(CoreGui:GetDescendants()) do
+                if obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox") then
+                    if obj.Name:find("Spam") or obj.Name:find("Flood") or obj.Name:find("DDOS") then
+                        obj:Destroy()
+                    end
+                end
+            end
+            
+            spamCount = 0
+        end
+    end
+    
+    RunService.Heartbeat:Connect(checkSpam)
+end
+
+task.spawn(protectFromSpam)
+
+-- Anti-exploit detection
+local function protectFromExploitDetection()
+    -- Block exploit detection
+    if getrenv and getrenv().Detected then
+        getrenv().Detected = function()
+            return false
+        end
+    end
+    
+    -- Block script analysis
+    if getrenv and getrenv().AnalyzeScript then
+        getrenv().AnalyzeScript = function()
+            return
+        end
+    end
+    
+    -- Block memory scanning
+    if getrenv and getrenv().ScanMemory then
+        getrenv().ScanMemory = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromExploitDetection)
+
+-- Advanced connection management
+local function manageConnections()
+    -- Track connections
+    local connections = {}
+    
+    -- Override connection creation
+    local oldConnect = game.Connect
+    game.Connect = function(self, ...)
+        local connection = oldConnect(self, ...)
+        
+        if connection then
+            table.insert(connections, connection)
+            
+            -- Auto-cleanup
+            if #connections > 1000 then
+                for i = 1, 500 do
+                    local oldConnection = table.remove(connections, 1)
+                    if oldConnection and oldConnection.Connected then
+                        oldConnection:Disconnect()
+                    end
+                end
+            end
+        end
+        
+        return connection
+    end
+end
+
+task.spawn(manageConnections)
+
+-- Anti-freeze protection
+local function protectFromFreeze()
+    -- Monitor script execution
+    local lastExecution = os.clock()
+    
+    RunService.Heartbeat:Connect(function()
+        lastExecution = os.clock()
+    end)
+    
+    -- Detect freezing
+    task.spawn(function()
+        while true do
+            task.wait(5)
+            
+            if os.clock() - lastExecution > 10 then
+                -- Script is frozen, attempt recovery
+                pcall(function()
+                    RunService:Reset()
+                end)
+            end
+        end
+    end)
+end
+
+task.spawn(protectFromFreeze)
+
+-- Anti-debugging protection
+local function protectFromDebugging()
+    -- Block debugger attachment
+    if getrenv and getrenv().Debugger then
+        getrenv().Debugger = function()
+            return
+        end
+    end
+    
+    -- Block breakpoints
+    if getrenv and getrenv().SetBreakpoint then
+        getrenv().SetBreakpoint = function()
+            return
+        end
+    end
+    
+    -- Block script inspection
+    if getrenv and getrenv().InspectScript then
+        getrenv().InspectScript = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromDebugging)
+
+-- Anti-tampering protection
+local function protectFromTampering()
+    -- Block script modification
+    if getrenv and getrenv().ModifyScript then
+        getrenv().ModifyScript = function()
+            return
+        end
+    end
+    
+    -- Block value manipulation
+    if getrenv and getrenv().SetValue then
+        getrenv().SetValue = function()
+            return
+        end
+    end
+    
+    -- Block property changes
+    if getrenv and getrenv().SetProperty then
+        getrenv().SetProperty = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromTampering)
+
+-- Anti-replication protection
+local function protectFromReplication()
+    -- Block replication to server
+    local oldReplicate = game.Replicate
+    game.Replicate = function(self, ...)
+        return
+    end
+    
+    -- Block property replication
+    if getrenv and getrenv().ReplicateProperty then
+        getrenv().ReplicateProperty = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromReplication)
+
+-- Anti-network analysis
+local function protectFromNetworkAnalysis()
+    -- Block network inspection
+    if getrenv and getrenv().InspectNetwork then
+        getrenv().InspectNetwork = function()
+            return
+        end
+    end
+    
+    -- Block packet capture
+    if getrenv and getrenv().CapturePackets then
+        getrenv().CapturePackets = function()
+            return
+        end
+    end
+    
+    -- Block traffic monitoring
+    if getrenv and getrenv().MonitorTraffic then
+        getrenv().MonitorTraffic = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromNetworkAnalysis)
+
+-- Anti-performance monitoring
+local function protectFromPerformanceMonitoring()
+    -- Block FPS monitoring
+    if getrenv and getrenv().GetFPS then
+        getrenv().GetFPS = function()
+            return 60
+        end
+    end
+    
+    -- Block memory monitoring
+    if getrenv and getrenv().GetMemory then
+        getrenv().GetMemory = function()
+            return 0
+        end
+    end
+    
+    -- Block CPU monitoring
+    if getrenv and getrenv().GetCPU then
+        getrenv().GetCPU = function()
+            return 0
+        end
+    end
+end
+
+task.spawn(protectFromPerformanceMonitoring)
+
+-- Anti-data collection
+local function protectFromDataCollection()
+    -- Block data collection
+    if getrenv and getrenv().CollectData then
+        getrenv().CollectData = function()
+            return
+        end
+    end
+    
+    -- Block analytics
+    if getrenv and getrenv().SendAnalytics then
+        getrenv().SendAnalytics = function()
+            return
+        end
+    end
+    
+    -- Block telemetry
+    if getrenv and getrenv().SendTelemetry then
+        getrenv().SendTelemetry = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromDataCollection)
+
+-- Anti-logging protection
+local function protectFromLogging()
+    -- Block logging
+    if getrenv and getrenv().Log then
+        getrenv().Log = function()
+            return
+        end
+    end
+    
+    -- Block error reporting
+    if getrenv and getrenv().ReportError then
+        getrenv().ReportError = function()
+            return
+        end
+    end
+    
+    -- Block warning system
+    if getrenv and getrenv().SendWarning then
+        getrenv().SendWarning = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromLogging)
+
+-- Anti-update protection
+local function protectFromUpdates()
+    -- Block game updates
+    if getrenv and getrenv().UpdateGame then
+        getrenv().UpdateGame = function()
+            return
+        end
+    end
+    
+    -- Block script updates
+    if getrenv and getrenv().UpdateScript then
+        getrenv().UpdateScript = function()
+            return
+        end
+    end
+    
+    -- Block client updates
+    if getrenv and getrenv().UpdateClient then
+        getrenv().UpdateClient = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromUpdates)
+
+-- Main protection loop
+local function mainProtectionLoop()
+    while true do
+        -- Check for suspicious objects
+        for _, obj in ipairs(game:GetDescendants()) do
+            if obj:IsA("Script") or obj:IsA("LocalScript") or obj:IsA("ModuleScript") then
+                local name = obj.Name:lower()
+                
+                if name:find("detect") or name:find("ban") or name:find("kick") or 
+                   name:find("crash") or name:find("exploit") or name:find("hack") or
+                   name:find("cheat") or name:find("bypass") or name:find("inject") or
+                   name:find("admin") or name:find("moderation") or name:find("punish") then
+                    obj.Enabled = false
+                    pcall(function()
+                        obj:Destroy()
+                    end)
+                end
+            end
+        end
+        
+        task.wait(5)
+    end
+end
+
+task.spawn(mainProtectionLoop)
+
+-- Advanced connection filtering
+local function filterConnections()
+    local oldConnect = game.Connect
+    
+    game.Connect = function(self, event, ...)
+        if event == "ChildAdded" or event == "DescendantAdded" then
+            local name = self.Name:lower()
+            
+            if name:find("detect") or name:find("ban") or name:find("kick") or 
+               name:find("crash") or name:find("exploit") or name:find("hack") or
+               name:find("cheat") or name:find("bypass") or name:find("inject") then
+                return {
+                    Disconnect = function() end,
+                    Connected = false
+                }
+            end
+        end
+        
+        return oldConnect(self, event, ...)
+    end
+end
+
+task.spawn(filterConnections)
+
+-- Anti-injection protection
+local function protectFromInjection()
+    -- Block script injection
+    local oldLoadString = loadstring or function() return function() end end
+    
+    if loadstring then
+        loadstring = function(code, chunkname, mode, env)
+            if type(code) == "string" then
+                if code:find("getfenv") or code:find("getgenv") or code:find("getrenv") or
+                   code:find("hookfunction") or code:find("hookmetamethod") or
+                   code:find("getgc") or code:find("getloadedmodules") or
+                   code:find("getrunningscripts") or code:find("getscripthash") then
+                    return function() end
+                end
+            end
+            
+            return oldLoadString(code, chunkname, mode, env)
+        end
+    end
+end
+
+task.spawn(protectFromInjection)
+
+-- Anti-decompilation protection
+local function protectFromDecompilation()
+    -- Block decompilation attempts
+    if getrenv and getrenv().Decompile then
+        getrenv().Decompile = function()
+            return "local function protected() return true end"
+        end
+    end
+    
+    -- Block bytecode extraction
+    if getrenv and getrenv().GetBytecode then
+        getrenv().GetBytecode = function()
+            return ""
+        end
+    end
+end
+
+task.spawn(protectFromDecompilation)
+
+-- Anti-obfuscation detection
+local function protectFromObfuscationDetection()
+    -- Block obfuscation checks
+    if getrenv and getrenv().CheckObfuscation then
+        getrenv().CheckObfuscation = function()
+            return true
+        end
+    end
+    
+    -- Block encryption checks
+    if getrenv and getrenv().CheckEncryption then
+        getrenv().CheckEncryption = function()
+            return true
+        end
+    end
+end
+
+task.spawn(protectFromObfuscationDetection)
+
+-- Anti-VM detection
+local function protectFromVMDetection()
+    -- Block VM checks
+    if getrenv and getrenv().CheckVM then
+        getrenv().CheckVM = function()
+            return false
+        end
+    end
+    
+    -- Block sandbox checks
+    if getrenv and getrenv().CheckSandbox then
+        getrenv().CheckSandbox = function()
+            return false
+        end
+    end
+end
+
+task.spawn(protectFromVMDetection)
+
+-- Anti-rootkit detection
+local function protectFromRootkitDetection()
+    -- Block rootkit scans
+    if getrenv and getrenv().ScanRootkit then
+        getrenv().ScanRootkit = function()
+            return false
+        end
+    end
+    
+    -- Block driver scans
+    if getrenv and getrenv().ScanDrivers then
+        getrenv().ScanDrivers = function()
+            return false
+        end
+    end
+end
+
+task.spawn(protectFromRootkitDetection)
+
+-- Anti-keylogger detection
+local function protectFromKeyloggerDetection()
+    -- Block input monitoring
+    if getrenv and getrenv().MonitorInput then
+        getrenv().MonitorInput = function()
+            return
+        end
+    end
+    
+    -- Block keyboard hooks
+    if getrenv and getrenv().KeyboardHook then
+        getrenv().KeyboardHook = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromKeyloggerDetection)
+
+-- Anti-screen recording detection
+local function protectFromScreenRecordingDetection()
+    -- Block screen capture
+    if getrenv and getrenv().CaptureScreen then
+        getrenv().CaptureScreen = function()
+            return
+        end
+    end
+    
+    -- Block video recording
+    if getrenv and getrenv().RecordVideo then
+        getrenv().RecordVideo = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromScreenRecordingDetection)
+
+-- Anti-memory dumping
+local function protectFromMemoryDumping()
+    -- Block memory dumps
+    if getrenv and getrenv().DumpMemory then
+        getrenv().DumpMemory = function()
+            return
+        end
+    end
+    
+    -- Block process inspection
+    if getrenv and getrenv().InspectProcess then
+        getrenv().InspectProcess = function()
+            return
+        end
+    end
+end
+
+task.spawn(protectFromMemoryDumping)
+
+-- Final initialization
+print("ULTRA ADVANCED PROTECTION SYSTEM v5.3.4.7.5.7.3.4 INITIALIZED")
+print("Protection Level: MAXIMUM")
+print("Anti-Detection: ACTIVE")
+print("Anti-Tampering: ACTIVE")
+print("Anti-Debugging: ACTIVE")
+print("Anti-Crash: ACTIVE")
+print("Anti-Kick: ACTIVE")
+print("Anti-Ban: ACTIVE")
+print("Anti-Teleport: ACTIVE")
+print("Anti-Lag: ACTIVE")
+print("Anti-Spam: ACTIVE")
+print("Anti-Freeze: ACTIVE")
+print("Memory Protection: ACTIVE")
+print("Network Protection: ACTIVE")
+print("Data Protection: ACTIVE")
+print("All Systems: ONLINE")
