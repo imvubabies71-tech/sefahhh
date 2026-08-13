@@ -1,172 +1,10117 @@
-const mineflayer = require('mineflayer');
-const Movements = require('mineflayer-pathfinder').Movements;
-const pathfinder = require('mineflayer-pathfinder').pathfinder;
-const { GoalBlock } = require('mineflayer-pathfinder').goals;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.AbilityHandler
+-- Took 0.01s to decompile.
+-- Executor: Potassium (v2.4.2)
 
-const config = require('./settings.json');
-const express = require('express');
+-- Decompiled with Potassium's decompiler.
 
-const app = express();
+return {
+    Run = {
+        Remote = "noremote",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        InfoOnly = true,
+        Toggle = true,
+        Cooldown = 0,
+        Cost = 0,
+        WantedSpecie = {},
+        Characters = {},
+        Keycode = Enum.KeyCode.LeftShift
+    },
+    ["Double Jump"] = {
+        Remote = "noremote",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        InfoOnly = true,
+        Cooldown = 0,
+        Cost = 0,
+        WantedSpecie = { "Vampires", "Originals", "Heretics", "Gods", "Werewolves", "Sirens", "Werewitches", "Hybrids", "Tribrids", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics" },
+        Characters = {},
+        Keycode = Enum.KeyCode.Space
+    },
+    Combat = {
+        Remote = "noremote",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        Cooldown = 2,
+        Cost = 30,
+        Magnitude = 35,
+        InfoOnly = true,
+        WantedSpecie = {},
+        Characters = {},
+        Keycode = Enum.KeyCode.F
+    },
+    Bite = {
+        Remote = "Bite",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Toggle = true,
+        Cooldown = 10,
+        Cost = 30,
+        Magnitude = 10,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "UpgradedOGs", "Heretics", "Originals", "Sirens", "TransitioningVampire", "TransitioningHeretic", "TransitioningHybrid", "TransitioningTribrid", "OriginalHybrids", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.E
+    },
+    Choke = {
+        Remote = "Choke",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 20,
+        Cost = 80,
+        Magnitude = 35,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "UpgradedOGs", "Heretics", "Originals", "Sirens", "OriginalHybrids", "Hunters", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.K
+    },
+    ["Alternative Face"] = {
+        Remote = "AltFace",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 4,
+        Cost = 5,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "Werewitches", "Werewolves", "UpgradedOGs", "Heretics", "Werewitches", "Originals", "Gods", "OriginalHybrids", "OriginalHeretics" },
+        Characters = {},
+        Keycode = Enum.KeyCode.V
+    },
+    Senses = {
+        Remote = "Senses",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Toggle = true,
+        Cooldown = 10,
+        Cost = 0,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "UpgradedOGs", "Heretics", "Originals", "Sirens", "OriginalHybrids", "OriginalHeretics" },
+        Characters = {},
+        Keycode = Enum.KeyCode.LeftAlt
+    },
+    ["Blood Heal"] = {
+        Remote = "BloodHeal",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 5,
+        Cost = 30,
+        Magnitude = 10,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "UpgradedOGs", "Heretics", "Originals", "Gods", "OriginalHybrids", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.G
+    },
+    ["Neck Snap"] = {
+        Remote = "NeckSnap",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 10,
+        Cost = 50,
+        Magnitude = 35,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "UpgradedOGs", "Heretics", "Originals", "Gods", "Sirens", "OriginalHybrids", "Hunters", "Phoenix", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Q
+    },
+    HeartRip = {
+        Remote = "HeartRip",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 30,
+        Cost = 80,
+        Magnitude = 35,
+        WantedSpecie = { "Originals", "UpgradedOGs", "Tribrids", "Sirens", "Hybrids", "OriginalHybrids", "Hunters", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.R
+    },
+    Claws = {
+        Remote = "Claws",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 3,
+        Cost = 30,
+        Magnitude = 10,
+        WantedSpecie = { "Werewolves", "Hybrids", "Werewitches", "Tribrids", "OriginalHybrids", "Sirens" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Z
+    },
+    ["Spine grab"] = {
+        Remote = "SpineGrab",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 25,
+        Cost = 90,
+        Magnitude = 10,
+        WantedSpecie = { "Werewolves", "Hybrids", "OriginalHybrids", "Hunters", "Originals", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Y
+    },
+    OutBurst = {
+        Remote = "OutBurst",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 80,
+        Cost = 200,
+        WantedSpecie = { "Psychics", "Gods" },
+        Characters = {},
+        Keycode = Enum.KeyCode.M
+    },
+    ["Psychic Scream"] = {
+        Remote = "Bonnie\'s scream",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 350,
+        WantedSpecie = { "Witches" },
+        Characters = { "Bonnie" },
+        Keycode = Enum.KeyCode.M
+    },
+    ["Mass Neck"] = {
+        Remote = "MassNeck",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 50,
+        Cost = 350,
+        WantedSpecie = { "Originals", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics", "Tribrids" },
+        Characters = {},
+        Keycode = Enum.KeyCode.B
+    },
+    ["Self Siphon"] = {
+        Remote = "SelfSiphon",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Toggle = true,
+        Cooldown = 5,
+        Cost = 0,
+        WantedSpecie = { "Heretics", "OriginalHeretics" },
+        Characters = {},
+        Keycode = Enum.KeyCode.Z
+    },
+    Scream = {
+        Remote = "Scream",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 400,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Lizzie", "Hope", "Inadu", "Tony", "Regina Mills", "Odin", "Death", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Change Outfit"] = {
+        Remote = "Change Outfit",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 8,
+        Cost = 50,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Dark Josie" },
+        Keycode = Enum.KeyCode.Zero
+    },
+    ["Mass slam"] = {
+        Remote = "Mass slam",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 30,
+        Cost = 50,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Psychics" },
+        Characters = { "Inadu", "Tony", "Regina Mills", "Odin", "Death", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Keycode = Enum.KeyCode.X
+    },
+    ["Mass siphon"] = {
+        Remote = "MassSiphon",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 50,
+        Cost = 0,
+        WantedSpecie = { "Siphoners", "Heretics", "OriginalHeretics" },
+        Characters = { "Dark Josie" },
+        Keycode = Enum.KeyCode.T
+    },
+    Siphon = {
+        Remote = "Siphon",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 0,
+        Cost = 0,
+        Magnitude = 10,
+        Toggle = true,
+        WantedSpecie = { "Heretics", "Siphoners", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.X
+    },
+    ["Sleep Siphon"] = {
+        Remote = "SleepSiphon",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 30,
+        Cost = 0,
+        WantedSpecie = { "Heretics", "Siphoners", "OriginalHeretics" },
+        Characters = { "Lizzie" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.M
+    },
+    Flight = {
+        Remote = "Flight",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 45,
+        Cost = 0,
+        Untogglable = true,
+        WantedSpecie = { "Gods", "Witches", "Phoenix", "Tribrids" },
+        Characters = { "Ken", "Jen", "Landon", "Tony" },
+        Keycode = Enum.KeyCode.J
+    },
+    Stomp = {
+        Remote = "Stomp",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 500,
+        WantedSpecie = { "Gods" },
+        Characters = { "Ken" },
+        Keycode = Enum.KeyCode.K
+    },
+    Ashes = {
+        Remote = "Ashes",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 150,
+        Cost = 550,
+        Magnitude = 20,
+        WantedSpecie = { "Gods" },
+        Characters = { "Ken" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.X
+    },
+    ["Spear Creation"] = {
+        Remote = "SpearCreation",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 500,
+        CustomLocked = true,
+        WantedSpecie = { "Gods" },
+        Characters = { "Jen" },
+        Keycode = Enum.KeyCode.Z
+    },
+    ["Lightning Bolt"] = {
+        Remote = "LightningBolt",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 30,
+        Cost = 100,
+        Magnitude = 60,
+        WantedSpecie = { "Gods" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Mass Pain"] = {
+        Remote = "MassPain",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 60,
+        Cost = 500,
+        WantedSpecie = { "Psychics" },
+        Characters = {},
+        Keycode = Enum.KeyCode.G
+    },
+    Levitation = {
+        Remote = "Levitation",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 40,
+        Cost = 150,
+        Untogglable = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Dark Josie" },
+        Keycode = Enum.KeyCode.L
+    },
+    Decapitation = {
+        Remote = "Decapitation",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 100,
+        Cost = 500,
+        Magnitude = 35,
+        WantedSpecie = { "UpgradedOGs" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.M
+    },
+    Scratch = {
+        Remote = "Scratch",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 25,
+        Cost = 50,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Hope", "Dahlia", "Esther" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.X
+    },
+    Teleport = {
+        Remote = "Teleport",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 5,
+        Cost = 50,
+        CustomLocked = true,
+        Magnitude = 200,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods", "OriginalHeretics" },
+        Characters = { "Dahlia", "Cleo", "Freya", "Dark Josie", "Inadu", "Ken", "Jen", "Regina Mills", "Odin", "Emily", "Esther" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.LeftControl
+    },
+    WandaBolts = {
+        Remote = "WandaBolts",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 5,
+        Cost = 50,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods" },
+        Characters = { "Tony", "Death" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.LeftControl
+    },
+    ["Explosion trail"] = {
+        Remote = "ExplosionTrail",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 50,
+        Cost = 150,
+        Magnitude = 120,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods" },
+        Characters = { "Qetsiyah" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Storm creation"] = {
+        Remote = "StormCreation",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 150,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Dahlia" },
+        Keycode = Enum.KeyCode.N
+    },
+    ["Orb form"] = {
+        Remote = "Orb form",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 45,
+        Cost = 0,
+        SpiritAble = true,
+        Untogglable = true,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Regina Mills", "Odin", "Death", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Keycode = Enum.KeyCode.J
+    },
+    ["Telekinetic neck snap"] = {
+        Remote = "Telekinetic neck snap",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 30,
+        Cost = 150,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.U
+    },
+    BloodChoke = {
+        Remote = "BloodChoke",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 45,
+        Cost = 250,
+        Magnitude = 25,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Bonnie", "Qetsiyah", "Davina", "Esther", "Vincent" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Q
+    },
+    Dessicate = {
+        Remote = "Dessicate",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 250,
+        Magnitude = 20,
+        SpiritAble = true,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Psychics" },
+        Characters = { "Inadu", "Odin" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.E
+    },
+    Kneel = {
+        Remote = "Kneel",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 45,
+        Cost = 150,
+        Magnitude = 25,
+        SpiritAble = true,
+        WantedSpecie = { "Witches", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Davina", "Odin" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Snake choke"] = {
+        Remote = "SnakeChoke",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 45,
+        Cost = 150,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.N
+    },
+    ["Force wolf turn"] = {
+        Remote = "ForceWolfTurn",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 90,
+        Cost = 150,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Davina" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.E
+    },
+    ["Sleep induction"] = {
+        Remote = "SleepInduction",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 70,
+        Cost = 150,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Sirens", "OriginalHeretics" },
+        Characters = { "Dark Josie" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Sleep Induction"] = {
+        Remote = "Sleep Induction",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 70,
+        Cost = 150,
+        Magnitude = 25,
+        WantedSpecie = { "Sirens" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Self heal"] = {
+        Remote = "Selfheal",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 180,
+        Expression = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Inadu", "Bonnie", "Dark Josie", "Emily" },
+        Keycode = Enum.KeyCode.R
+    },
+    ["Heart Crush"] = {
+        Remote = "HeartCrush",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 500,
+        Magnitude = 20,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Tony", "Regina Mills", "Odin", "Death", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Z
+    },
+    ["Bone manipulation"] = {
+        Remote = "Bone manipulation",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 300,
+        Magnitude = 20,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Bonnie" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.B
+    },
+    ["Ancestral push"] = {
+        Remote = "Ancestral Push",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 25,
+        Cost = 150,
+        Magnitude = 25,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Emily", "Qetsiyah", "Bonnie", "Papa Tunde", "Genevieve", "Davina", "Sheila", "Vincent" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.L
+    },
+    ["Skull Crush"] = {
+        Remote = "SkullCrush",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 400,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Bonnie" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.E
+    },
+    ["Skull crush"] = {
+        Remote = "SkullCrushOP",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 400,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Tony", "Death" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.One
+    },
+    ["Brain Melt"] = {
+        Remote = "BrainMelt",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 50,
+        Cost = 300,
+        Magnitude = 10,
+        WantedSpecie = { "Psychics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.V
+    },
+    ["Dark face"] = {
+        Remote = "DarkFace",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 5,
+        Cost = 0,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Dark Josie", "Inadu" },
+        Keycode = Enum.KeyCode.M
+    },
+    ["Muse eyes"] = {
+        Remote = "MuseFace",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 5,
+        Cost = 0,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Cleo" },
+        Keycode = Enum.KeyCode.M
+    },
+    Inspire = {
+        Remote = "Inspire",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 100,
+        Cost = 80,
+        Magnitude = 35,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Cleo" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.R
+    },
+    ["Crow Turn"] = {
+        Remote = "CrowTurn",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 100,
+        Cost = 500,
+        Magnitude = 10,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Freya", "Tony", "Regina Mills", "Odin", "Death" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.N
+    },
+    ["Pain infliction"] = {
+        Remote = "Pain",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Toggle = true,
+        Cooldown = 15,
+        Cost = 0,
+        Magnitude = 50,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.H
+    },
+    ["Advanced pain infliction"] = {
+        Remote = "Advanced pain infliction",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Toggle = true,
+        Cooldown = 30,
+        Cost = 0,
+        Magnitude = 50,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods" },
+        Characters = { "Vincent", "Qetsiyah" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.R
+    },
+    Explosion = {
+        Remote = "Explosion",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 150,
+        Magnitude = 50,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods" },
+        Characters = { "Cleo", "Sheila" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Frontal push"] = {
+        Remote = "Frontal push",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 150,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods" },
+        Characters = { "Vincent" },
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Fire breath"] = {
+        Remote = "Fire breath",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 100,
+        WantedSpecie = { "Vampires" },
+        Characters = { "Kaleb" },
+        Keycode = Enum.KeyCode.T
+    },
+    ["Crow summoning"] = {
+        Remote = "Crow summoning",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 30,
+        Cost = 80,
+        Magnitude = 35,
+        WantedSpecie = { "Vampires", "UpgradedOGs", "Heretics", "Originals", "OriginalHeretics" },
+        Characters = { "Stefan", "Damon" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    Telekinesis = {
+        Remote = "Telekinesis",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Toggle = true,
+        Cooldown = 40,
+        Cost = 0,
+        Magnitude = 50,
+        WantedSpecie = { "Witches", "Siphoners", "Psychics", "Gods", "Tribrids" },
+        Characters = { "Esther", "Bonnie", "Dahlia", "Ken" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    Drag = {
+        Remote = "Drag",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Toggle = true,
+        Cooldown = 40,
+        Cost = 0,
+        Magnitude = 50,
+        WantedSpecie = { "Witches", "Siphoners", "Psychics", "Gods" },
+        Characters = { "Dahlia" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Telekinetic push"] = {
+        Remote = "Ictus",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 15,
+        Cost = 80,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods", "OriginalHeretics" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.C
+    },
+    ["Turn Into Werewolf Form"] = {
+        Remote = "TurnIntoWerewolfForm",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 30,
+        Cost = 50,
+        WantedSpecie = { "Werewolves", "Werewitches", "Hybrids", "Tribrids", "OriginalHybrids", "TransitioningTribrid" },
+        Characters = {},
+        Keycode = Enum.KeyCode.L
+    },
+    Howl = {
+        Remote = "Howl",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        WolfLocked = true,
+        Cooldown = 8,
+        Cost = 0,
+        WantedSpecie = {},
+        Characters = {},
+        Keycode = Enum.KeyCode.R
+    },
+    Pounce = {
+        Remote = "Pounce",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        WolfLocked = true,
+        Cooldown = 15,
+        Cost = 50,
+        WantedSpecie = {},
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.F
+    },
+    Attack = {
+        Remote = "Attack",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        WolfLocked = true,
+        Cooldown = 10,
+        Cost = 50,
+        WantedSpecie = {},
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.G
+    },
+    ["Wolf Bite"] = {
+        Remote = "WolfBite",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        WolfLocked = true,
+        Cooldown = 10,
+        Cost = 30,
+        WantedSpecie = {},
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.E
+    },
+    ["Wolf senses"] = {
+        Remote = "noremote",
+        SpecieLocked = false,
+        CharacterLocked = false,
+        WolfLocked = true,
+        Toggle = true,
+        Cooldown = 10,
+        Cost = 0,
+        WantedSpecie = {},
+        Characters = {},
+        Keycode = Enum.KeyCode.LeftAlt
+    },
+    Storm = {
+        Remote = "StormFreya",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 30,
+        Cost = 500,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Freya" },
+        Keycode = Enum.KeyCode.Y
+    },
+    Earthquake = {
+        Remote = "Earthquake",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 30,
+        Cost = 500,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Davina", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Keycode = Enum.KeyCode.R
+    },
+    Resurrect = {
+        Remote = "Resurrect",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 450,
+        Cost = 450,
+        Magnitude = 15,
+        CorpseTarget = true,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Tony", "Death", "Regina Mills", "Odin", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.K
+    },
+    Petrification = {
+        Remote = "Petrification",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 300,
+        Magnitude = 25,
+        Expression = true,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Dark Josie", "Bonnie" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.N
+    },
+    ["Mind fry"] = {
+        Remote = "Mind fry",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 50,
+        Cost = 300,
+        Magnitude = 10,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Freya", "Qetsiyah" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.M
+    },
+    ["Fire trail"] = {
+        Remote = "Fire trail",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 90,
+        Cost = 100,
+        Magnitude = 35,
+        Toggle = true,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Heretics", "Psychics", "Phoenix", "Tribrids" },
+        Characters = { "Cleo", "Bonnie", "Landon" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.Z
+    },
+    Burn = {
+        Remote = "Burn",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 25,
+        Cost = 50,
+        Magnitude = 25,
+        WantedSpecie = { "Phoenix" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.R
+    },
+    Blink = {
+        Remote = "Blink",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 5,
+        Cost = 50,
+        Magnitude = 200,
+        WantedSpecie = { "Vampires", "Hybrids", "Tribrids", "Heretics", "Originals", "OriginalHybrids", "OriginalHeretics", "UpgradedOGs" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.W
+    },
+    ["Fire pentagram"] = {
+        Remote = "Fire pentagram",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 350,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Esther", "Emily" },
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Psychic dimension"] = {
+        Remote = "Psychic dimension",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 150,
+        Psychic = true,
+        WantedSpecie = { "Witches" },
+        Characters = { "Bonnie" },
+        Keycode = Enum.KeyCode.Y,
+        Input = Enum.UserInputType.MouseButton1
+    },
+    ["Fire torrent"] = {
+        Remote = "Fire torrent",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 40,
+        Cost = 300,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Hope" },
+        Keycode = Enum.KeyCode.N
+    },
+    ["Fire beam"] = {
+        Remote = "Fire beam",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 30,
+        Cost = 250,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Keycode = Enum.KeyCode.T
+    },
+    ["Mass snap"] = {
+        Remote = "Mass snap",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 350,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Davina", "Odin" },
+        Keycode = Enum.KeyCode.B
+    },
+    ["Blood boil"] = {
+        Remote = "Blood boil",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 40,
+        Cost = 175,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Davina" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.J
+    },
+    ["Telekinetic combo"] = {
+        Remote = "Telekinetic combo",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 40,
+        Cost = 175,
+        Magnitude = 30,
+        CustomLocked = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods" },
+        Characters = { "Davina", "Ken", "Inadu", "Dahlia", "Emily" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.P
+    },
+    Possession = {
+        Remote = "Possession",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 300,
+        Cost = 475,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu", "Tony" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Nine
+    },
+    ["Siphon hug"] = {
+        Remote = "Siphon hug",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 135,
+        Cost = 0,
+        Magnitude = 10,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Dark Josie", "Odin" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.J
+    },
+    Locate = {
+        Remote = "Locate",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 50,
+        Cost = 200,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Dahlia" },
+        Keycode = Enum.KeyCode.E
+    },
+    ["Telekinetic decapitation"] = {
+        Remote = "Telekinetic decapitation",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 100,
+        Cost = 500,
+        Magnitude = 35,
+        WantedSpecie = { "Tribrids" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.M
+    },
+    ["Memory wipe"] = {
+        Remote = "Memory wipe",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 195,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Davina" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.N
+    },
+    ["Crescent curse"] = {
+        Remote = "Crescent curse",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 250,
+        Cost = 200,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Dahlia", "Odin" },
+        Keycode = Enum.KeyCode.M
+    },
+    ["Organ crush"] = {
+        Remote = "Organ crush",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 100,
+        Cost = 250,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Inadu" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.L
+    },
+    ["Mass pain infliction"] = {
+        Remote = "Mass pain infliction",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 400,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Freya", "Olivia" },
+        Keycode = Enum.KeyCode.R
+    },
+    ShapeShift = {
+        Remote = "ShapeShift",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 200,
+        Cost = 500,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Silas" },
+        Keycode = Enum.KeyCode.R
+    },
+    ["Siphon choke"] = {
+        Remote = "Siphon choke",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Toggle = true,
+        Cooldown = 35,
+        Cost = 0,
+        Magnitude = 50,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics", "Gods", "OriginalHeretics" },
+        Characters = { "Valerie", "Mary Louise", "Malcolm", "Beau", "Nora", "Lizzie" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Coin throw"] = {
+        Remote = "Coin throw",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 25,
+        Cost = 90,
+        Magnitude = 90,
+        WantedSpecie = { "Originals" },
+        Characters = { "Elijah" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.T
+    },
+    Slam = {
+        Remote = "Slam",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 110,
+        Magnitude = 90,
+        WantedSpecie = { "Originals" },
+        Characters = { "Rebekah" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Hybrid combo"] = {
+        Remote = "Hybrid combo",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 110,
+        Magnitude = 90,
+        WantedSpecie = { "OriginalHybrids", "Werewolves", "Hybrids" },
+        Characters = { "Niklaus" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Outburst "] = {
+        Remote = "Dav scream",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 130,
+        Cost = 400,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Psychics" },
+        Characters = { "Davina" },
+        Keycode = Enum.KeyCode.V
+    },
+    ["Crows attack"] = {
+        Remote = "Crows attack",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 100,
+        Cost = 250,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Esther" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.L
+    },
+    ["Fire swirl"] = {
+        Remote = "Fire swirl",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 100,
+        Cost = 250,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Siphoners", "Psychics" },
+        Characters = { "Esther" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.V
+    },
+    ["Resurrect "] = {
+        Remote = "ResurrectQet",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 450,
+        Cost = 450,
+        Magnitude = 35,
+        CorpseTarget = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Qetsiyah" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.K
+    },
+    ["Organ liquify"] = {
+        Remote = "Organ liquify",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 120,
+        Cost = 350,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Siphoners", "Heretics", "Psychics", "OriginalHeretics" },
+        Characters = { "Silas" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Q
+    },
+    ["Lift slam"] = {
+        Remote = "Lift slam",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 300,
+        Magnitude = 25,
+        WantedSpecie = { "Witches", "Werewitches", "Psychics" },
+        Characters = { "Vincent" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.G
+    },
+    ["Psychic wave"] = {
+        Remote = "PsychicWave",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 30,
+        Cost = 100,
+        Magnitude = 60,
+        WantedSpecie = { "Sirens" },
+        Characters = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.G
+    },
+    ["Siren Scream"] = {
+        Remote = "SirenScream",
+        SpecieLocked = true,
+        CharacterLocked = false,
+        Cooldown = 30,
+        Cost = 100,
+        Magnitude = 60,
+        WantedSpecie = { "Sirens" },
+        Characters = {},
+        Keycode = Enum.KeyCode.H
+    },
+    ["Possession "] = {
+        Remote = "EmilyPoss",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 300,
+        Cost = 475,
+        Magnitude = 25,
+        GhostCast = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Emily" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Earthquake "] = {
+        Remote = "EmilyEarthquake",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 45,
+        Cost = 200,
+        WantedSpecie = { "Witches" },
+        Characters = { "Emily" },
+        Keycode = Enum.KeyCode.G
+    },
+    ["Pendant throw"] = {
+        Remote = "EmilyPendant",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 150,
+        WantedSpecie = { "Witches" },
+        Characters = { "Emily" },
+        Keycode = Enum.KeyCode.V
+    },
+    ["Mass ghost attack"] = {
+        Remote = "Mass ghost attack",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 130,
+        Cost = 400,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Emily", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Keycode = Enum.KeyCode.E
+    },
+    Repulse = {
+        Remote = "Repulse",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 60,
+        Cost = 350,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Tony" },
+        Keycode = Enum.KeyCode.T
+    },
+    Invisibility = {
+        Remote = "Invisibility",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 35,
+        Cost = 100,
+        Magnitude = 35,
+        Toggle = true,
+        WantedSpecie = { "Mortals" },
+        Characters = { "Ethan" },
+        Keycode = Enum.KeyCode.E
+    },
+    ["Teleport "] = {
+        Remote = "EthanTP",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 10,
+        Cost = 100,
+        Magnitude = 150,
+        WantedSpecie = { "Mortals" },
+        Characters = { "Ethan" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.Q
+    },
+    ["Teleport with someone"] = {
+        Remote = "EthanTPBoth",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 50,
+        Cost = 100,
+        Magnitude = 150,
+        WantedSpecie = { "Mortals" },
+        Characters = { "Ethan" },
+        Input = Enum.UserInputType.MouseButton2,
+        Keycode = Enum.KeyCode.R
+    },
+    Illusion = {
+        Remote = "Illusion",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 100,
+        Cost = 500,
+        Magnitude = 35,
+        WantedSpecie = { "Psychics" },
+        Characters = { "Cade" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.T
+    },
+    ["Mind Pain"] = {
+        Remote = "Mind Pain",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 80,
+        Cost = 300,
+        Magnitude = 35,
+        WantedSpecie = { "Psychics" },
+        Characters = { "Cade" },
+        Input = Enum.UserInputType.MouseButton1,
+        Keycode = Enum.KeyCode.Y
+    },
+    ["Mass bone break"] = {
+        Remote = "Mass bone break",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 130,
+        Cost = 300,
+        Magnitude = 30,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Dahlia", "Inadu" },
+        Keycode = Enum.KeyCode.K
+    },
+    ["Expression Blast"] = {
+        Remote = "Expression Blast",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 130,
+        Cost = 300,
+        Magnitude = 30,
+        Expression = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Bonnie" },
+        Keycode = Enum.KeyCode.G
+    },
+    ["Turn into crow"] = {
+        Remote = "Turn into crow",
+        SpecieLocked = true,
+        CharacterLocked = true,
+        Cooldown = 130,
+        Cost = 300,
+        Magnitude = 30,
+        Untogglable = true,
+        WantedSpecie = { "Witches", "Werewitches", "Tribrids", "Siphoners", "Heretics", "Psychics" },
+        Characters = { "Esther" },
+        Keycode = Enum.KeyCode.B
+    },
+    ["Change outfit"] = {
+        Remote = "Change Outfit staff",
+        SpecieLocked = false,
+        CharacterLocked = true,
+        Cooldown = 8,
+        Cost = 50,
+        StaffAccess = true,
+        WantedSpecie = {},
+        Characters = {},
+        Keycode = Enum.KeyCode.Zero
+    }
+};
+-- Script Path: game:GetService("ReplicatedStorage").Modules.CameraShaker
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
 
-app.get('/', (req, res) => {
-  res.send('Bot has arrived');
-});
+-- Decompiled with Potassium's decompiler.
 
-app.listen(8000, () => {
-  console.log('Server started');
-});
+local u1 = {};
+u1.__index = u1;
+local profilebegin = debug.profilebegin;
+local profileend = debug.profileend;
+local new = CFrame.new;
+local Angles = CFrame.Angles;
+local rad = math.rad;
+local u2 = Vector3.new();
+local CameraShakeInstance = require(script.CameraShakeInstance);
+local CameraShakeState = CameraShakeInstance.CameraShakeState;
+u1.CameraShakeInstance = CameraShakeInstance;
+u1.Presets = require(script.CameraShakePresets);
 
-function createBot() {
-   const bot = mineflayer.createBot({
-      username: config['bot-account']['username'],
-      password: config['bot-account']['password'],
-      auth: config['bot-account']['type'],
-      host: config.server.ip,
-      port: config.server.port,
-      version: config.server.version,
-   });
+function u1.new(p3, p4) -- Line: 87
+    -- upvalues: u2 (copy), u1 (copy)
+    local v5 = type(p3) == "number";
+    assert(v5, "RenderPriority must be a number (e.g.: Enum.RenderPriority.Camera.Value)");
+    local v6 = type(p4) == "function";
+    assert(v6, "Callback must be a function");
 
-   bot.loadPlugin(pathfinder);
-   const mcData = require('minecraft-data')(bot.version);
-   const defaultMove = new Movements(bot, mcData);
-   bot.settings.colorsEnabled = false;
+    return setmetatable({
+        _running = false,
+        _renderName = "CameraShaker",
+        _renderPriority = p3,
+        _posAddShake = u2,
+        _rotAddShake = u2,
+        _camShakeInstances = {},
+        _removeInstances = {},
+        _callback = p4
+    }, u1);
+end;
 
-   let pendingPromise = Promise.resolve();
+function u1.Start(u7) -- Line: 108
+    -- upvalues: profilebegin (copy), profileend (copy)
+    if u7._running then
+        return;
+    end;
 
-   function sendRegister(password) {
-      return new Promise((resolve, reject) => {
-         bot.chat(`/register ${password} ${password}`);
-         console.log(`[Auth] Sent /register command.`);
+    u7._running = true;
+    local _callback = u7._callback;
+    game:GetService("RunService"):BindToRenderStep(u7._renderName, u7._renderPriority, function(p8) -- Line: 112
+        -- upvalues: profilebegin (ref), u7 (copy), profileend (ref), _callback (copy)
+        profilebegin("CameraShakerUpdate");
+        local v9 = u7:Update(p8);
+        profileend();
+        _callback(v9);
+    end);
+end;
 
-         bot.once('chat', (username, message) => {
-            console.log(`[ChatLog] <${username}> ${message}`); // Log all chat messages
+function u1.Stop(p10) -- Line: 121
+    if not p10._running then
+        return;
+    end;
 
-            // Check for various possible responses
-            if (message.includes('successfully registered')) {
-               console.log('[INFO] Registration confirmed.');
-               resolve();
-            } else if (message.includes('already registered')) {
-               console.log('[INFO] Bot was already registered.');
-               resolve(); // Resolve if already registered
-            } else if (message.includes('Invalid command')) {
-               reject(`Registration failed: Invalid command. Message: "${message}"`);
-            } else {
-               reject(`Registration failed: unexpected message "${message}".`);
+    game:GetService("RunService"):UnbindFromRenderStep(p10._renderName);
+    p10._running = false;
+end;
+
+function u1.StopSustained(p11, p12) -- Line: 128
+    for _, v in pairs(p11._camShakeInstances) do
+        if v.fadeOutDuration == 0 then
+            v:StartFadeOut(p12 or v.fadeInDuration);
+        end;
+    end;
+end;
+
+function u1.Update(p13, p14) -- Line: 137
+    -- upvalues: u2 (copy), CameraShakeState (copy), new (copy), Angles (copy), rad (copy)
+    local v15 = u2;
+    local v16 = u2;
+    local _camShakeInstances = p13._camShakeInstances;
+
+    for i = 1, #_camShakeInstances do
+        local v17 = _camShakeInstances[i];
+        local v18 = v17:GetState();
+
+        if v18 == CameraShakeState.Inactive and v17.DeleteOnInactive then
+            p13._removeInstances[#p13._removeInstances + 1] = i;
+        elseif v18 ~= CameraShakeState.Inactive then
+            local v19 = v17:UpdateShake(p14);
+            v15 = v15 + v19 * v17.PositionInfluence;
+            v16 = v16 + v19 * v17.RotationInfluence;
+        end;
+    end;
+
+    for i = #p13._removeInstances, 1, -1 do
+        table.remove(_camShakeInstances, p13._removeInstances[i]);
+        p13._removeInstances[i] = nil;
+    end;
+
+    return new(v15) * Angles(0, rad(v16.Y), 0) * Angles(rad(v16.X), 0, (rad(v16.Z)));
+end;
+
+function u1.Shake(p20, p21) -- Line: 174
+    local v22;
+
+    if type(p21) == "table" then
+        v22 = p21._camShakeInstance;
+    else
+        v22 = false;
+    end;
+
+    assert(v22, "ShakeInstance must be of type CameraShakeInstance");
+    p20._camShakeInstances[#p20._camShakeInstances + 1] = p21;
+
+    return p21;
+end;
+
+function u1.ShakeSustain(p23, p24) -- Line: 181
+    local v25;
+
+    if type(p24) == "table" then
+        v25 = p24._camShakeInstance;
+    else
+        v25 = false;
+    end;
+
+    assert(v25, "ShakeInstance must be of type CameraShakeInstance");
+    p23._camShakeInstances[#p23._camShakeInstances + 1] = p24;
+    p24:StartFadeIn(p24.fadeInDuration);
+
+    return p24;
+end;
+
+function u1.ShakeOnce(p26, p27, p28, p29, p30, p31, p32) -- Line: 189
+    -- upvalues: CameraShakeInstance (copy)
+    local v33 = CameraShakeInstance.new(p27, p28, p29, p30);
+    v33.PositionInfluence = typeof(p31) == "Vector3" and p31 and p31 or Vector3.new(0.15, 0.15, 0.15);
+    v33.RotationInfluence = typeof(p32) == "Vector3" and p32 and p32 or Vector3.new(1, 1, 1);
+    p26._camShakeInstances[#p26._camShakeInstances + 1] = v33;
+
+    return v33;
+end;
+
+function u1.StartShake(p34, p35, p36, p37, p38, p39) -- Line: 198
+    -- upvalues: CameraShakeInstance (copy)
+    local v40 = CameraShakeInstance.new(p35, p36, p37);
+    v40.PositionInfluence = typeof(p38) == "Vector3" and p38 and p38 or Vector3.new(0.15, 0.15, 0.15);
+    v40.RotationInfluence = typeof(p39) == "Vector3" and p39 and p39 or Vector3.new(1, 1, 1);
+    v40:StartFadeIn(p37);
+    p34._camShakeInstances[#p34._camShakeInstances + 1] = v40;
+
+    return v40;
+end;
+
+return u1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.Color
+-- Took 0.01s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local UserInputService = game:GetService("UserInputService");
+local RunService = game:GetService("RunService");
+local u1 = {};
+u1.__index = u1;
+
+function toPolar(p2)
+    return math.atan2(p2.Y, p2.X), p2.Magnitude;
+end;
+
+function radToDeg(p3)
+    return (p3 + 3.141592653589793) / 6.283185307179586 * 360;
+end;
+
+function getScreenGuiWorldDetails(p4)
+    local Parent = p4.Parent;
+
+    if p4.Face == Enum.NormalId.Front then
+        return Parent.Position + Parent.CFrame.LookVector * Parent.Size.Z / 2, Parent.CFrame.LookVector;
+    end;
+
+    if p4.Face == Enum.NormalId.Back then
+        return Parent.Position + Parent.CFrame.LookVector * -Parent.Size.Z / 2, -Parent.CFrame.LookVector;
+    end;
+
+    if p4.Face == Enum.NormalId.Right then
+        return Parent.Position + Parent.CFrame.RightVector * Parent.Size.X / 2, Parent.CFrame.RightVector;
+    end;
+
+    if p4.Face == Enum.NormalId.Left then
+        return Parent.Position + Parent.CFrame.RightVector * -Parent.Size.X / 2, -Parent.CFrame.RightVector;
+    end;
+
+    if p4.Face == Enum.NormalId.Top then
+        return Parent.Position + Parent.CFrame.UpVector * Parent.Size.Y / 2, Parent.CFrame.UpVector;
+    end;
+
+    if p4.Face == Enum.NormalId.Bottom then
+        return Parent.Position + Parent.CFrame.UpVector * -Parent.Size.Y / 2, -Parent.CFrame.UpVector;
+    end;
+end;
+
+function template(p5, p6)
+    local v7 = (not p5 or (typeof(p5) ~= "table" or not p5)) and {} or p5;
+
+    for i, v in pairs(p6) do
+        if v7[i] == nil or typeof(v) == "table" then
+            if typeof(v) == "table" then
+                local v = template(v7[i] or {}, v) or v;
+            end;
+
+            v7[i] = v;
+        end;
+    end;
+
+    return v7;
+end;
+
+function roundToHundredths(p8)
+    return math.round(p8 * 100) / 100;
+end;
+
+function u1.New(p9, p10) -- Line: 76
+    -- upvalues: UserInputService (copy), u1 (copy)
+    if p9:IsA("SurfaceGui") then
+        assert(p9.Face == Enum.NormalId.Front, "Color Picker - SurfaceGui must have it\'s Face property set to \'Front\' to work properly");
+    end;
+
+    local v11 = p9:IsA("ScreenGui") and UserInputService:GetMouseLocation() + Vector2.new(16, -20) or Vector2.zero;
+    local v12 = template(p10, {
+        RoundedCorners = true,
+        Draggable = true,
+        ZIndex = 1,
+        Size = 0.4,
+        Position = UDim2.fromOffset(v11.X, v11.Y),
+        Primary = {
+            Transparency = 0,
+            Color = Color3.fromRGB(26, 26, 36)
+        },
+        Secondary = {
+            Transparency = 0,
+            Color = Color3.fromRGB(36, 36, 46)
+        },
+        Topbar = {
+            Transparency = 0,
+            Color = Color3.fromRGB(21, 21, 31)
+        },
+        Text = {
+            Transparency = 0,
+            Color = Color3.fromRGB(255, 255, 255)
+        }
+    });
+    local v13 = setmetatable({}, u1);
+    v13.Params = v12;
+    v13.Gui = p9;
+    v13.Connections = {};
+    v13:Create();
+    v13:SetColor(Color3.fromRGB(255, 255, 255));
+
+    return v13;
+end;
+
+function u1.Create(u14) -- Line: 107
+    -- upvalues: RunService (copy), UserInputService (copy)
+    local u15 = script.ColorWindow:Clone();
+    u15.Position = u14.Params.Position;
+    u15.Size = UDim2.fromScale(u14.Params.Size, u14.Params.Size);
+    u15.ZIndex = u14.Params.ZIndex;
+    u15.Parent = u14.Gui;
+    u15.Visible = true;
+
+    if u14.Params.Draggable then
+        u15.Topbar.Button.MouseButton1Down:Connect(function() -- Line: 118
+            -- upvalues: u14 (copy), RunService (ref)
+            local u16 = u14:GetMousePos() or Vector2.zero;
+            local Position = u14.Instance.Position;
+            u14._dragFunc = RunService.Heartbeat:Connect(function() -- Line: 121
+                -- upvalues: u14 (ref), u16 (copy), Position (copy)
+                local v17 = (u14:GetMousePos() or Vector2.zero) - u16;
+                u14.Instance.Position = Position + UDim2.fromOffset(v17.X, v17.Y);
+            end);
+        end);
+    end;
+
+    u14.Updated = u15.UpdateEvent.Event;
+    u14.Finished = u15.FinishedEvent.Event;
+    u14.Canceled = u15.CanceledEvent.Event;
+    u14.Cancelled = u15.CanceledEvent.Event;
+
+    local function _updateVisual(p18, p19) -- Line: 136
+        for _, v in pairs(p18) do
+            for i, v2 in pairs(p19) do
+                v[i] = v2;
+            end;
+        end;
+    end;
+
+    _updateVisual({ u15.Content.Background.Top, u15.Content.Background.Bottom.Frame, u15.Properties }, {
+        BackgroundColor3 = u14.Params.Primary.Color,
+        BackgroundTransparency = u14.Params.Primary.Transparency
+    });
+    _updateVisual({ u15.Properties.Line, u15.Content.Bottom.Hex.Frame }, {
+        BackgroundColor3 = u14.Params.Secondary.Color,
+        BackgroundTransparency = u14.Params.Secondary.Transparency
+    });
+    _updateVisual({ u15.Topbar.Frame, u15.Topbar.Top.Frame }, {
+        BackgroundColor3 = u14.Params.Topbar.Color,
+        BackgroundTransparency = u14.Params.Topbar.Transparency
+    });
+
+    for _, v in pairs({ u15.Properties.HSV, u15.Properties.RGB }) do
+        for _, child in pairs(v:GetChildren()) do
+            if child:IsA("Frame") then
+                child.Frame.BackgroundColor3 = u14.Params.Secondary.Color;
+                child.Frame.BackgroundTransparency = u14.Params.Secondary.Transparency;
+            end;
+        end;
+    end;
+
+    for _, descendant in pairs(u15:GetDescendants()) do
+        if not u14.Params.RoundedCorners and (descendant:IsA("UICorner") and descendant.Parent.Name ~= "Select") then
+            descendant:Destroy();
+        end;
+
+        if descendant:IsA("TextLabel") or (descendant:IsA("TextBox") or descendant:IsA("ImageButton")) then
+            descendant[(descendant:IsA("TextLabel") or descendant:IsA("TextBox")) and "TextColor3" or "ImageColor3"] = u14.Params.Text.Color;
+            descendant[(descendant:IsA("TextLabel") or descendant:IsA("TextBox")) and "TextTransparency" or "ImageTransparency"] = u14.Params.Text.Transparency;
+        end;
+    end;
+
+    local Wheel = u15.Content.Wheel;
+    Wheel.Button.InputBegan:Connect(function(p20) -- Line: 181
+        -- upvalues: u14 (copy), RunService (ref), Wheel (copy)
+        if p20.UserInputType == Enum.UserInputType.MouseButton1 or p20.UserInputType == Enum.UserInputType.Touch then
+            u14.Connections.wheelReposition = RunService.Heartbeat:Connect(function(p21) -- Line: 183
+                -- upvalues: u14 (ref), Wheel (ref)
+                local v22 = u14:GetMousePos();
+
+                if v22 then
+                    local v23 = (v22 - (Wheel.Image.AbsolutePosition + Wheel.Image.AbsoluteSize / 2)) / Wheel.Image.AbsoluteSize;
+
+                    if v23.Magnitude > 0.5 then
+                        v23 = v23.Unit / 2;
+                    end;
+
+                    Wheel.Image.Select.Position = UDim2.fromScale(0.5 + v23.X, 0.5 + v23.Y);
+                    local v24, v25 = toPolar(v23 * Vector2.new(1, -1));
+                    local v26 = radToDeg(v24) / 360;
+                    local v27 = math.clamp(v26, 0, 1);
+                    u14.Saturation = math.clamp(v25 * 2, 0, 1);
+                    u14.Hue = v27;
+                    u14:UpdateColorVisual();
+                end;
+            end);
+        end;
+    end);
+    local Value = u15.Content.Right.Value;
+    Value.Button.InputBegan:Connect(function(p28) -- Line: 208
+        -- upvalues: u14 (copy), RunService (ref), Value (copy)
+        if p28.UserInputType == Enum.UserInputType.MouseButton1 or p28.UserInputType == Enum.UserInputType.Touch then
+            u14.Connections.valueReposition = RunService.Heartbeat:Connect(function(p29) -- Line: 210
+                -- upvalues: u14 (ref), Value (ref)
+                local v30 = u14:GetMousePos();
+
+                if v30 then
+                    local v31 = 1 - math.clamp((v30.Y - Value.AbsolutePosition.Y) / Value.AbsoluteSize.Y, 0, 1);
+                    u14.Value = v31;
+                    Value.Select.Position = UDim2.fromScale(0, 1 - v31);
+                    u14:UpdateColorVisual();
+                end;
+            end);
+        end;
+    end);
+    u14.Connections.inputEnded = UserInputService.InputEnded:Connect(function(p32, p33) -- Line: 226
+        -- upvalues: u14 (copy)
+        if p32.UserInputType == Enum.UserInputType.MouseButton1 or p32.UserInputType == Enum.UserInputType.Touch then
+            if u14.Connections.wheelReposition then
+                u14.Connections.wheelReposition:Disconnect();
+                u14.Connections.wheelReposition = nil;
+            end;
+
+            if u14.Connections.valueReposition then
+                u14.Connections.valueReposition:Disconnect();
+                u14.Connections.valueReposition = nil;
+            end;
+
+            if u14._dragFunc then
+                u14._dragFunc:Disconnect();
+                u14._dragFunc = nil;
+            end;
+        end;
+    end);
+    u15.Content.Bottom.Hex.Frame.TextBox.FocusLost:Connect(function() -- Line: 245
+        -- upvalues: u15 (copy), u14 (copy)
+        u14:SetColor((Color3.fromHex(u15.Content.Bottom.Hex.Frame.TextBox.Text)));
+    end);
+
+    for _, child in pairs(u15.Properties.RGB:GetChildren()) do
+        if child:IsA("Frame") then
+            child.Frame.TextBox.FocusLost:Connect(function() -- Line: 253
+                -- upvalues: u14 (copy), u15 (copy)
+                local fromRGB = Color3.fromRGB;
+                local v34 = tonumber(u15.Properties.RGB.R.Frame.TextBox.Text) or 255;
+                local v35 = math.clamp(v34, 0, 255);
+                local v36 = tonumber(u15.Properties.RGB.G.Frame.TextBox.Text) or 255;
+                local v37 = math.clamp(v36, 0, 255);
+                local v38 = tonumber(u15.Properties.RGB.B.Frame.TextBox.Text) or 255;
+                u14:SetColor(fromRGB(v35, v37, (math.clamp(v38, 0, 255))));
+            end);
+        end;
+    end;
+
+    for _, child in pairs(u15.Properties.HSV:GetChildren()) do
+        if child:IsA("Frame") then
+            child.Frame.TextBox.FocusLost:Connect(function() -- Line: 265
+                -- upvalues: u14 (copy), u15 (copy)
+                local fromHSV = Color3.fromHSV;
+                local v39 = tonumber(u15.Properties.HSV.H.Frame.TextBox.Text) or 0;
+                local v40 = math.clamp(v39, 0, 360) / 360;
+                local v41 = tonumber(u15.Properties.HSV.S.Frame.TextBox.Text) or 1;
+                local v42 = math.clamp(v41, 0, 1);
+                local v43 = tonumber(u15.Properties.HSV.V.Frame.TextBox.Text) or 1;
+                u14:SetColor(fromHSV(v40, v42, (math.clamp(v43, 0, 1))));
+            end);
+        end;
+    end;
+
+    u15.Content.Bottom.Buttons.Confirm.InputBegan:Connect(function(p44) -- Line: 275
+        -- upvalues: u15 (copy), u14 (copy)
+        if p44.UserInputType == Enum.UserInputType.MouseButton1 or p44.UserInputType == Enum.UserInputType.Touch then
+            u15.FinishedEvent:Fire(Color3.fromHSV(u14.Hue, u14.Saturation, u14.Value));
+            u14:Destroy();
+        end;
+    end);
+    u15.Content.Bottom.Buttons.Cancel.InputBegan:Connect(function(p45) -- Line: 282
+        -- upvalues: u15 (copy), u14 (copy)
+        if p45.UserInputType == Enum.UserInputType.MouseButton1 or p45.UserInputType == Enum.UserInputType.Touch then
+            u15.CanceledEvent:Fire();
+            u14:Destroy();
+        end;
+    end);
+    u14.Instance = u15;
+
+    return u15;
+end;
+
+function u1.GetMousePos(p46) -- Line: 294
+    -- upvalues: UserInputService (copy)
+    local v47 = UserInputService:GetMouseLocation();
+
+    if p46.Gui:IsA("ScreenGui") then
+        return v47 - Vector2.new(0, 36);
+    end;
+
+    local v48 = game.Workspace.CurrentCamera:ViewportPointToRay(v47.X, v47.Y);
+    local v49, v50 = getScreenGuiWorldDetails(p46.Gui);
+    local v51 = -(v48.Origin - v49):Dot(v50) / v48.Direction:Dot(v50);
+    local v52 = (-p46.Gui.Parent.CFrame:PointToObjectSpace(v48.Origin + v48.Direction * v51) + p46.Gui.Parent.Size / 2) * p46.Gui.PixelsPerStud;
+
+    return Vector2.new(v52.X, v52.Y);
+end;
+
+function u1.UpdateColorVisual(p53) -- Line: 312
+    if p53.Instance then
+        local v54 = Color3.fromHSV(p53.Hue, p53.Saturation, p53.Value);
+        p53.Instance.UpdateEvent:Fire(v54);
+        p53.Instance.Content.Right.Value.UIGradient.Color = ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromHSV(p53.Hue, p53.Saturation, 1)), ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0)) });
+        p53.Instance.Content.Bottom.Color.Frame.BackgroundColor3 = v54;
+        p53.Instance.Content.Bottom.Hex.Frame.TextBox.Text = string.format("#%s", v54:ToHex());
+        p53.Instance.Properties.RGB.R.Frame.TextBox.Text = math.floor(v54.R * 255);
+        p53.Instance.Properties.RGB.G.Frame.TextBox.Text = math.floor(v54.G * 255);
+        p53.Instance.Properties.RGB.B.Frame.TextBox.Text = math.floor(v54.B * 255);
+        p53.Instance.Properties.HSV.H.Frame.TextBox.Text = math.floor(p53.Hue * 360);
+        p53.Instance.Properties.HSV.S.Frame.TextBox.Text = roundToHundredths(p53.Saturation);
+        p53.Instance.Properties.HSV.V.Frame.TextBox.Text = roundToHundredths(p53.Value);
+    end;
+end;
+
+function u1.SetColor(p55, p56) -- Line: 336
+    if p55.Instance then
+        local v57, v58, v59 = p56:ToHSV();
+        p55.Saturation = v58;
+        p55.Value = v59;
+        p55.Hue = v57;
+        local v60 = v57 * 3.141592653589793 * 2;
+        local v61 = Vector2.new(-math.cos(v60) / 2 * v58, math.sin(v60) / 2 * v58);
+        p55.Instance.Content.Wheel.Image.Select.Position = UDim2.fromScale(0.5 + v61.X, 0.5 + v61.Y);
+        p55.Instance.Content.Right.Value.Select.Position = UDim2.fromScale(0, 1 - v59);
+        p55:UpdateColorVisual();
+    end;
+end;
+
+function u1.Destroy(p62) -- Line: 353
+    for _, v in pairs(p62.Connections) do
+        if typeof(v) == "RBXScriptConnection" then
+            v:Disconnect();
+        end;
+    end;
+
+    if p62._dragFunc then
+        p62._dragFunc:Disconnect();
+        p62._dragFunc = nil;
+    end;
+
+    if p62.Instance then
+        p62.Instance:Destroy();
+        p62.Instance = nil;
+    end;
+end;
+
+return u1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.CompulsionConfiguration
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+return {
+    ["Fall asleep"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Fall asleep",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Follow me"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Follow me",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Walk away"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Walk away",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Dont talk"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Dont talk",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Ignore what i said"] = {
+        Cooldown = 0,
+        Energy = 0,
+        Magnitude = 30,
+        Key = "Ignore what i said",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Dont feed"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Dont feed",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Take off your ring"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Take off your ring",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    },
+    ["Put your ring back on"] = {
+        Cooldown = 40,
+        Energy = 60,
+        Magnitude = 30,
+        Key = "Put your ring back on",
+        CharacterLocked = false,
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {},
+        Characters = {}
+    }
+};
+-- Script Path: game:GetService("ReplicatedStorage").Modules.CraterModule
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local v1 = {};
+local TweenService = game:GetService("TweenService");
+local Debris = game:GetService("Debris");
+local u2 = math.random(6, 8);
+local _ = { Color3.fromRGB(91, 91, 91) };
+local _ = { Enum.Material.Plastic };
+
+function v1.Create(u3, p4, p5) -- Line: 22
+    -- upvalues: Debris (copy), TweenService (copy), u2 (copy)
+    local Model = Instance.new("Model", workspace.Terrain);
+    Model.Name = "Debris";
+    Debris:AddItem(Model, 5);
+    local _ = p4.Y;
+    local v6 = { workspace.Terrain };
+
+    for _, child in pairs(workspace:GetChildren()) do
+        if child.Name == "Debris" or (child.Name == "Debree" or child:FindFirstChildWhichIsA("Humanoid")) then
+            table.insert(v6, child);
+        end;
+    end;
+
+    local v7 = RaycastParams.new();
+    v7.FilterDescendantsInstances = v6;
+    v7.FilterType = Enum.RaycastFilterType.Exclude;
+    local v8 = workspace:Raycast(p4 + Vector3.new(0, 0.1, 0), Vector3.new(0, -999, 0), v7);
+
+    if not v8 then
+        return;
+    end;
+
+    local Y = v8.Position.Y;
+    local Material = v8.Material;
+    local Transparency = v8.Instance.Transparency;
+    local Color = v8.Instance.Color;
+    local v9 = {};
+
+    for _ = 0, u3 * 8, p5 do
+        table.insert(v9, Instance.new("Part", Model));
+    end;
+
+    local function getXAndZPositions(p10) -- Line: 63
+        -- upvalues: u3 (copy)
+        return math.cos(p10) * u3, math.sin(p10) * u3;
+    end;
+
+    for i, v in pairs(v9) do
+        v.Anchored = true;
+        v.CanCollide = false;
+        v.Name = "Debree";
+        v.Size = Vector3.new(0, 0, 0);
+        local v11 = i * p5 * (360 / #v9);
+        local v12 = math.cos(v11) * u3;
+        local v13 = math.sin(v11) * u3;
+        table.insert(v6, v);
+        v7.FilterDescendantsInstances = v6;
+
+        for _, v2 in pairs(Enum.NormalId:GetEnumItems()) do
+            v[v2.Name .. "Surface"] = Enum.SurfaceType.Smooth;
+        end;
+
+        v.CFrame = CFrame.new(p4) * CFrame.new(v12, 0, v13);
+        v.Position = Vector3.new(v.Position.X, Y, v.Position.Z);
+        local CFrame2 = v.CFrame;
+        local Angles = CFrame.Angles;
+        local v14 = math.random(-90, 90);
+        local v15 = math.rad(v14);
+        local v16 = math.random(-90, 90);
+        local v17 = math.rad(v16);
+        local v18 = math.random(-90, 90);
+        v.CFrame = CFrame2 * Angles(v15, v17, (math.rad(v18)));
+        local v19 = workspace:Raycast(v.Position + Vector3.new(0, 0.1, 0), Vector3.new(0, -999, 0), v7);
+
+        if v19 then
+            v.Material = v19.Material;
+            v.Transparency = v19.Instance.Transparency;
+            v.Color = v19.Instance.Color;
+        else
+            v.Material = Material;
+            v.Transparency = Transparency;
+            v.Color = Color;
+        end;
+
+        TweenService:Create(v, TweenInfo.new(0.2), {
+            Size = Vector3.new(p5, p5, p5)
+        }):Play();
+        task.spawn(function() -- Line: 106
+            -- upvalues: TweenService (ref), v (copy), Debris (ref)
+            task.wait(3);
+            TweenService:Create(v, TweenInfo.new(0.1), {
+                Size = Vector3.new(0, 0, 0)
+            }):Play();
+            Debris:AddItem(v, 0.11);
+        end);
+    end;
+
+    for _ = 0, u2 do
+        local v20 = math.random(-50, 50);
+        local v21 = math.floor(70, 120);
+        local v22 = Vector3.new(v20, v21, math.random(-50, 50));
+        local Part = Instance.new("Part", Model);
+        Part.CanCollide = false;
+        Part.Size = Vector3.new(0, 0, 0);
+        Part.Massless = true;
+        Part.Name = "Debree";
+        TweenService:Create(Part, TweenInfo.new(0.2), {
+            Size = Vector3.new(p5, p5, p5)
+        }):Play();
+        Part.Material = Material;
+        Part.Transparency = Transparency;
+        Part.Color = Color;
+        Part.Position = p4 + Vector3.new(0, p5, 0);
+        Part.Velocity = v22;
+        local v23 = math.random(-90, 90);
+        local v24 = math.random(-90, 90);
+        Part.AssemblyAngularVelocity = Vector3.new(v23, v24, math.random(-90, 90));
+        task.spawn(function() -- Line: 136
+            -- upvalues: Part (copy)
+            task.wait(0.5);
+            Part.CanCollide = false;
+        end);
+        task.spawn(function() -- Line: 141
+            -- upvalues: TweenService (ref), Part (copy), Debris (ref)
+            task.wait(3);
+            TweenService:Create(Part, TweenInfo.new(0.5, Enum.EasingStyle.Cubic), {
+                Size = Vector3.new(0, 0, 0)
+            }):Play();
+            Debris:AddItem(Part, 1);
+        end);
+    end;
+end;
+
+return v1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.CustomShiftLock
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local u1 = {};
+local Players = game:GetService("Players");
+local RunService = game:GetService("RunService");
+local UserInputService = game:GetService("UserInputService");
+local LocalPlayer = Players.LocalPlayer;
+LocalPlayer:GetMouse();
+
+function u1.new() -- Line: 22
+    -- upvalues: u1 (copy)
+    local BindableEvent = Instance.new("BindableEvent");
+    local BindableEvent2 = Instance.new("BindableEvent");
+    local BindableEvent3 = Instance.new("BindableEvent");
+    local BindableEvent4 = Instance.new("BindableEvent");
+    local BindableEvent5 = Instance.new("BindableEvent");
+    local BindableEvent6 = Instance.new("BindableEvent");
+    local v2 = {
+        SavedCameraSettings = nil,
+        SavedMouseBehavior = nil,
+        ActiveCameraSettings = nil,
+        HorizontalAngle = 0,
+        VerticalAngle = 0,
+        ShoulderDirection = 1,
+        IsCharacterAligned = false,
+        IsMouseSteppedIn = false,
+        IsEnabled = false,
+        ActiveCameraSettingsChangedEvent = BindableEvent,
+        ActiveCameraSettingsChanged = BindableEvent.Event,
+        CharacterAlignmentChangedEvent = BindableEvent2,
+        CharacterAlignmentChanged = BindableEvent2.Event,
+        MouseStepChangedEvent = BindableEvent3,
+        MouseStepChanged = BindableEvent3.Event,
+        ShoulderDirectionChangedEvent = BindableEvent4,
+        ShoulderDirectionChanged = BindableEvent4.Event,
+        EnabledEvent = BindableEvent5,
+        Enabled = BindableEvent5.Event,
+        DisabledEvent = BindableEvent6,
+        Disabled = BindableEvent6.Event,
+        VerticalAngleLimits = NumberRange.new(-45, 45),
+        CameraSettings = {
+            DefaultShoulder = {
+                FieldOfView = 70,
+                Offset = Vector3.new(2.5, 2.5, 8),
+                Sensitivity = 3,
+                LerpSpeed = 0.5
+            },
+            ZoomedShoulder = {
+                FieldOfView = 40,
+                Offset = Vector3.new(1.5, 1.5, 6),
+                Sensitivity = 1.5,
+                LerpSpeed = 0.5
             }
-         });
-      });
-   }
+        }
+    };
+    local u3 = setmetatable(v2, u1);
 
-   function sendLogin(password) {
-      return new Promise((resolve, reject) => {
-         bot.chat(`/login ${password}`);
-         console.log(`[Auth] Sent /login command.`);
+    return setmetatable({}, {
+        __index = function(p4, p5) -- Line: 98, Name: __index
+            -- upvalues: u3 (copy)
+            return u3[p5];
+        end,
 
-         bot.once('chat', (username, message) => {
-            console.log(`[ChatLog] <${username}> ${message}`); // Log all chat messages
+        __newindex = function(p6, p7, p8) -- Line: 101, Name: __newindex
+            -- upvalues: u3 (copy)
+            u3[p7] = p8;
+        end
+    });
+end;
 
-            if (message.includes('successfully logged in')) {
-               console.log('[INFO] Login successful.');
-               resolve();
-            } else if (message.includes('Invalid password')) {
-               reject(`Login failed: Invalid password. Message: "${message}"`);
-            } else if (message.includes('not registered')) {
-               reject(`Login failed: Not registered. Message: "${message}"`);
-            } else {
-               reject(`Login failed: unexpected message "${message}".`);
-            }
-         });
-      });
-   }
+local function Lerp(p9, p10, p11) -- Line: 112
+    return p9 + (p10 - p9) * p11;
+end;
 
-   bot.once('spawn', () => {
-      console.log('\x1b[33m[AfkBot] Bot joined the server', '\x1b[0m');
+function u1.SetActiveCameraSettings(p12, p13) -- Line: 119
+    assert(p13 ~= nil, "OTS Camera System Argument Error: Argument 1 nil or missing");
+    local v14 = typeof(p13) == "string";
+    local v15 = "OTS Camera System Argument Error: string expected, got " .. typeof(p13);
+    assert(v14, v15);
+    assert(p12.CameraSettings[p13] ~= nil, "OTS Camera System Argument Error: Attempt to set unrecognized camera settings " .. p13);
 
-      if (config.utils['auto-auth'].enabled) {
-         console.log('[INFO] Started auto-auth module');
+    if p12.IsEnabled == false then
+        warn("OTS Camera System Logic Warning: Attempt to change active camera settings without enabling OTS camera system");
 
-         const password = config.utils['auto-auth'].password;
+        return;
+    end;
 
-         pendingPromise = pendingPromise
-            .then(() => sendRegister(password))
-            .then(() => sendLogin(password))
-            .catch(error => console.error('[ERROR]', error));
-      }
+    p12.ActiveCameraSettings = p13;
+    p12.ActiveCameraSettingsChangedEvent:Fire(p13);
+end;
 
-      if (config.utils['chat-messages'].enabled) {
-         console.log('[INFO] Started chat-messages module');
-         const messages = config.utils['chat-messages']['messages'];
+function u1.SetCharacterAlignment(p16, p17) -- Line: 132
+    assert(p17 ~= nil, "OTS Camera System Argument Error: Argument 1 nil or missing");
+    local v18 = typeof(p17) == "boolean";
+    local v19 = "OTS Camera System Argument Error: boolean expected, got " .. typeof(p17);
+    assert(v18, v19);
 
-         if (config.utils['chat-messages'].repeat) {
-            const delay = config.utils['chat-messages']['repeat-delay'];
-            let i = 0;
+    if p16.IsEnabled == false then
+        warn("OTS Camera System Logic Warning: Attempt to change character alignment without enabling OTS camera system");
 
-            let msg_timer = setInterval(() => {
-               bot.chat(`${messages[i]}`);
+        return;
+    end;
 
-               if (i + 1 === messages.length) {
-                  i = 0;
-               } else {
-                  i++;
-               }
-            }, delay * 1000);
-         } else {
-            messages.forEach((msg) => {
-               bot.chat(msg);
+    p16.IsCharacterAligned = p17;
+    p16.CharacterAlignmentChangedEvent:Fire(p17);
+end;
+
+function u1.SetMouseStep(p20, p21) -- Line: 144
+    -- upvalues: UserInputService (copy)
+    assert(p21 ~= nil, "OTS Camera System Argument Error: Argument 1 nil or missing");
+    local v22 = typeof(p21) == "boolean";
+    local v23 = "OTS Camera System Argument Error: boolean expected, got " .. typeof(p21);
+    assert(v22, v23);
+
+    if p20.IsEnabled == false then
+        warn("OTS Camera System Logic Warning: Attempt to change mouse step without enabling OTS camera system");
+
+        return;
+    end;
+
+    p20.IsMouseSteppedIn = p21;
+    p20.MouseStepChangedEvent:Fire(p21);
+
+    if p21 == true then
+        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+
+        return;
+    end;
+
+    UserInputService.MouseBehavior = Enum.MouseBehavior.Default;
+end;
+
+function u1.SetShoulderDirection(p24, p25) -- Line: 161
+    assert(p25 ~= nil, "OTS Camera System Argument Error: Argument 1 nil or missing");
+    local v26 = typeof(p25) == "number";
+    local v27 = "OTS Camera System Argument Error: number expected, got " .. typeof(p25);
+    assert(v26, v27);
+    local v28 = math.abs(p25) == 1;
+    assert(v28, "OTS Camera System Argument Error: Attempt to set unrecognized shoulder direction " .. p25);
+
+    if p24.IsEnabled == false then
+        warn("OTS Camera System Logic Warning: Attempt to change shoulder direction without enabling OTS camera system");
+
+        return;
+    end;
+
+    p24.ShoulderDirection = p25;
+    p24.ShoulderDirectionChangedEvent:Fire(p25);
+end;
+
+function u1.SaveCameraSettings(p29) -- Line: 176
+    local CurrentCamera = workspace.CurrentCamera;
+    p29.SavedCameraSettings = {
+        FieldOfView = CurrentCamera.FieldOfView,
+        CameraSubject = CurrentCamera.CameraSubject,
+        CameraType = CurrentCamera.CameraType
+    };
+end;
+
+function u1.LoadCameraSettings(p30) -- Line: 185
+    local CurrentCamera = workspace.CurrentCamera;
+
+    for i, v in pairs(p30.SavedCameraSettings) do
+        CurrentCamera[i] = v;
+    end;
+end;
+
+function u1.Update(p31) -- Line: 194
+    -- upvalues: UserInputService (copy), LocalPlayer (copy)
+    local CurrentCamera = workspace.CurrentCamera;
+    local v32 = p31.CameraSettings[p31.ActiveCameraSettings];
+
+    if p31.IsMouseSteppedIn == true then
+        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+    else
+        UserInputService.MouseBehavior = Enum.MouseBehavior.Default;
+    end;
+
+    CurrentCamera.CameraType = Enum.CameraType.Scriptable;
+    local v33 = UserInputService:GetMouseDelta() * v32.Sensitivity;
+    p31.HorizontalAngle = p31.HorizontalAngle - v33.X / CurrentCamera.ViewportSize.X;
+    p31.VerticalAngle = p31.VerticalAngle - v33.Y / CurrentCamera.ViewportSize.Y;
+    local v34 = math.deg(p31.VerticalAngle);
+    local v35 = math.clamp(v34, p31.VerticalAngleLimits.Min, p31.VerticalAngleLimits.Max);
+    p31.VerticalAngle = math.rad(v35);
+    local Character = LocalPlayer.Character;
+    local v36;
+
+    if Character == nil then
+        v36 = false;
+    else
+        v36 = Character:FindFirstChild("HumanoidRootPart");
+    end;
+
+    if v36 == nil then
+        p31:Disable();
+
+        return;
+    end;
+
+    local FieldOfView = CurrentCamera.FieldOfView;
+    CurrentCamera.FieldOfView = FieldOfView + (v32.FieldOfView - FieldOfView) * v32.LerpSpeed;
+    local Offset = v32.Offset;
+    local v37 = Vector3.new(Offset.X * p31.ShoulderDirection, Offset.Y, Offset.Z);
+    local v38 = CFrame.new(v36.Position) * CFrame.Angles(0, p31.HorizontalAngle, 0) * CFrame.Angles(p31.VerticalAngle, 0, 0) * CFrame.new(v37);
+    local v39 = CurrentCamera.CFrame:Lerp(v38, v32.LerpSpeed);
+    local v40 = RaycastParams.new();
+    v40.FilterDescendantsInstances = { Character, workspace.Map:WaitForChild("Borders") };
+    v40.FilterType = Enum.RaycastFilterType.Exclude;
+    local v41 = workspace:Raycast(v36.Position, v39.p - v36.Position, v40);
+
+    if v41 ~= nil then
+        local v42 = v41.Position - v36.Position;
+        local v43 = v36.Position + v42.Unit * (v42.Magnitude - 0.1);
+        local _, _, _, v44, v45, v46, v47, v48, v49, v50, v51, v52 = v39:components();
+        v39 = CFrame.new(v43.x, v43.y, v43.z, v44, v45, v46, v47, v48, v49, v50, v51, v52);
+    end;
+
+    if p31.IsCharacterAligned == true then
+        local v53 = CFrame.new(v36.Position) * CFrame.Angles(0, p31.HorizontalAngle, 0);
+        v36.CFrame = v36.CFrame:Lerp(v53, v32.LerpSpeed / 2);
+    end;
+
+    CurrentCamera.CFrame = v39;
+end;
+
+function u1.ConfigureStateForEnabled(p54) -- Line: 275
+    -- upvalues: UserInputService (copy)
+    p54:SaveCameraSettings();
+    p54.SavedMouseBehavior = UserInputService.MouseBehavior;
+    p54:SetActiveCameraSettings("DefaultShoulder");
+    p54:SetCharacterAlignment(false);
+    p54:SetMouseStep(true);
+    p54:SetShoulderDirection(1);
+    local v55, v56, _ = workspace.CurrentCamera.CFrame:ToOrientation();
+    p54.HorizontalAngle = v56;
+    p54.VerticalAngle = v55;
+end;
+
+function u1.ConfigureStateForDisabled(p57) -- Line: 294
+    -- upvalues: UserInputService (copy)
+    p57:LoadCameraSettings();
+    UserInputService.MouseBehavior = p57.SavedMouseBehavior;
+    p57:SetActiveCameraSettings("DefaultShoulder");
+    p57:SetCharacterAlignment(false);
+    p57:SetMouseStep(false);
+    p57:SetShoulderDirection(1);
+    p57.HorizontalAngle = 0;
+    p57.VerticalAngle = 0;
+end;
+
+function u1.Enable(u58) -- Line: 305
+    -- upvalues: RunService (copy)
+    assert(u58.IsEnabled == false, "OTS Camera System Logic Error: Attempt to enable without disabling");
+    u58.IsEnabled = true;
+    u58.EnabledEvent:Fire();
+    u58:ConfigureStateForEnabled();
+    RunService:BindToRenderStep("OTS_CAMERA_SYSTEM_UPDATE", Enum.RenderPriority.Camera.Value - 10, function() -- Line: 315
+        -- upvalues: u58 (copy)
+        if u58.IsEnabled == true then
+            u58:Update();
+        end;
+    end);
+end;
+
+function u1.Disable(p59) -- Line: 323
+    -- upvalues: RunService (copy)
+    if p59.IsEnabled ~= true then
+        return;
+    end;
+
+    p59:ConfigureStateForDisabled();
+    p59.IsEnabled = false;
+    p59.DisabledEvent:Fire();
+    pcall(function() -- Line: 331
+        -- upvalues: RunService (ref)
+        RunService:UnbindFromRenderStep("OTS_CAMERA_SYSTEM_UPDATE");
+    end);
+end;
+
+u1.__index = u1;
+
+return u1.new();
+-- Script Path: game:GetService("ReplicatedStorage").Modules.Flight
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+if not game:IsLoaded() then
+    game.Loaded:Wait();
+end;
+
+local v1 = {};
+local LocalPlayer = game.Players.LocalPlayer;
+local CurrentCamera = workspace.CurrentCamera;
+local CameraShaker = require(game.ReplicatedStorage.Modules.CameraShaker);
+require(game.ReplicatedStorage.Modules.AbilityHandler);
+local TweenService = game:GetService("TweenService");
+local UserInputService = game:GetService("UserInputService");
+local u3 = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(p2) -- Line: 10
+    -- upvalues: CurrentCamera (copy)
+    CurrentCamera.CFrame = CurrentCamera.CFrame * p2;
+end);
+u3:Start();
+local u4 = false;
+local u5 = {
+    forward = 0,
+    backward = 0,
+    right = 0,
+    left = 0
+};
+
+function v1.OnUpdate(p6, p7) -- Line: 17
+    -- upvalues: u4 (ref), LocalPlayer (copy), u5 (ref), u3 (copy), CameraShaker (copy), CurrentCamera (copy), TweenService (copy)
+    if p6 then
+        u4 = false;
+
+        return;
+    end;
+
+    if u4 then
+        u4 = false;
+
+        return;
+    end;
+
+    local Character = LocalPlayer.Character;
+    local Humanoid = Character.Humanoid;
+    local Stats = Character:FindFirstChild("Stats");
+
+    if not Stats then
+        u4 = false;
+
+        return;
+    end;
+
+    local Value = Stats:WaitForChild("CharacterName").Value;
+    local Value2 = Stats:WaitForChild("Specie").Value;
+
+    if not Humanoid or (Humanoid:GetState() == Enum.HumanoidStateType.Dead or (Humanoid:GetState() == Enum.HumanoidStateType.Physics or (Character:FindFirstChild("HumanoidRootPart").Anchored or Character:FindFirstChild("Ghost")))) then
+        u4 = false;
+
+        return;
+    end;
+
+    u4 = true;
+    u5 = {
+        forward = 0,
+        backward = 0,
+        right = 0,
+        left = 0
+    };
+    local v8;
+
+    if p7 then
+        v8 = nil;
+    else
+        if Value == "Tony" then
+            v8 = LocalPlayer.Character.Humanoid.Animator:LoadAnimation(game.ReplicatedStorage.Assets.Anims.FlyNew);
+        else
+            v8 = LocalPlayer.Character.Humanoid.Animator:LoadAnimation(game.ReplicatedStorage.Assets.Anims.FlyIdle);
+        end;
+
+        v8:Play();
+    end;
+
+    local BodyPosition = Instance.new("BodyPosition", Character.PrimaryPart);
+    BodyPosition.MaxForce = Vector3.new(1000000, 1000000, 1000000);
+    BodyPosition.Position = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, 8, 0).Position;
+    game.Debris:AddItem(BodyPosition, 0.4);
+    task.wait(0.4);
+    local BodyGyro = Instance.new("BodyGyro", Character.PrimaryPart);
+    BodyGyro.D = 500;
+    BodyGyro.P = 4000;
+    BodyGyro.MaxTorque = Vector3.new(40000, 40000, 40000);
+    local BodyVelocity = Instance.new("BodyVelocity", Character.PrimaryPart);
+    BodyVelocity.maxForce = Vector3.new(1000000, 1000000, 1000000);
+    BodyVelocity.P = 10000;
+    local v9 = u3:ShakeSustain(CameraShaker.Presets.Vibration);
+
+    while u4 do
+        pcall(function() -- Line: 54
+            -- upvalues: Humanoid (copy), Character (copy), Value2 (copy), Stats (copy), u4 (ref)
+            if Humanoid:GetState() == Enum.HumanoidStateType.Dead or (Humanoid:GetState() == Enum.HumanoidStateType.Physics or (Character:FindFirstChild("Dessicated") or (Character:FindFirstChild("Influenced") or (not table.find({ "Witches", "Heretics", "Siphoners", "Tribrids", "Werewitches", "Gods", "Psychics", "Phoenix", "OriginalHeretics" }, Value2) or Stats == nil)))) then
+                u4 = false;
+            end;
+
+            if Stats:FindFirstChild("WitchStats") then
+                if Stats:FindFirstChild("WitchStats").Magic.Value <= 5 then
+                    u4 = false;
+                end;
+            elseif Stats:FindFirstChild("GodStats") then
+                if Stats:FindFirstChild("GodStats").Energy.Value <= 5 then
+                    u4 = false;
+                end;
+            elseif Stats:FindFirstChild("PhoenixStats") and Stats:FindFirstChild("PhoenixStats").Energy.Value <= 5 then
+                u4 = false;
+            end;
+        end);
+
+        if not u4 then
+            break;
+        end;
+
+        local CFrame2 = CurrentCamera.CFrame;
+        local v10 = CFrame2.rightVector * (u5.right - u5.left) + CFrame2.lookVector * (u5.forward - u5.backward);
+
+        if v10:Dot(v10) > 0 then
+            v10 = v10.unit;
+        end;
+
+        local WalkSpeed = Humanoid.WalkSpeed;
+        BodyVelocity.Velocity = BodyVelocity.Velocity:Lerp(v10 * (WalkSpeed >= 90 and 90 or WalkSpeed) * 3, 0.3);
+        BodyGyro.CFrame = CFrame2;
+        task.wait(0.1);
+    end;
+
+    BodyVelocity:Destroy();
+    BodyGyro:Destroy();
+    v9:StartFadeOut(0.5);
+    TweenService:Create(CurrentCamera, TweenInfo.new(0.4), {
+        FieldOfView = 70
+    }):Play();
+
+    if v8 then
+        v8:Stop();
+    end;
+end;
+
+local function modifyMovement(p11) -- Line: 95
+    -- upvalues: u5 (ref)
+    u5 = p11 or u5;
+end;
+
+local function movementBind(p12, p13, p14) -- Line: 98
+    -- upvalues: u4 (ref), u5 (ref), TweenService (copy), CurrentCamera (copy)
+    if u4 ~= false then
+        if p13 == Enum.UserInputState.Begin then
+            u5[p12] = 1;
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.4), {
+                FieldOfView = 100
+            }):Play();
+            u5 = u5;
+        elseif p13 == Enum.UserInputState.End then
+            u5[p12] = 0;
+            local v15 = true;
+
+            for _, v in pairs(u5) do
+                if v == 1 then
+                    v15 = false;
+                end;
+            end;
+
+            if v15 then
+                TweenService:Create(CurrentCamera, TweenInfo.new(0.4), {
+                    FieldOfView = 70
+                }):Play();
+                u5 = u5;
+            end;
+        end;
+
+        return Enum.ContextActionResult.Pass;
+    end;
+end;
+
+local ContextActionService = game:GetService("ContextActionService");
+ContextActionService:BindAction("forward", movementBind, false, Enum.PlayerActions.CharacterForward);
+ContextActionService:BindAction("backward", movementBind, false, Enum.PlayerActions.CharacterBackward);
+ContextActionService:BindAction("left", movementBind, false, Enum.PlayerActions.CharacterLeft);
+ContextActionService:BindAction("right", movementBind, false, Enum.PlayerActions.CharacterRight);
+local ControlModule = require(LocalPlayer:FindFirstChild("ControlModule", true));
+local TouchControlFrame = LocalPlayer:FindFirstChild("TouchControlFrame", true);
+
+if ControlModule and TouchControlFrame then
+    local u16 = false;
+
+    local function isTouchOnThumbstick(p17) -- Line: 132
+        -- upvalues: TouchControlFrame (copy)
+        if not TouchControlFrame then
+            return false;
+        end;
+
+        local ThumbstickFrame = TouchControlFrame:FindFirstChild("ThumbstickFrame");
+        local DynamicThumbstickFrame = TouchControlFrame:FindFirstChild("DynamicThumbstickFrame");
+
+        if ThumbstickFrame and ThumbstickFrame.Visible then
+            DynamicThumbstickFrame = ThumbstickFrame or DynamicThumbstickFrame;
+        end;
+
+        if not DynamicThumbstickFrame then
+            return false;
+        end;
+
+        local AbsolutePosition = DynamicThumbstickFrame.AbsolutePosition;
+        local AbsoluteSize = DynamicThumbstickFrame.AbsoluteSize;
+        local v18;
+
+        if p17.X >= AbsolutePosition.X and (p17.X <= AbsolutePosition.X + AbsoluteSize.X and p17.Y >= AbsolutePosition.Y) then
+            v18 = p17.Y <= AbsolutePosition.Y + AbsoluteSize.Y;
+        else
+            v18 = false;
+        end;
+
+        return v18;
+    end;
+
+    UserInputService.TouchStarted:connect(function(p19, p20) -- Line: 152
+        -- upvalues: u16 (ref), isTouchOnThumbstick (copy)
+        u16 = isTouchOnThumbstick(p19.Position);
+    end);
+    UserInputService.TouchEnded:connect(function(p21, p22) -- Line: 156
+        -- upvalues: u16 (ref), u5 (ref)
+        if not u16 then
+            return;
+        end;
+
+        u16 = false;
+        u5 = {
+            forward = 0,
+            backward = 0,
+            right = 0,
+            left = 0
+        } or u5;
+    end);
+    UserInputService.TouchMoved:connect(function(p23, p24) -- Line: 162
+        -- upvalues: u16 (ref), ControlModule (copy), u5 (ref)
+        if not u16 then
+            return;
+        end;
+
+        local v25 = ControlModule:GetMoveVector();
+        local X = v25.X;
+        local Z = v25.Z;
+        u5.left = X < -0.15 and (-(X - 0.15) / 0.85 or 0) or 0;
+        u5.right = X > 0.15 and (X - 0.15) / 0.85 or 0;
+        u5.forward = Z < -0.15 and (-(Z - 0.15) / 0.85 or 0) or 0;
+        u5.backward = Z > 0.15 and (Z - 0.15) / 0.85 or 0;
+        u5 = u5;
+    end);
+end;
+
+return v1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.Footsteps
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+return {
+    sounds = {
+        Asphalt = { "rbxassetid://1612901459", "rbxassetid://1612901699" },
+        Bass = { "rbxassetid://9126748907", "rbxassetid://9126748813", "rbxassetid://9126748580", "rbxassetid://9126748691", "rbxassetid://9126748431", "rbxassetid://9126748324", "rbxassetid://9126748239", "rbxassetid://9126748185", "rbxassetid://9126748045", "rbxassetid://9126747958" },
+        Carpet = { "rbxassetid://9126748130", "rbxassetid://9126747861", "rbxassetid://9126747720", "rbxassetid://9126747529", "rbxassetid://9126747412", "rbxassetid://9126747283", "rbxassetid://9126746732", "rbxassetid://9126746837", "rbxassetid://9126747132", "rbxassetid://9126746984", "rbxassetid://9126746598", "rbxassetid://9126746481", "rbxassetid://9126746371", "rbxassetid://9126746291" },
+        Concrete = { "rbxassetid://9126746167", "rbxassetid://9126746098", "rbxassetid://9126745995", "rbxassetid://9126745877", "rbxassetid://9126745774", "rbxassetid://9126745574", "rbxassetid://9126745336", "rbxassetid://9126745241", "rbxassetid://9126745445", "rbxassetid://9126745052", "rbxassetid://9126745141", "rbxassetid://9126745676", "rbxassetid://9126744969", "rbxassetid://9126744894", "rbxassetid://9126744639", "rbxassetid://9126744789", "rbxassetid://9126744481" },
+        Dirt = { "rbxassetid://9126744390", "rbxassetid://9126744718", "rbxassetid://9126744263", "rbxassetid://9126744157", "rbxassetid://9126744066", "rbxassetid://9126744009", "rbxassetid://9126743796", "rbxassetid://9126743938", "rbxassetid://9126743711", "rbxassetid://9126743879", "rbxassetid://9126743613", "rbxassetid://9126743481", "rbxassetid://9126743338", "rbxassetid://9126743086" },
+        Glass = { "rbxassetid://9126742971", "rbxassetid://9126742461", "rbxassetid://9126742875", "rbxassetid://9126742786", "rbxassetid://9126743193", "rbxassetid://9126742680", "rbxassetid://9126742582", "rbxassetid://9126742510" },
+        Grass = { "rbxassetid://9126742396", "rbxassetid://9126741427", "rbxassetid://9126742333", "rbxassetid://9126742215", "rbxassetid://9126742271", "rbxassetid://9126742031", "rbxassetid://9126741934", "rbxassetid://9126742105", "rbxassetid://9126741826", "rbxassetid://9126741594", "rbxassetid://9126741512", "rbxassetid://9126741741", "rbxassetid://9126741674" },
+        Gravel = { "rbxassetid://9126741273", "rbxassetid://9126740393", "rbxassetid://9126741200", "rbxassetid://9126741051", "rbxassetid://9126741128", "rbxassetid://9126740951", "rbxassetid://9126740802", "rbxassetid://9126740724", "rbxassetid://9126740524", "rbxassetid://9126740623" },
+        Ladder = { "rbxassetid://9126740217", "rbxassetid://9126739039", "rbxassetid://9126740133", "rbxassetid://9126739947", "rbxassetid://9126740044", "rbxassetid://9126740305", "rbxassetid://9126739834", "rbxassetid://9126739622", "rbxassetid://9126739505", "rbxassetid://9126739406", "rbxassetid://9126739332", "rbxassetid://9126739229" },
+        Metal_Auto = { "rbxassetid://9126739090", "rbxassetid://9126738967", "rbxassetid://9126738896", "rbxassetid://9126738732", "rbxassetid://9126738543", "rbxassetid://9126738634" },
+        Metal_Chainlink = { "rbxassetid://9126738423", "rbxassetid://9126737791", "rbxassetid://9126738338", "rbxassetid://9126738197", "rbxassetid://9126738113", "rbxassetid://9126738032", "rbxassetid://9126737943", "rbxassetid://9126737853" },
+        Metal_Grate = { "rbxassetid://9126737728", "rbxassetid://9126736554", "rbxassetid://9126737597", "rbxassetid://9126737668", "rbxassetid://9126737506", "rbxassetid://9126737412", "rbxassetid://9126737315", "rbxassetid://9126737212", "rbxassetid://9126736947", "rbxassetid://9126737081", "rbxassetid://9126736863", "rbxassetid://9126736806", "rbxassetid://9126736642", "rbxassetid://9126736721" },
+        Metal_Solid = { "rbxassetid://9126736470", "rbxassetid://9126734921", "rbxassetid://9126736274", "rbxassetid://9126736354", "rbxassetid://9126736186", "rbxassetid://9126736049", "rbxassetid://9126735913", "rbxassetid://9126735734", "rbxassetid://9126735546", "rbxassetid://9126735474", "rbxassetid://9126735265", "rbxassetid://9126735374", "rbxassetid://9126735161", "rbxassetid://9126735028", "rbxassetid://9126735089", "rbxassetid://9126734972" },
+        Mud = { "rbxassetid://9126734842", "rbxassetid://9126734314", "rbxassetid://9126734778", "rbxassetid://9126734710", "rbxassetid://9126734613", "rbxassetid://9126734499", "rbxassetid://9126734365", "rbxassetid://9126734432", "rbxassetid://9126734244" },
+        Rubber = { "rbxassetid://9126734172", "rbxassetid://9126733896", "rbxassetid://9126734560", "rbxassetid://9126734010", "rbxassetid://9126733324", "rbxassetid://9126733766", "rbxassetid://9126733614", "rbxassetid://9126733493" },
+        Sand = { "rbxassetid://9126733118", "rbxassetid://9126733408", "rbxassetid://9126733225", "rbxassetid://9126732675", "rbxassetid://9126732571", "rbxassetid://9126732962", "rbxassetid://9126732962", "rbxassetid://9126732457", "rbxassetid://9126732862", "rbxassetid://9126732776", "rbxassetid://9126732334", "rbxassetid://9126732253" },
+        Slosh = { "rbxassetid://10822813850", "rbxassetid://10822813728", "rbxassetid://10822813637", "rbxassetid://10822813572", "rbxassetid://10822813486", "rbxassetid://10822813412" },
+        Snow = { "rbxassetid://9126732128", "rbxassetid://9126731099", "rbxassetid://9126732016", "rbxassetid://9126731951", "rbxassetid://9126731877", "rbxassetid://9126731632", "rbxassetid://9126731493", "rbxassetid://9126731343", "rbxassetid://9126731790", "rbxassetid://9126731243", "rbxassetid://9126731169", "rbxassetid://9126730861" },
+        Tile = { "rbxassetid://9126730713", "rbxassetid://9126730782", "rbxassetid://9126731037", "rbxassetid://9126730980", "rbxassetid://9126730651", "rbxassetid://9126730563", "rbxassetid://9126730279", "rbxassetid://9126730403", "rbxassetid://9126730056", "rbxassetid://9126730172", "rbxassetid://9126729836", "rbxassetid://9126730472", "rbxassetid://9126729938", "rbxassetid://9126729706" },
+        Wood = { "rbxassetid://9126931624", "rbxassetid://9126931515", "rbxassetid://9126931417", "rbxassetid://9126931322", "rbxassetid://9126931699", "rbxassetid://9126931235", "rbxassetid://9126931169", "rbxassetid://9126931026", "rbxassetid://9126930953", "rbxassetid://9126930885", "rbxassetid://9126930789", "rbxassetid://9126930647", "rbxassetid://9126930516", "rbxassetid://9126930598", "rbxassetid://9126930718" }
+    },
+    volume = {
+        Tile = 0.3,
+        Grass = 0.3
+    },
+    decay = {
+        Sand = 2,
+        Snow = 5
+    },
+    materialMap = {
+        [Enum.Material.Fabric] = "Carpet",
+        [Enum.Material.Slate] = "Concrete",
+        [Enum.Material.Concrete] = "Concrete",
+        [Enum.Material.Brick] = "Concrete",
+        [Enum.Material.Cobblestone] = "Concrete",
+        [Enum.Material.Sandstone] = "Concrete",
+        [Enum.Material.Rock] = "Concrete",
+        [Enum.Material.Basalt] = "Asphalt",
+        [Enum.Material.CrackedLava] = "Concrete",
+        [Enum.Material.Asphalt] = "Asphalt",
+        [Enum.Material.Limestone] = "Concrete",
+        [Enum.Material.Pavement] = "Concrete",
+        [Enum.Material.Pebble] = "Gravel",
+        [Enum.Material.Ground] = "Dirt",
+        [Enum.Material.Mud] = "Mud",
+        [Enum.Material.Grass] = "Grass",
+        [Enum.Material.LeafyGrass] = "Grass",
+        [Enum.Material.Sand] = "Sand",
+        [Enum.Material.Salt] = "Sand",
+        [Enum.Material.Snow] = "Snow",
+        [Enum.Material.Glacier] = "Glass",
+        [Enum.Material.Marble] = "Tile",
+        [Enum.Material.Granite] = "Tile",
+        [Enum.Material.Neon] = "Tile",
+        [Enum.Material.Plastic] = "Tile",
+        [Enum.Material.Wood] = "Wood",
+        [Enum.Material.WoodPlanks] = "Wood",
+        [Enum.Material.Foil] = "Metal_Grate",
+        [Enum.Material.Ice] = "Glass",
+        [Enum.Material.Glacier] = "Glass",
+        [Enum.Material.Glass] = "Glass",
+        [Enum.Material.ForceField] = "Rubber",
+        [Enum.Material.SmoothPlastic] = "Rubber",
+        [Enum.Material.CorrodedMetal] = "Metal_Solid",
+        [Enum.Material.DiamondPlate] = "Metal_Solid",
+        [Enum.Material.Metal] = "Metal_Solid"
+    }
+};
+-- Script Path: game:GetService("ReplicatedStorage").Modules.Icon
+-- Took 0.02s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+game:GetService("LocalizationService");
+local UserInputService = game:GetService("UserInputService");
+game:GetService("RunService");
+game:GetService("TextService");
+local StarterGui = game:GetService("StarterGui");
+local GuiService = game:GetService("GuiService");
+local Players = game:GetService("Players");
+local u1 = script;
+local Reference = require(u1.Reference);
+local v2 = Reference.getObject();
+local v3;
+
+if v2 then
+    v3 = v2.Value;
+else
+    v3 = v2;
+end;
+
+if v3 and v3 ~= u1 then
+    return require(v3);
+end;
+
+if not v2 then
+    Reference.addToReplicatedStorage();
+end;
+
+local GoodSignal = require(u1.Packages.GoodSignal);
+local Janitor = require(u1.Packages.Janitor);
+local Utility = require(u1.Utility);
+require(u1.Attribute);
+local Themes = require(u1.Features.Themes);
+local Gamepad = require(u1.Features.Gamepad);
+local Overflow = require(u1.Features.Overflow);
+local u4 = {};
+u4.__index = u4;
+local Themes2 = u1.Features.Themes;
+local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui");
+local u5 = {};
+local u6 = GoodSignal.new();
+local Elements = u1.Elements;
+local u7 = 0;
+
+if GuiService.TopbarInset.Height == 0 then
+    GuiService:GetPropertyChangedSignal("TopbarInset"):Wait();
+end;
+
+u4.baseDisplayOrderChanged = GoodSignal.new();
+u4.baseDisplayOrder = 10;
+u4.baseTheme = require(Themes2.Default);
+u4.isOldTopbar = GuiService.TopbarInset.Height == 36;
+u4.iconsDictionary = u5;
+u4.container = require(Elements.Container)(u4);
+u4.topbarEnabled = true;
+u4.iconAdded = GoodSignal.new();
+u4.iconRemoved = GoodSignal.new();
+u4.iconChanged = GoodSignal.new();
+
+function u4.getIcons() -- Line: 112
+    -- upvalues: u4 (copy)
+    return u4.iconsDictionary;
+end;
+
+function u4.getIconByUID(p8) -- Line: 116
+    -- upvalues: u4 (copy)
+    local v9 = u4.iconsDictionary[p8];
+
+    if v9 then
+        return v9;
+    end;
+end;
+
+function u4.getIcon(p10) -- Line: 123
+    -- upvalues: u4 (copy), u5 (copy)
+    local v11 = u4.getIconByUID(p10);
+
+    if v11 then
+        return v11;
+    end;
+
+    for _, v in pairs(u5) do
+        if v.name == p10 then
+            return v;
+        end;
+    end;
+end;
+
+function u4.setTopbarEnabled(p12, p13) -- Line: 135
+    -- upvalues: u4 (copy)
+    if typeof(p12) ~= "boolean" then
+        p12 = u4.topbarEnabled;
+    end;
+
+    if not p13 then
+        u4.topbarEnabled = p12;
+    end;
+
+    for _, v in pairs(u4.container) do
+        v.Enabled = p12;
+    end;
+end;
+
+function u4.modifyBaseTheme(p14) -- Line: 147
+    -- upvalues: Themes (copy), u4 (copy), u5 (copy)
+    local v15 = Themes.getModifications(p14);
+
+    for _, v in pairs(v15) do
+        for _, v4 in pairs(u4.baseTheme) do
+            Themes.merge(v4, v);
+        end;
+    end;
+
+    for _, v in pairs(u5) do
+        v:setTheme(u4.baseTheme);
+    end;
+end;
+
+function u4.setDisplayOrder(p16) -- Line: 159
+    -- upvalues: u4 (copy)
+    u4.baseDisplayOrder = p16;
+    u4.baseDisplayOrderChanged:Fire(p16);
+end;
+
+task.defer(Gamepad.start, u4);
+task.defer(Overflow.start, u4);
+
+for _, v in pairs(u4.container) do
+    v.Parent = PlayerGui;
+end;
+
+if u4.isOldTopbar then
+    u4.modifyBaseTheme(require(Themes2.Classic));
+end;
+
+function u4.new() -- Line: 179
+    -- upvalues: u4 (copy), Janitor (copy), Utility (copy), u5 (copy), GoodSignal (copy), u1 (copy), Elements (copy), u7 (ref), UserInputService (copy), u6 (copy), StarterGui (copy)
+    local u17 = {};
+    setmetatable(u17, u4);
+    local v18 = Janitor.new();
+    u17.janitor = v18;
+    u17.themesJanitor = v18:add(Janitor.new());
+    u17.singleClickJanitor = v18:add(Janitor.new());
+    u17.captionJanitor = v18:add(Janitor.new());
+    u17.joinJanitor = v18:add(Janitor.new());
+    u17.menuJanitor = v18:add(Janitor.new());
+    u17.dropdownJanitor = v18:add(Janitor.new());
+    local u19 = Utility.generateUID();
+    u5[u19] = u17;
+    v18:add(function() -- Line: 196
+        -- upvalues: u5 (ref), u19 (copy)
+        u5[u19] = nil;
+    end);
+    u17.selected = v18:add(GoodSignal.new());
+    u17.deselected = v18:add(GoodSignal.new());
+    u17.toggled = v18:add(GoodSignal.new());
+    u17.viewingStarted = v18:add(GoodSignal.new());
+    u17.viewingEnded = v18:add(GoodSignal.new());
+    u17.stateChanged = v18:add(GoodSignal.new());
+    u17.notified = v18:add(GoodSignal.new());
+    u17.noticeStarted = v18:add(GoodSignal.new());
+    u17.noticeChanged = v18:add(GoodSignal.new());
+    u17.endNotices = v18:add(GoodSignal.new());
+    u17.dropdownOpened = v18:add(GoodSignal.new());
+    u17.dropdownClosed = v18:add(GoodSignal.new());
+    u17.menuOpened = v18:add(GoodSignal.new());
+    u17.menuClosed = v18:add(GoodSignal.new());
+    u17.toggleKeyAdded = v18:add(GoodSignal.new());
+    u17.fakeToggleKeyChanged = v18:add(GoodSignal.new());
+    u17.alignmentChanged = v18:add(GoodSignal.new());
+    u17.updateSize = v18:add(GoodSignal.new());
+    u17.resizingComplete = v18:add(GoodSignal.new());
+    u17.joinedParent = v18:add(GoodSignal.new());
+    u17.menuSet = v18:add(GoodSignal.new());
+    u17.dropdownSet = v18:add(GoodSignal.new());
+    u17.updateMenu = v18:add(GoodSignal.new());
+    u17.startMenuUpdate = v18:add(GoodSignal.new());
+    u17.childThemeModified = v18:add(GoodSignal.new());
+    u17.indicatorSet = v18:add(GoodSignal.new());
+    u17.dropdownChildAdded = v18:add(GoodSignal.new());
+    u17.menuChildAdded = v18:add(GoodSignal.new());
+    u17.iconModule = u1;
+    u17.UID = u19;
+    u17.isEnabled = true;
+    u17.isSelected = false;
+    u17.isViewing = false;
+    u17.joinedFrame = false;
+    u17.parentIconUID = false;
+    u17.deselectWhenOtherIconSelected = false;
+    u17.totalNotices = 0;
+    u17.activeState = "Deselected";
+    u17.alignment = "";
+    u17.originalAlignment = "";
+    u17.appliedTheme = {};
+    u17.appearance = {};
+    u17.cachedInstances = {};
+    u17.cachedNamesToInstances = {};
+    u17.cachedCollectives = {};
+    u17.bindedToggleKeys = {};
+    u17.customBehaviours = {};
+    u17.toggleItems = {};
+    u17.bindedEvents = {};
+    u17.notices = {};
+    u17.menuIcons = {};
+    u17.dropdownIcons = {};
+    u17.childIconsDict = {};
+    u17.isOldTopbar = u4.isOldTopbar;
+    u17.creationTime = os.clock();
+    u17.widget = v18:add(require(Elements.Widget)(u17, u4));
+    u17:setAlignment();
+    u7 = u7 + 1;
+    u17:setOrder(u7);
+    u17:setTheme(u4.baseTheme);
+    local v20 = u17:getInstance("ClickRegion");
+
+    local function handleToggle() -- Line: 275
+        -- upvalues: u17 (copy)
+        if u17.locked then
+            return;
+        end;
+
+        if u17.isSelected then
+            u17:deselect(u17);
+
+            return;
+        end;
+
+        u17:select(u17);
+    end;
+
+    local u21 = false;
+    local u22 = false;
+    v20.MouseButton1Click:Connect(function() -- Line: 287
+        -- upvalues: u21 (ref), u22 (ref), u17 (copy)
+        if u21 then
+            return;
+        end;
+
+        u22 = true;
+        task.delay(0.01, function() -- Line: 292
+            -- upvalues: u22 (ref)
+            u22 = false;
+        end);
+
+        if u17.locked then
+            return;
+        end;
+
+        if u17.isSelected then
+            u17:deselect(u17);
+
+            return;
+        end;
+
+        u17:select(u17);
+    end);
+    v20.TouchTap:Connect(function() -- Line: 297
+        -- upvalues: u22 (ref), u21 (ref), u17 (copy)
+        if u22 then
+            return;
+        end;
+
+        u21 = true;
+        task.delay(0.01, function() -- Line: 304
+            -- upvalues: u21 (ref)
+            u21 = false;
+        end);
+
+        if u17.locked then
+            return;
+        end;
+
+        if u17.isSelected then
+            u17:deselect(u17);
+
+            return;
+        end;
+
+        u17:select(u17);
+    end);
+    v18:add(UserInputService.InputBegan:Connect(function(p23, p24) -- Line: 311
+        -- upvalues: u17 (copy)
+        if u17.locked then
+            return;
+        end;
+
+        if u17.bindedToggleKeys[p23.KeyCode] and not p24 then
+            if u17.locked then
+                return;
+            end;
+
+            if u17.isSelected then
+                u17:deselect(u17);
+
+                return;
+            end;
+
+            u17:select(u17);
+        end;
+    end));
+
+    local function viewingEnded() -- Line: 333
+        -- upvalues: u17 (copy)
+        if u17.locked then
+            return;
+        end;
+
+        u17.isViewing = false;
+        u17.viewingEnded:Fire(true);
+        u17:setState(nil, u17);
+    end;
+
+    u17.joinedParent:Connect(function() -- Line: 341
+        -- upvalues: u17 (copy)
+        if u17.isViewing then
+            if u17.locked then
+                return;
+            end;
+
+            u17.isViewing = false;
+            u17.viewingEnded:Fire(true);
+            u17:setState(nil, u17);
+        end;
+    end);
+    v20.MouseEnter:Connect(function() -- Line: 346
+        -- upvalues: UserInputService (ref), u17 (copy)
+        local v25 = not UserInputService.KeyboardEnabled;
+
+        if u17.locked then
+            return;
+        end;
+
+        u17.isViewing = true;
+        u17.viewingStarted:Fire(true);
+
+        if not v25 then
+            u17:setState("Viewing", u17);
+        end;
+    end);
+    local u26 = 0;
+    v18:add(UserInputService.TouchEnded:Connect(viewingEnded));
+    v20.MouseLeave:Connect(viewingEnded);
+    v20.SelectionGained:Connect(function(p27) -- Line: 323, Name: viewingStarted
+        -- upvalues: u17 (copy)
+        if u17.locked then
+            return;
+        end;
+
+        u17.isViewing = true;
+        u17.viewingStarted:Fire(true);
+
+        if not p27 then
+            u17:setState("Viewing", u17);
+        end;
+    end);
+    v20.SelectionLost:Connect(viewingEnded);
+    v20.MouseButton1Down:Connect(function() -- Line: 355
+        -- upvalues: u17 (copy), UserInputService (ref), u26 (ref)
+        if not u17.locked and UserInputService.TouchEnabled then
+            u26 = u26 + 1;
+            local u28 = u26;
+            task.delay(0.2, function() -- Line: 359
+                -- upvalues: u28 (copy), u26 (ref), u17 (ref)
+                if u28 == u26 then
+                    if u17.locked then
+                        return;
+                    end;
+
+                    u17.isViewing = true;
+                    u17.viewingStarted:Fire(true);
+                    u17:setState("Viewing", u17);
+                end;
+            end);
+        end;
+    end);
+    v20.MouseButton1Up:Connect(function() -- Line: 366
+        -- upvalues: u26 (ref)
+        u26 = u26 + 1;
+    end);
+    local u29 = u17:getInstance("IconOverlay");
+    u17.viewingStarted:Connect(function() -- Line: 372
+        -- upvalues: u29 (copy), u17 (copy)
+        u29.Visible = not u17.overlayDisabled;
+    end);
+    u17.viewingEnded:Connect(function() -- Line: 375
+        -- upvalues: u29 (copy)
+        u29.Visible = false;
+    end);
+    v18:add(u6:Connect(function(p30) -- Line: 380
+        -- upvalues: u17 (copy)
+        if p30 ~= u17 and (u17.deselectWhenOtherIconSelected and p30.deselectWhenOtherIconSelected) then
+            u17:deselect();
+        end;
+    end));
+    local v31 = debug.info(2, "s");
+    local v32 = string.split(v31, ".");
+    local v33 = game;
+    local v34 = nil;
+
+    for _, v in pairs(v32) do
+        v33 = v33:FindFirstChild(v);
+
+        if not v33 then
+            break;
+        end;
+
+        if v33:IsA("ScreenGui") then
+            v34 = v33;
+        end;
+    end;
+
+    if v33 and (v34 and v34.ResetOnSpawn == true) then
+        Utility.localPlayerRespawned(function() -- Line: 405
+            -- upvalues: u17 (copy)
+            u17:destroy();
+        end);
+    end;
+
+    u17:getInstance("NoticeLabel");
+    u17.toggled:Connect(function(p35) -- Line: 412
+        -- upvalues: u17 (copy), u4 (ref)
+        u17.noticeChanged:Fire(u17.totalNotices);
+
+        for i, _ in pairs(u17.childIconsDict) do
+            local v36 = u4.getIconByUID(i);
+            v36.noticeChanged:Fire(v36.totalNotices);
+
+            if not p35 and v36.isSelected then
+                for _, _ in pairs(v36.childIconsDict) do
+                    v36:deselect();
+                end;
+            end;
+        end;
+    end);
+    u17.selected:Connect(function() -- Line: 435
+        -- upvalues: u17 (copy), StarterGui (ref)
+        if #u17.dropdownIcons > 0 and (StarterGui:GetCore("ChatActive") and u17.alignment ~= "Right") then
+            u17.chatWasPreviouslyActive = true;
+            StarterGui:SetCore("ChatActive", false);
+        end;
+    end);
+    u17.deselected:Connect(function() -- Line: 442
+        -- upvalues: u17 (copy), StarterGui (ref)
+        if u17.chatWasPreviouslyActive then
+            u17.chatWasPreviouslyActive = nil;
+            StarterGui:SetCore("ChatActive", true);
+        end;
+    end);
+    task.delay(0.1, function() -- Line: 453
+        -- upvalues: u17 (copy)
+        if u17.activeState == "Deselected" then
+            u17.stateChanged:Fire("Deselected");
+            u17:refresh();
+        end;
+    end);
+    u4.iconAdded:Fire(u17);
+
+    return u17;
+end;
+
+function u4.setName(p37, p38) -- Line: 469
+    p37.widget.Name = p38;
+    p37.name = p38;
+
+    return p37;
+end;
+
+function u4.setState(p39, p40, p41) -- Line: 475
+    -- upvalues: Utility (copy), u6 (copy)
+    local v42 = Utility.formatStateName(p40 or (p39.isSelected and "Selected" or "Deselected"));
+
+    if p39.activeState == v42 then
+        return;
+    end;
+
+    local isSelected = p39.isSelected;
+    p39.activeState = v42;
+
+    if v42 == "Deselected" then
+        p39.isSelected = false;
+
+        if isSelected then
+            p39.toggled:Fire(false, p41);
+            p39.deselected:Fire(p41);
+        end;
+
+        p39:_setToggleItemsVisible(false, p41);
+    elseif v42 == "Selected" then
+        p39.isSelected = true;
+
+        if not isSelected then
+            p39.toggled:Fire(true, p41);
+            p39.selected:Fire(p41);
+            u6:Fire(p39);
+        end;
+
+        p39:_setToggleItemsVisible(true, p41);
+    end;
+
+    p39.stateChanged:Fire(v42, p41);
+end;
+
+function u4.getInstance(u43, u44) -- Line: 508
+    -- upvalues: Themes (copy)
+    local v45 = u43.cachedNamesToInstances[u44];
+
+    if v45 then
+        return v45;
+    end;
+
+    local function cacheInstance(u46, u47) -- Line: 516
+        -- upvalues: u43 (copy)
+        if not u43.cachedInstances[u47] then
+            local v48 = u47:GetAttribute("Collective");
+
+            if v48 then
+                v48 = u43.cachedCollectives[v48];
+            end;
+
+            if v48 then
+                table.insert(v48, u47);
+            end;
+
+            u43.cachedNamesToInstances[u46] = u47;
+            u43.cachedInstances[u47] = true;
+            u47.Destroying:Once(function() -- Line: 526
+                -- upvalues: u43 (ref), u46 (copy), u47 (copy)
+                u43.cachedNamesToInstances[u46] = nil;
+                u43.cachedInstances[u47] = nil;
+            end);
+        end;
+    end;
+
+    local widget = u43.widget;
+    cacheInstance("Widget", widget);
+
+    if u44 == "Widget" then
+        return widget;
+    end;
+
+    local u49 = nil;
+
+    local function scanChildren(p50) -- Line: 539
+        -- upvalues: u43 (copy), Themes (ref), scanChildren (copy), cacheInstance (copy), u44 (copy), u49 (ref)
+        for _, child in pairs(p50:GetChildren()) do
+            local v51 = child:GetAttribute("WidgetUID");
+
+            if not v51 or v51 == u43.UID then
+                local v52 = Themes.getRealInstance(child) or child;
+                scanChildren(v52);
+
+                if v52:IsA("GuiBase") or (v52:IsA("UIBase") or v52:IsA("ValueBase")) then
+                    local Name = v52.Name;
+                    cacheInstance(Name, v52);
+
+                    if Name == u44 then
+                        u49 = v52;
+                    end;
+                end;
+            end;
+        end;
+    end;
+
+    scanChildren(widget);
+
+    return u49;
+end;
+
+function u4.getCollective(p53, p54) -- Line: 569
+    local v55 = p53.cachedCollectives[p54];
+
+    if v55 then
+        return v55;
+    end;
+
+    local v56 = {};
+
+    for i, _ in pairs(p53.cachedInstances) do
+        if i:GetAttribute("Collective") == p54 then
+            table.insert(v56, i);
+        end;
+    end;
+
+    p53.cachedCollectives[p54] = v56;
+
+    return v56;
+end;
+
+function u4.getInstanceOrCollective(p57, p58) -- Line: 590
+    local v59 = {};
+    local v60 = p57:getInstance(p58);
+
+    if v60 then
+        table.insert(v59, v60);
+    end;
+
+    if #v59 == 0 then
+        v59 = p57:getCollective(p58);
+    end;
+
+    return v59;
+end;
+
+function u4.getStateGroup(p61, p62) -- Line: 604
+    local v63 = p62 or p61.activeState;
+    local v64 = p61.appearance[v63];
+
+    if not v64 then
+        v64 = {};
+        p61.appearance[v63] = v64;
+    end;
+
+    return v64;
+end;
+
+function u4.refreshAppearance(p65, p66, p67) -- Line: 614
+    -- upvalues: Themes (copy)
+    Themes.refresh(p65, p66, p67);
+
+    return p65;
+end;
+
+function u4.refresh(p68) -- Line: 619
+    p68:refreshAppearance(p68.widget);
+    p68.updateSize:Fire();
+
+    return p68;
+end;
+
+function u4.updateParent(p69) -- Line: 625
+    -- upvalues: u4 (copy)
+    local v70 = u4.getIconByUID(p69.parentIconUID);
+
+    if v70 then
+        v70.updateSize:Fire();
+    end;
+end;
+
+function u4.setBehaviour(p71, p72, p73, p74, p75) -- Line: 632
+    p71.customBehaviours[p72 .. "-" .. p73] = p74;
+
+    if p75 then
+        local v76 = p71:getInstanceOrCollective(p72);
+
+        for _, v in pairs(v76) do
+            p71:refreshAppearance(v, p73);
+        end;
+    end;
+end;
+
+function u4.modifyTheme(p77, p78, p79) -- Line: 645
+    -- upvalues: Themes (copy)
+    return p77, Themes.modify(p77, p78, p79);
+end;
+
+function u4.modifyChildTheme(p80, p81, p82) -- Line: 650
+    -- upvalues: u4 (copy)
+    p80.childModifications = p81;
+    p80.childModificationsUID = p82;
+
+    for i, _ in pairs(p80.childIconsDict) do
+        u4.getIconByUID(i):modifyTheme(p81, p82);
+    end;
+
+    p80.childThemeModified:Fire();
+
+    return p80;
+end;
+
+function u4.removeModification(p83, p84) -- Line: 663
+    -- upvalues: Themes (copy)
+    Themes.remove(p83, p84);
+
+    return p83;
+end;
+
+function u4.removeModificationWith(p85, p86, p87, p88) -- Line: 668
+    -- upvalues: Themes (copy)
+    Themes.removeWith(p85, p86, p87, p88);
+
+    return p85;
+end;
+
+function u4.setTheme(p89, p90) -- Line: 673
+    -- upvalues: Themes (copy)
+    Themes.set(p89, p90);
+
+    return p89;
+end;
+
+function u4.setEnabled(p91, p92) -- Line: 678
+    p91.isEnabled = p92;
+    p91.widget.Visible = p92;
+    p91:updateParent();
+
+    return p91;
+end;
+
+function u4.select(p93, p94) -- Line: 685
+    p93:setState("Selected", p94);
+
+    return p93;
+end;
+
+function u4.deselect(p95, p96) -- Line: 690
+    p95:setState("Deselected", p96);
+
+    return p95;
+end;
+
+function u4.notify(p97, p98, p99) -- Line: 695
+    -- upvalues: Elements (copy), u4 (copy)
+    if not p97.notice then
+        p97.notice = require(Elements.Notice)(p97, u4);
+    end;
+
+    p97.noticeStarted:Fire(p98, p99);
+
+    return p97;
+end;
+
+function u4.clearNotices(p100) -- Line: 709
+    p100.endNotices:Fire();
+
+    return p100;
+end;
+
+function u4.disableOverlay(p101, p102) -- Line: 714
+    p101.overlayDisabled = p102;
+
+    return p101;
+end;
+
+u4.disableStateOverlay = u4.disableOverlay;
+
+function u4.setImage(p103, p104, p105) -- Line: 720
+    p103:modifyTheme({
+        "IconImage",
+        "Image",
+        p104,
+        p105
+    });
+
+    return p103;
+end;
+
+function u4.setLabel(p106, p107, p108) -- Line: 725
+    p106:modifyTheme({
+        "IconLabel",
+        "Text",
+        p107,
+        p108
+    });
+
+    return p106;
+end;
+
+function u4.setOrder(p109, p110, p111) -- Line: 730
+    p109:modifyTheme({
+        "Widget",
+        "LayoutOrder",
+        p110,
+        p111
+    });
+
+    return p109;
+end;
+
+function u4.setCornerRadius(p112, p113, p114) -- Line: 735
+    p112:modifyTheme({
+        "IconCorners",
+        "CornerRadius",
+        p113,
+        p114
+    });
+
+    return p112;
+end;
+
+function u4.align(p115, p116, p117) -- Line: 740
+    -- upvalues: u4 (copy)
+    local v118 = tostring(p116):lower();
+    local v119 = (v118 == "mid" or v118 == "centre") and "center" or v118;
+    local v120 = v119 ~= "left" and (v119 ~= "center" and v119 ~= "right") and "left" or v119;
+    local v121 = v120 == "center" and u4.container.TopbarCentered or u4.container.TopbarStandard;
+    local Holders = v121.Holders;
+    local v122 = string.upper((string.sub(v120, 1, 1))) .. string.sub(v120, 2);
+
+    if not p117 then
+        p115.originalAlignment = v122;
+    end;
+
+    local joinedFrame = p115.joinedFrame;
+    local v123 = Holders[v122];
+    p115.screenGui = v121;
+    p115.alignmentHolder = v123;
+    p115.widget.Parent = joinedFrame or v123;
+    p115.alignment = v122;
+    p115.alignmentChanged:Fire(v122);
+    u4.iconChanged:Fire(p115);
+
+    return p115;
+end;
+
+u4.setAlignment = u4.align;
+
+function u4.setLeft(p124) -- Line: 767
+    p124:setAlignment("Left");
+
+    return p124;
+end;
+
+function u4.setMid(p125) -- Line: 772
+    p125:setAlignment("Center");
+
+    return p125;
+end;
+
+function u4.setRight(p126) -- Line: 777
+    p126:setAlignment("Right");
+
+    return p126;
+end;
+
+function u4.setWidth(p127, p128, p129) -- Line: 782
+    p127:modifyTheme({
+        "Widget",
+        "Size",
+        UDim2.fromOffset(p128, p127.widget.Size.Y.Offset),
+        p129
+    });
+    p127:modifyTheme({
+        "Widget",
+        "DesiredWidth",
+        p128,
+        p129
+    });
+
+    return p127;
+end;
+
+function u4.setImageScale(p130, p131, p132) -- Line: 792
+    p130:modifyTheme({
+        "IconImageScale",
+        "Value",
+        p131,
+        p132
+    });
+
+    return p130;
+end;
+
+function u4.setImageRatio(p133, p134, p135) -- Line: 797
+    p133:modifyTheme({
+        "IconImageRatio",
+        "AspectRatio",
+        p134,
+        p135
+    });
+
+    return p133;
+end;
+
+function u4.setTextSize(p136, p137, p138) -- Line: 802
+    p136:modifyTheme({
+        "IconLabel",
+        "TextSize",
+        p137,
+        p138
+    });
+
+    return p136;
+end;
+
+function u4.setTextFont(p139, p140, p141, p142, p143) -- Line: 807
+    p139:modifyTheme({
+        "IconLabel",
+        "FontFace",
+        Font.new(p140, p141 or Enum.FontWeight.Regular, p142 or Enum.FontStyle.Normal),
+        p143
+    });
+
+    return p139;
+end;
+
+function u4.bindToggleItem(p144, p145) -- Line: 815
+    if not (p145:IsA("GuiObject") or p145:IsA("LayerCollector")) then
+        error("Toggle item must be a GuiObject or LayerCollector!");
+    end;
+
+    p144.toggleItems[p145] = true;
+    p144:_updateSelectionInstances();
+
+    return p144;
+end;
+
+function u4.unbindToggleItem(p146, p147) -- Line: 824
+    p146.toggleItems[p147] = nil;
+    p146:_updateSelectionInstances();
+
+    return p146;
+end;
+
+function u4._updateSelectionInstances(p148) -- Line: 830
+    for i, _ in pairs(p148.toggleItems) do
+        local v149 = {};
+
+        for _, descendant in pairs(i:GetDescendants()) do
+            if (descendant:IsA("TextButton") or descendant:IsA("ImageButton")) and descendant.Active then
+                table.insert(v149, descendant);
+            end;
+        end;
+
+        p148.toggleItems[i] = v149;
+    end;
+end;
+
+function u4._setToggleItemsVisible(p150, p151, p152) -- Line: 844
+    for i, _ in pairs(p150.toggleItems) do
+        if not p152 or (p152 == p150 or p152.toggleItems[i] == nil) then
+            i[i:IsA("LayerCollector") and "Enabled" or "Visible"] = p151;
+        end;
+    end;
+end;
+
+function u4.bindEvent(u153, p154, u155) -- Line: 856
+    local v156 = u153[p154];
+    local v157;
+
+    if v156 then
+        if typeof(v156) == "table" then
+            v157 = v156.Connect;
+        else
+            v157 = false;
+        end;
+    else
+        v157 = v156;
+    end;
+
+    assert(v157, "argument[1] must be a valid topbarplus icon event name!");
+    local v158 = typeof(u155) == "function";
+    assert(v158, "argument[2] must be a function!");
+    u153.bindedEvents[p154] = v156:Connect(function(...) -- Line: 860
+        -- upvalues: u155 (copy), u153 (copy)
+        u155(u153, ...);
+    end);
+
+    return u153;
+end;
+
+function u4.unbindEvent(p159, p160) -- Line: 866
+    local v161 = p159.bindedEvents[p160];
+
+    if v161 then
+        v161:Disconnect();
+        p159.bindedEvents[p160] = nil;
+    end;
+
+    return p159;
+end;
+
+function u4.bindToggleKey(p162, p163) -- Line: 875
+    local v164 = typeof(p163) == "EnumItem";
+    assert(v164, "argument[1] must be a KeyCode EnumItem!");
+    p162.bindedToggleKeys[p163] = true;
+    p162.toggleKeyAdded:Fire(p163);
+    p162:setCaption("_hotkey_");
+
+    return p162;
+end;
+
+function u4.unbindToggleKey(p165, p166) -- Line: 883
+    local v167 = typeof(p166) == "EnumItem";
+    assert(v167, "argument[1] must be a KeyCode EnumItem!");
+    p165.bindedToggleKeys[p166] = nil;
+
+    return p165;
+end;
+
+function u4.call(u168, u169, ...) -- Line: 889
+    local u170 = table.pack(...);
+    task.spawn(function() -- Line: 891
+        -- upvalues: u169 (copy), u168 (copy), u170 (copy)
+        u169(u168, table.unpack(u170));
+    end);
+
+    return u168;
+end;
+
+function u4.addToJanitor(p171, p172) -- Line: 897
+    p171.janitor:add(p172);
+
+    return p171;
+end;
+
+function u4.lock(p173) -- Line: 902
+    p173:getInstance("ClickRegion").Visible = false;
+    p173.locked = true;
+
+    return p173;
+end;
+
+function u4.unlock(p174) -- Line: 910
+    p174:getInstance("ClickRegion").Visible = true;
+    p174.locked = false;
+
+    return p174;
+end;
+
+function u4.debounce(p175, p176) -- Line: 917
+    p175:lock();
+    task.wait(p176);
+    p175:unlock();
+
+    return p175;
+end;
+
+function u4.autoDeselect(p177, p178) -- Line: 924
+    p177.deselectWhenOtherIconSelected = p178 == nil and true or p178;
+
+    return p177;
+end;
+
+function u4.oneClick(u179, p180) -- Line: 934
+    local singleClickJanitor = u179.singleClickJanitor;
+    singleClickJanitor:clean();
+
+    if p180 or p180 == nil then
+        singleClickJanitor:add(u179.selected:Connect(function() -- Line: 940
+            -- upvalues: u179 (copy)
+            u179:deselect();
+        end));
+    end;
+
+    u179.oneClickEnabled = true;
+
+    return u179;
+end;
+
+function u4.setCaption(p181, p182) -- Line: 948
+    -- upvalues: Elements (copy)
+    if p182 == "_hotkey_" and p181.captionText then
+        return p181;
+    end;
+
+    local captionJanitor = p181.captionJanitor;
+    p181.captionJanitor:clean();
+
+    if not p182 or p182 == "" then
+        p181.caption = nil;
+        p181.captionText = nil;
+
+        return p181;
+    end;
+
+    local v183 = captionJanitor:add(require(Elements.Caption)(p181));
+    v183:SetAttribute("CaptionText", p182);
+    p181.caption = v183;
+    p181.captionText = p182;
+
+    return p181;
+end;
+
+function u4.setCaptionHint(p184, p185) -- Line: 966
+    local v186 = typeof(p185) == "EnumItem";
+    assert(v186, "argument[1] must be a KeyCode EnumItem!");
+    p184.fakeToggleKey = p185;
+    p184.fakeToggleKeyChanged:Fire(p185);
+    p184:setCaption("_hotkey_");
+
+    return p184;
+end;
+
+function u4.leave(p187) -- Line: 974
+    p187.joinJanitor:clean();
+
+    return p187;
+end;
+
+function u4.joinMenu(p188, p189) -- Line: 980
+    -- upvalues: Utility (copy)
+    Utility.joinFeature(p188, p189, p189.menuIcons, p189:getInstance("Menu"));
+    p189.menuChildAdded:Fire(p188);
+
+    return p188;
+end;
+
+function u4.setMenu(p190, p191) -- Line: 986
+    p190.menuSet:Fire(p191);
+
+    return p190;
+end;
+
+function u4.setFrozenMenu(p192, p193) -- Line: 991
+    p192:freezeMenu(p193);
+    p192:setMenu(p193);
+end;
+
+function u4.freezeMenu(p194) -- Line: 996
+    p194:select();
+    p194:bindEvent("deselected", function(p195) -- Line: 1000
+        p195:select();
+    end);
+    p194:modifyTheme({ "IconSpot", "Visible", false });
+end;
+
+function u4.joinDropdown(p196, p197) -- Line: 1006
+    -- upvalues: Utility (copy)
+    p197:getDropdown();
+    Utility.joinFeature(p196, p197, p197.dropdownIcons, p197:getInstance("DropdownScroller"));
+    p197.dropdownChildAdded:Fire(p196);
+
+    return p196;
+end;
+
+function u4.getDropdown(p198) -- Line: 1013
+    -- upvalues: Elements (copy)
+    local dropdown = p198.dropdown;
+
+    if not dropdown then
+        dropdown = require(Elements.Dropdown)(p198);
+        p198.dropdown = dropdown;
+        p198:clipOutside(dropdown);
+    end;
+
+    return dropdown;
+end;
+
+function u4.setDropdown(p199, p200) -- Line: 1023
+    p199:getDropdown();
+    p199.dropdownSet:Fire(p200);
+
+    return p199;
+end;
+
+function u4.clipOutside(p201, p202) -- Line: 1029
+    -- upvalues: Utility (copy)
+    local v203 = Utility.clipOutside(p201, p202);
+    p201:refreshAppearance(p202);
+
+    return p201, v203;
+end;
+
+function u4.setIndicator(p204, p205) -- Line: 1040
+    -- upvalues: Elements (copy), u4 (copy)
+    if not p204.indicator then
+        p204.indicator = p204.janitor:add(require(Elements.Indicator)(p204, u4));
+    end;
+
+    p204.indicatorSet:Fire(p205);
+end;
+
+function u4.destroy(p206) -- Line: 1055
+    -- upvalues: u4 (copy)
+    if p206.isDestroyed then
+        return;
+    end;
+
+    p206:clearNotices();
+
+    if p206.parentIconUID then
+        p206:leave();
+    end;
+
+    p206.isDestroyed = true;
+    p206.janitor:clean();
+    u4.iconRemoved:Fire(p206);
+end;
+
+u4.Destroy = u4.destroy;
+
+return u4;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.KeybindsHandler
+-- Took 0.01s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local u1 = {};
+local LocalPlayer = game.Players.LocalPlayer;
+local u2 = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait();
+local AbilityHandler = require(game.ReplicatedStorage.Modules.AbilityHandler);
+local PlayerInteraction = game.ReplicatedStorage.RemoteEvents.PlayerInteraction;
+local AbilityEvent = game.ReplicatedStorage.RemoteEvents.AbilityEvent;
+local SpellEvent = game.ReplicatedStorage.RemoteEvents.SpellEvent;
+local CompulsionEvent = game.ReplicatedStorage.RemoteEvents.CompulsionEvent;
+local SpellsConfiguration = require(game.ReplicatedStorage.Modules.SpellsConfiguration);
+local AbilityHandler2 = require(game.ReplicatedStorage.Modules.AbilityHandler);
+local CompulsionConfiguration = require(game.ReplicatedStorage.Modules.CompulsionConfiguration);
+local UserInputService = game:GetService("UserInputService");
+local TweenService = game:GetService("TweenService");
+local CurrentCamera = workspace.CurrentCamera;
+local u3 = LocalPlayer:GetMouse();
+local Utility = require(game.ReplicatedStorage.Modules.Utility);
+local u4 = u2:FindFirstChild("Humanoid") or u2:WaitForChild("Humanoid", (1 / 0));
+local u5 = u2:FindFirstChild("Stats") or u2:WaitForChild("Stats", (1 / 0));
+local CharacterName = u5:WaitForChild("CharacterName", (1 / 0));
+local Specie = u5:WaitForChild("Specie", (1 / 0));
+local CameraShaker = require(game.ReplicatedStorage.Modules.CameraShaker);
+local u7 = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(p6) -- Line: 25
+    -- upvalues: CurrentCamera (copy)
+    CurrentCamera.CFrame = CurrentCamera.CFrame * p6;
+end);
+u7:Start();
+local Anims = game.ReplicatedStorage.Assets.Anims;
+local VampireFallingLoop = Anims.Jumping.VampireFallingLoop;
+local VampireFalling = Anims.Jumping.VampireFalling;
+local DogFalling = Anims.Jumping.DogFalling;
+local WerewolfJump = Anims.Jumping.WerewolfJump;
+local WformJump = Anims.WformJump;
+local u8 = false;
+local u9 = 0;
+local u10 = false;
+local u11 = {};
+
+local function events() -- Line: 41
+    -- upvalues: u11 (copy), CharacterName (ref), u5 (ref), Specie (ref), PlayerInteraction (copy), u4 (ref), u10 (ref), u9 (ref), u2 (ref)
+    for _, v in pairs(u11) do
+        v:Disconnect();
+    end;
+
+    u11.A = CharacterName.Changed:Connect(function() -- Line: 43
+        -- upvalues: CharacterName (ref), u5 (ref)
+        CharacterName = u5.CharacterName;
+    end);
+    u11.B = Specie.Changed:Connect(function() -- Line: 46
+        -- upvalues: Specie (ref), u5 (ref), PlayerInteraction (ref)
+        Specie = u5.Specie;
+        PlayerInteraction:FireServer("ActivateTrailVampire", {
+            vampSound = false
+        });
+    end);
+    u11.C = u4.StateChanged:connect(function(p12, p13) -- Line: 50
+        -- upvalues: u10 (ref), u9 (ref), u4 (ref), u2 (ref), PlayerInteraction (ref)
+        if p13 == Enum.HumanoidStateType.Landed then
+            u10 = false;
+            u9 = 0;
+            u4.JumpPower = 50;
+        elseif p13 == Enum.HumanoidStateType.Freefall then
+            task.wait(0.2);
+
+            if u4:GetState() == Enum.HumanoidStateType.Freefall then
+                u10 = true;
+            end;
+        end;
+
+        if p13 == Enum.HumanoidStateType.Landed then
+            local v14 = -u2.HumanoidRootPart.Velocity.Y;
+
+            if not u2:FindFirstChild("Stats") then
+                return;
+            end;
+
+            local Stats = u2:FindFirstChild("Stats");
+
+            if v14 > 100 and (not Stats:FindFirstChild("VampireStats") and (not Stats:FindFirstChild("GodStats") and (not Stats:FindFirstChild("SirenStats") and (not Stats:FindFirstChild("WolfStats") and u2:FindFirstChild("Ghost") == nil)))) then
+                PlayerInteraction:FireServer("Damage", {
+                    Damage = (v14 / 80) ^ 5
+                });
+                game.SoundService.fallDamage:Play();
+
+                return;
+            end;
+
+            if v14 > 200 and (Stats:FindFirstChild("VampireStats") or (Stats:FindFirstChild("GodStats") or Stats:FindFirstChild("SirenStats"))) then
+                PlayerInteraction:FireServer("Landed");
+            end;
+        end;
+    end);
+end;
+
+local function update() -- Line: 75
+    -- upvalues: u2 (ref), LocalPlayer (copy), u4 (ref), u5 (ref), CharacterName (ref), Specie (ref), events (copy)
+    u2 = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait();
+    u4 = u2:WaitForChild("Humanoid", (1 / 0));
+    u5 = u2:WaitForChild("Stats", (1 / 0));
+    local CharacterName2 = u5:WaitForChild("CharacterName", (1 / 0));
+    local Specie2 = u5:WaitForChild("Specie", (1 / 0));
+    CharacterName = CharacterName2;
+    Specie = Specie2;
+    events();
+end;
+
+update();
+LocalPlayer.CharacterAdded:Connect(function(p15) -- Line: 83
+    -- upvalues: update (copy), u2 (ref)
+    update();
+    u2 = p15;
+    p15.ChildAdded:Connect(function(p16) -- Line: 86
+        -- upvalues: update (ref)
+        if p16.Name == "Stats" then
+            update();
+        end;
+    end);
+end);
+
+function u1.sprint(p17) -- Line: 93
+    -- upvalues: u2 (ref), Utility (copy), u8 (ref), u4 (ref), PlayerInteraction (copy), TweenService (copy), CurrentCamera (copy)
+    if p17 ~= "start" then
+        if p17 == "end" then
+            u8 = false;
+        end;
+
+        return;
+    end;
+
+    if u2:FindFirstChild("NoRun") or (Utility.IsRagolled(u2) or (Utility.CheckForInfluency(u2) or (u2.HumanoidRootPart.Anchored == true or u2:FindFirstChild("Levitating")))) then
+        return;
+    end;
+
+    if u8 then
+        return;
+    end;
+
+    local v18 = Utility.IsSpecie({ "Vampires", "Hybrids", "Heretics" }) and 80 or (Utility.IsSpecie({ "Originals", "OriginalHeretics" }) and 110 or (Utility.IsSpecie({ "UpgradedOGs", "Tribrids", "OriginalHybrids" }) and 130 or (Utility.IsSpecie({ "Werewolves", "Werewitches", "Gods", "Sirens", "Hunters" }) and 55 or 34)));
+    local v19 = u2:FindFirstChild("WolfForm") and 110 or v18;
+    local v20 = u2:FindFirstChild("WolfLocked") and not Utility.IsSpecie({ "Tribrids", "OriginalHybrids" }) and 34 or v19;
+    u8 = true;
+    u4.WalkSpeed = v20;
+    PlayerInteraction:FireServer("ActivateTrailVampire", {
+        vampSound = true,
+        Valore = v20
+    });
+
+    if u4.MoveDirection ~= Vector3.new(0, 0, 0) and Utility.CheckState() then
+        if Utility.IsSpecie({ "Vampires", "Hybrids", "Heretics", "Originals", "Tribrids", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics" }) then
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+                FieldOfView = 100
+            }):Play();
+        else
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+                FieldOfView = 90
+            }):Play();
+        end;
+    end;
+
+    local v21 = u4.StateChanged:Connect(function() -- Line: 125
+        -- upvalues: u4 (ref), Utility (ref), TweenService (ref), CurrentCamera (ref)
+        if u4.MoveDirection == Vector3.new(0, 0, 0) or not Utility.CheckState() then
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+                FieldOfView = 70
+            }):Play();
+
+            return;
+        end;
+
+        if Utility.IsSpecie({ "Vampires", "Hybrids", "Heretics", "Originals", "Tribrids", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics" }) then
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+                FieldOfView = 100
+            }):Play();
+
+            return;
+        end;
+
+        TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+            FieldOfView = 90
+        }):Play();
+    end);
+    local v22 = u4:GetPropertyChangedSignal("MoveDirection"):Connect(function() -- Line: 136
+        -- upvalues: u4 (ref), Utility (ref), TweenService (ref), CurrentCamera (ref)
+        if u4.MoveDirection == Vector3.new(0, 0, 0) or not Utility.CheckState() then
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+                FieldOfView = 70
+            }):Play();
+
+            return;
+        end;
+
+        if Utility.IsSpecie({ "Vampires", "Hybrids", "Heretics", "Originals", "Tribrids", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics" }) then
+            TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+                FieldOfView = 100
+            }):Play();
+
+            return;
+        end;
+
+        TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+            FieldOfView = 90
+        }):Play();
+    end);
+
+    repeat
+        task.wait();
+    until u2 == nil or (u2.PrimaryPart == nil or (u2.PrimaryPart.Anchored or not u8));
+
+    v22:Disconnect();
+    v21:Disconnect();
+    TweenService:Create(CurrentCamera, TweenInfo.new(0.3), {
+        FieldOfView = 70
+    }):Play();
+    u4.WalkSpeed = 16;
+    PlayerInteraction:FireServer("ActivateTrailVampire", {
+        vampSound = false,
+        Valore = 16
+    });
+end;
+
+function u1.jump() -- Line: 159
+    -- upvalues: Utility (copy), u2 (ref), u5 (ref), u10 (ref), u9 (ref), PlayerInteraction (copy), u7 (copy), CameraShaker (copy), u4 (ref), WformJump (copy), VampireFalling (copy), WerewolfJump (copy), DogFalling (copy), VampireFallingLoop (copy)
+    if not Utility.IsSpecie({ "Vampires", "Hybrids", "Tribrids", "Originals", "Werewolves", "Werewitches", "UpgradedOGs", "Heretics", "Gods", "Sirens", "OriginalHybrids", "OriginalHeretics" }) then
+        return;
+    end;
+
+    if u2:FindFirstChild("WolfLocked") and not Utility.IsSpecie({ "Tribrids", "OriginalHybrids" }) then
+        return;
+    end;
+
+    local v23 = u5:FindFirstChild("VampireStats") or u5:FindFirstChild("WolfStats") or (u5:FindFirstChild("GodStats") or u5:FindFirstChild("SirenStats"));
+
+    if not v23 then
+        return;
+    end;
+
+    if u10 and (u9 <= 1 and not Utility.IsRagolled(u2)) then
+        if u9 >= 1 and not Utility.IsSpecie({ "Tribrids", "UpgradedOGs" }) then
+            return;
+        end;
+
+        if v23:FindFirstChild("Energy") and v23:FindFirstChild("Energy").Value < 25 then
+            PlayerInteraction:FireServer("SelfNotification", {
+                Message = "You do not have enough energy to double jump"
             });
-         }
-      }
 
-      const pos = config.position;
+            return;
+        end;
 
-      if (config.position.enabled) {
-         console.log(
-            `\x1b[32m[Afk Bot] Starting to move to target location (${pos.x}, ${pos.y}, ${pos.z})\x1b[0m`
-         );
-         bot.pathfinder.setMovements(defaultMove);
-         bot.pathfinder.setGoal(new GoalBlock(pos.x, pos.y, pos.z));
-      }
+        u9 = u9 + 1;
+        PlayerInteraction:FireServer("DrainSpecieEnergy");
+        u7:Shake(CameraShaker.Presets.Bump);
+        u4.JumpPower = 120;
 
-      if (config.utils['anti-afk'].enabled) {
-         bot.setControlState('jump', true);
-         if (config.utils['anti-afk'].sneak) {
-            bot.setControlState('sneak', true);
-         }
-      }
-   });
+        if Utility.IsSpecie({ "Hybrids", "Heretics", "Originals", "OriginalHybrids", "OriginalHeretics" }) then
+            u4.JumpPower = 140;
+        elseif Utility.IsSpecie({ "Werewolves", "Werewitches", "Gods", "Sirens" }) then
+            u4.JumpPower = 85;
+        elseif Utility.IsSpecie({ "UpgradedOGs", "Tribrids" }) then
+            u4.JumpPower = 145;
+        end;
 
-   bot.on('goal_reached', () => {
-      console.log(
-         `\x1b[32m[AfkBot] Bot arrived at the target location. ${bot.entity.position}\x1b[0m`
-      );
-   });
+        u4:ChangeState(Enum.HumanoidStateType.Jumping);
 
-   bot.on('death', () => {
-      console.log(
-         `\x1b[33m[AfkBot] Bot has died and was respawned at ${bot.entity.position}`,
-         '\x1b[0m'
-      );
-   });
+        repeat
+            task.wait();
+        until u4:GetState() == Enum.HumanoidStateType.FallingDown or u4:GetState() == Enum.HumanoidStateType.Freefall;
 
-   if (config.utils['auto-reconnect']) {
-      bot.on('end', () => {
-         setTimeout(() => {
-            createBot();
-         }, config.utils['auto-recconect-delay']);
-      });
-   }
+        local u24;
 
-   bot.on('kicked', (reason) =>
-      console.log(
-         '\x1b[33m',
-         `[AfkBot] Bot was kicked from the server. Reason: \n${reason}`,
-         '\x1b[0m'
-      )
-   );
+        if u2:FindFirstChild("WolfForm") then
+            u24 = u4.Animator:LoadAnimation(WformJump);
+        elseif Utility.IsSpecie({ "Vampires", "Hybrids", "Heretics", "Originals", "Tribrids", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics" }) then
+            u24 = u4.Animator:LoadAnimation(VampireFalling);
+        else
+            u24 = u4.Animator:LoadAnimation(WerewolfJump);
+        end;
 
-   bot.on('error', (err) =>
-      console.log(`\x1b[31m[ERROR] ${err.message}`, '\x1b[0m')
-   );
-}
+        u24:Play();
+        local u25 = nil;
+        u25 = u4.StateChanged:Connect(function(p26, p27) -- Line: 201
+            -- upvalues: u25 (ref), u24 (ref)
+            if p27 ~= Enum.HumanoidStateType.FallingDown and p27 ~= Enum.HumanoidStateType.Freefall then
+                u25:Disconnect();
+                u24:Stop();
+            end;
+        end);
+        local Length = u24.Length;
 
-createBot();
+        if u2:FindFirstChild("WolfForm") then
+            Length = Length - 1;
+        end;
+
+        task.wait(Length);
+        u24:Destroy();
+        local v28;
+
+        if u2:FindFirstChild("WolfForm") then
+            v28 = u4.Animator:LoadAnimation(DogFalling);
+        else
+            v28 = u4.Animator:LoadAnimation(VampireFallingLoop);
+        end;
+
+        v28:Play();
+
+        repeat
+            task.wait();
+        until u4:GetState() ~= Enum.HumanoidStateType.FallingDown and u4:GetState() ~= Enum.HumanoidStateType.Freefall;
+
+        v28:Stop();
+        v28:Destroy();
+    end;
+end;
+
+local u29 = 0;
+UserInputService.InputBegan:Connect(function(p30, p31) -- Line: 228, Name: InputBegan
+    -- upvalues: Utility (copy), u29 (ref), AbilityEvent (copy), AbilityHandler (copy), u1 (copy), Specie (ref), CharacterName (ref), u2 (ref), LocalPlayer (copy), PlayerInteraction (copy), UserInputService (copy)
+    local KeyCode = p30.KeyCode;
+
+    if p31 then
+        return;
+    end;
+
+    local v32 = KeyCode == Enum.KeyCode.V and Utility.IsACharacter();
+
+    if v32 then
+        game.ReplicatedStorage.RemoteEvents.CarryRagdoll:FireServer(v32);
+
+        return;
+    end;
+
+    if KeyCode == Enum.KeyCode.W then
+        if u29 >= 1 then
+            u29 = 0;
+            local _, v33 = Utility.IsACharacter();
+
+            if v33 then
+                AbilityEvent:FireServer({
+                    Action = "Blink",
+                    Position = v33
+                });
+
+                return;
+            end;
+        else
+            u29 = u29 + 1;
+            spawn(function() -- Line: 248
+                -- upvalues: u29 (ref)
+                task.wait(0.2);
+                u29 = 0;
+            end);
+        end;
+
+        return;
+    end;
+
+    for i, v in pairs(AbilityHandler) do
+        if v.Keycode == KeyCode then
+            local v34 = true;
+
+            if i == "Run" then
+                u1.sprint("start");
+                v34 = false;
+            elseif i == "Double Jump" then
+                u1.jump();
+            end;
+
+            if v.InfoOnly then
+                v34 = false;
+            end;
+
+            if v.SpecieLocked and not table.find(v.WantedSpecie, Specie.Value) then
+                v34 = false;
+            end;
+
+            if v.CharacterLocked and not table.find(v.Characters, CharacterName.Value) then
+                v34 = false;
+            end;
+
+            if v.WolfLocked and not u2:FindFirstChild("WolfForm") then
+                v34 = false;
+            end;
+
+            local v35 = v.CustomLocked and CharacterName:GetAttribute("Custom") and true or v34;
+
+            if v.StaffAccess and Utility.IsStaff(LocalPlayer) and true or v35 then
+                if v.Input then
+                    if v.Input == Enum.UserInputType.MouseButton1 then
+                        local v36, v37 = Utility.IsACharacter();
+
+                        if v36 and v36.Parent == workspace.Map.Boundaries then
+                            PlayerInteraction:FireServer("SiphonBarrier", {
+                                Target = v36,
+                                Position = v37
+                            });
+                        end;
+
+                        if v36 ~= nil then
+                            AbilityEvent:FireServer({
+                                Action = v.Remote,
+                                Target = v36,
+                                Position = v37
+                            });
+                        end;
+                    elseif v.Input == Enum.UserInputType.MouseButton2 then
+                        local v38, v39 = Utility.IsACharacter();
+
+                        if v39 then
+                            AbilityEvent:FireServer({
+                                Action = v.Remote,
+                                Target = v38,
+                                Position = v39
+                            });
+                        end;
+                    end;
+                else
+                    AbilityEvent:FireServer({
+                        Action = v.Remote
+                    });
+                end;
+
+                if v.Toggle then
+                    local u40 = nil;
+                    u40 = UserInputService.InputEnded:Connect(function(p41, p42) -- Line: 292
+                        -- upvalues: v (copy), u40 (ref), Utility (ref), AbilityEvent (ref)
+                        if p42 then
+                            return;
+                        end;
+
+                        if p41.KeyCode == v.Keycode then
+                            u40:Disconnect();
+                            local _, v43 = Utility.IsACharacter();
+                            AbilityEvent:FireServer({
+                                Untoggle = true,
+                                Action = v.Remote,
+                                Position = v43
+                            });
+                        end;
+                    end);
+                end;
+            end;
+        end;
+    end;
+end);
+UserInputService.InputEnded:Connect(function(p44, p45) -- Line: 306, Name: InputEnded
+    -- upvalues: AbilityHandler (copy), u1 (copy)
+    local KeyCode = p44.KeyCode;
+
+    for i, v in pairs(AbilityHandler) do
+        if v.Keycode == KeyCode and (v.Toggle and i == "Run") then
+            u1.sprint("end");
+        end;
+    end;
+end);
+
+function u1.get(p46, p47) -- Line: 320
+    -- upvalues: SpellsConfiguration (copy), LocalPlayer (copy), AbilityHandler2 (copy), CompulsionConfiguration (copy)
+    local v48 = p46:lower();
+
+    if p47 == "Spell" then
+        for i, v in pairs(SpellsConfiguration) do
+            if v48 == v.Key:lower() and v.Input ~= Enum.UserInputType.InputMethod then
+                return i;
+            end;
+
+            if v.Aliases and table.find(v.Aliases, v48:lower()) then
+                return i;
+            end;
+
+            if v48 == v.Key:lower() and v.Input == Enum.UserInputType.InputMethod then
+                local u49 = game.ReplicatedStorage.UIAssets.Locator:Clone();
+                u49.Parent = LocalPlayer.PlayerGui:WaitForChild("SystemGui");
+                local u50 = nil;
+                local u51 = nil;
+                local u52 = false;
+                u50 = u49:WaitForChild("Picked"):GetPropertyChangedSignal("Value"):Connect(function() -- Line: 336
+                    -- upvalues: u49 (copy), u51 (ref), u50 (ref), u52 (ref)
+                    u49.Visible = false;
+                    u51 = u49.Picked.Value;
+                    u49.Picked.Value = "";
+                    u50:Disconnect();
+                    u52 = true;
+
+                    for _, child in pairs(u49.ScrollingFrame:GetChildren()) do
+                        if child:IsA("TextButton") then
+                            child:Destroy();
+                        end;
+                    end;
+                end);
+                local v53 = 0;
+
+                repeat
+                    task.wait(0.1);
+                    v53 = v53 + 0.1;
+                until u52 or v53 >= 10;
+
+                u49.Picked.Value = "Undo";
+                u49:Destroy();
+
+                if u50 then
+                    u50:Disconnect();
+                end;
+
+                if u51 == "Undo" then
+                    return nil;
+                end;
+
+                return i, u51;
+            end;
+        end;
+
+        return;
+    end;
+
+    if p47 == "Ability" then
+        for i, _ in pairs(AbilityHandler2) do
+            if v48 == i:lower() then
+                return i;
+            end;
+        end;
+
+        return;
+    end;
+
+    if p47 == "Compulsion" then
+        for i, v in pairs(CompulsionConfiguration) do
+            if v48 == v.Key:lower() then
+                return i;
+            end;
+        end;
+    end;
+end;
+
+local u54 = nil;
+
+function u1.cast(u55, p56, u57, u58, p59) -- Line: 371
+    -- upvalues: u54 (ref), UserInputService (copy), Utility (copy)
+    if u54 ~= nil then
+        u54:Disconnect();
+    end;
+
+    if p56 == Enum.UserInputType.TextInput or p56 == nil then
+        u54 = UserInputService.InputBegan:Connect(function(p60, p61) -- Line: 374
+            -- upvalues: u55 (copy), u58 (copy), u54 (ref), u57 (copy), UserInputService (ref)
+            if p61 then
+                return;
+            end;
+
+            if p60.UserInputType == Enum.UserInputType.MouseButton1 or p60.UserInputType == Enum.UserInputType.Touch then
+                u55:FireServer({
+                    Action = u58
+                });
+                u54:Disconnect();
+
+                if u57.Toggle then
+                    if u54 ~= nil then
+                        u54:Disconnect();
+                    end;
+
+                    u54 = UserInputService.InputBegan:Connect(function(p62, p63) -- Line: 381
+                        -- upvalues: u55 (ref), u58 (ref), u54 (ref)
+                        if p63 then
+                            return;
+                        end;
+
+                        if p62.UserInputType == Enum.UserInputType.MouseButton1 or p62.UserInputType == Enum.UserInputType.Touch then
+                            u55:FireServer({
+                                Untoggle = true,
+                                Action = u58
+                            });
+                            u54:Disconnect();
+                        end;
+                    end);
+                end;
+            end;
+        end);
+
+        return;
+    end;
+
+    if p56 == Enum.UserInputType.MouseButton1 then
+        u54 = UserInputService.InputBegan:Connect(function(p64, p65) -- Line: 392
+            -- upvalues: Utility (ref), u55 (copy), u58 (copy), u54 (ref)
+            if p65 then
+                return;
+            end;
+
+            if p64.UserInputType == Enum.UserInputType.MouseButton1 or p64.UserInputType == Enum.UserInputType.Touch then
+                local v66 = Utility.IsACharacter();
+
+                if v66 ~= nil then
+                    u55:FireServer({
+                        Action = u58,
+                        Target = v66
+                    });
+                    u54:Disconnect();
+                end;
+            end;
+        end);
+
+        return;
+    end;
+
+    if p56 == Enum.UserInputType.MouseButton2 then
+        u54 = UserInputService.InputBegan:Connect(function(p67, p68) -- Line: 403
+            -- upvalues: Utility (ref), u55 (copy), u58 (copy), u54 (ref), u57 (copy), UserInputService (ref)
+            if p68 then
+                return;
+            end;
+
+            if p67.UserInputType == Enum.UserInputType.MouseButton1 or p67.UserInputType == Enum.UserInputType.Touch then
+                local v69, v70 = Utility.IsACharacter();
+                u55:FireServer({
+                    Action = u58,
+                    Target = v69,
+                    Position = v70
+                });
+                u54:Disconnect();
+
+                if u57.Toggle then
+                    if u54 ~= nil then
+                        u54:Disconnect();
+                    end;
+
+                    u54 = UserInputService.InputBegan:Connect(function(p71, p72) -- Line: 411
+                        -- upvalues: u55 (ref), u58 (ref), u54 (ref)
+                        if p72 then
+                            return;
+                        end;
+
+                        if p71.UserInputType == Enum.UserInputType.MouseButton1 or p71.UserInputType == Enum.UserInputType.Touch then
+                            u55:FireServer({
+                                Untoggle = true,
+                                Action = u58
+                            });
+                            u54:Disconnect();
+                        end;
+                    end);
+                end;
+            end;
+        end);
+
+        return;
+    end;
+
+    if p56 == Enum.UserInputType.InputMethod then
+        if u54 then
+            u54:Disconnect();
+        end;
+
+        u55:FireServer({
+            Action = u58,
+            TextTarget = p59
+        });
+
+        if u57.Toggle then
+            if u54 ~= nil then
+                u54:Disconnect();
+            end;
+
+            u54 = UserInputService.InputBegan:Connect(function(p73, p74) -- Line: 426
+                -- upvalues: u55 (copy), u58 (copy), u54 (ref)
+                if p74 then
+                    return;
+                end;
+
+                if p73.UserInputType == Enum.UserInputType.MouseButton1 or p73.UserInputType == Enum.UserInputType.Touch then
+                    u55:FireServer({
+                        Untoggle = true,
+                        Action = u58
+                    });
+                    u54:Disconnect();
+                end;
+            end);
+        end;
+    end;
+end;
+
+require(game.ReplicatedStorage.Chat):GetPlayerChattedEvent(LocalPlayer):Connect(function(p75) -- Line: 437
+    -- upvalues: u1 (copy), SpellsConfiguration (copy), SpellEvent (copy), CompulsionConfiguration (copy), CompulsionEvent (copy), AbilityHandler2 (copy), AbilityEvent (copy)
+    local v76, v77 = u1.get(p75, "Spell");
+
+    if v76 then
+        local v78 = SpellsConfiguration[v76];
+        u1.cast(SpellEvent, v78.Input, v78, v78.Key, v77);
+    end;
+
+    local v79 = u1.get(p75, "Compulsion");
+
+    if v79 then
+        local v80 = CompulsionConfiguration[v79];
+        u1.cast(CompulsionEvent, v80.Input, v80, v80.Key);
+    end;
+
+    local v81 = u1.get(string.gsub(p75, "!", ""), "Ability");
+
+    if v81 then
+        local v82 = AbilityHandler2[v81];
+        u1.cast(AbilityEvent, v82.Input, v82, v82.Remote);
+    end;
+end);
+u3.Button1Down:Connect(function() -- Line: 466
+    -- upvalues: u2 (ref), CurrentCamera (copy), u3 (copy), Utility (copy), PlayerInteraction (copy)
+    local v83 = RaycastParams.new();
+    v83.FilterDescendantsInstances = { u2, workspace.Map.Borders, workspace.Map.Boundaries };
+    v83.FilterType = Enum.RaycastFilterType.Exclude;
+    local v84 = CurrentCamera:ScreenPointToRay(u3.X, u3.Y);
+    local v85 = workspace:Raycast(v84.Origin, v84.Direction * 500, v83);
+
+    if v85 and v85.Instance then
+        local v86 = Utility.CharCheck(v85.Instance);
+
+        if v85.Instance:IsDescendantOf(workspace.Map:WaitForChild("Doors")) then
+            PlayerInteraction:FireServer("MagicDoor", {
+                Target = v85.Instance.Parent
+            });
+
+            return;
+        end;
+
+        if v85.Instance:IsDescendantOf(workspace.Map:WaitForChild("Interactables"):WaitForChild("Manhole")) then
+            PlayerInteraction:FireServer("Manhole", {
+                Target = v85.Instance
+            });
+
+            return;
+        end;
+
+        if v86 and v86:FindFirstChild("OccupVal") then
+            PlayerInteraction:FireServer("BeingPrisoned", {
+                Target = v86
+            });
+        end;
+    end;
+end);
+
+return u1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.LightningBolt
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local clock = os.clock;
+local Workspace = game:GetService("Workspace");
+local RunService = game:GetService("RunService");
+local Terrain = Workspace.Terrain;
+local Part = Instance.new("Part");
+Part.TopSurface = 0;
+Part.BottomSurface = 0;
+Part.Anchored = true;
+Part.CanCollide = false;
+Part.Locked = true;
+Part.CastShadow = false;
+Part.CanTouch = false;
+Part.CanQuery = false;
+Part.Shape = "Cylinder";
+Part.Name = "BoltPart";
+Part.Material = Enum.Material.Neon;
+Part.Color = Color3.new(1, 1, 1);
+Part.Transparency = 1;
+local u1 = require(script:WaitForChild("PartCache")).new(Part, 1000);
+u1:SetCacheParent(Terrain);
+
+local function CubicBezier(p2, p3, p4, p5, p6) -- Line: 34
+    return p3 * (1 - p2) ^ 3 + p4 * 3 * p2 * (1 - p2) ^ 2 + p5 * 3 * (1 - p2) * p2 ^ 2 + p6 * p2 ^ 3;
+end;
+
+local function DiscretePulse(p7, p8, p9, p10, p11, p12, p13) -- Line: 41
+    local v14 = p10 / (2 * p11) - math.abs((p7 - p8 * p9 + 0.5 * p10) / p11);
+
+    return math.clamp(v14, p12, p13);
+end;
+
+local function ExtrudeCenter(p15) -- Line: 45
+    return math.exp(-5000 * (p15 - 0.5) ^ 10);
+end;
+
+local function NoiseBetween(p16, p17, p18, p19, p20) -- Line: 49
+    return p19 + (p20 - p19) * (math.noise(p16, p17, p18) + 0.5);
+end;
+
+local u21 = CFrame.lookAt(Vector3.new(), Vector3.new(1, 0, 0)):inverse();
+local u22 = {};
+local u23 = {
+    __type = "LightningBolt"
+};
+u23.__index = u23;
+
+function u23.new(p24, p25, p26) -- Line: 70
+    -- upvalues: u23 (copy), CubicBezier (copy), DiscretePulse (copy), ExtrudeCenter (copy), u1 (copy), clock (copy), u22 (copy)
+    local v27 = setmetatable({}, u23);
+    v27.Enabled = true;
+    v27.Attachment0 = p24;
+    v27.Attachment1 = p25;
+    v27.CurveSize0 = 0;
+    v27.CurveSize1 = 0;
+    v27.MinRadius = 0;
+    v27.MaxRadius = 2.4;
+    v27.Frequency = 1;
+    v27.AnimationSpeed = 7;
+    v27.Thickness = 1;
+    v27.MinThicknessMultiplier = 0.2;
+    v27.MaxThicknessMultiplier = 1;
+    v27.MinTransparency = 0;
+    v27.MaxTransparency = 1;
+    v27.PulseSpeed = 2;
+    v27.PulseLength = 1000000;
+    v27.FadeLength = 0.2;
+    v27.ContractFrom = 0.5;
+    v27.Color = Color3.new(1, 1, 1);
+    v27.ColorOffsetSpeed = 3;
+    v27.SpaceCurveFunction = CubicBezier;
+    v27.OpacityProfileFunction = DiscretePulse;
+    v27.RadialProfileFunction = ExtrudeCenter;
+    v27._Parts = {};
+
+    for i = 1, p26 or 30 do
+        v27._Parts[i] = u1:GetPart();
+    end;
+
+    v27._PartsHidden = false;
+    v27._DisabledTransparency = 1;
+    v27._StartT = clock();
+    v27._RanNum = math.random() * 100;
+    v27._RefIndex = #u22 + 1;
+    u22[v27._RefIndex] = v27;
+
+    return v27;
+end;
+
+function u23.Destroy(p28) -- Line: 155
+    -- upvalues: u22 (copy), u1 (copy)
+    u22[p28._RefIndex] = nil;
+
+    for i = 1, #p28._Parts do
+        u1:ReturnPart(p28._Parts[i]);
+    end;
+end;
+
+function u23.DestroyDissipate(u29, p30, p31) -- Line: 166
+    -- upvalues: clock (copy), RunService (copy)
+    local u32 = p30 or 0.2;
+    local u33 = p31 or 0.5;
+    local u34 = clock();
+    local MinTransparency = u29.MinTransparency;
+    local ContractFrom = u29.ContractFrom;
+    local u35 = u29.ContractFrom + 1 / (#u29._Parts * u29.FadeLength);
+    local MaxRadius = u29.MaxRadius;
+    local MinThicknessMultiplier = u29.MinThicknessMultiplier;
+    local u36 = nil;
+    u36 = RunService.Heartbeat:Connect(function() -- Line: 176
+        -- upvalues: clock (ref), u34 (copy), u29 (copy), MinThicknessMultiplier (copy), u32 (ref), MinTransparency (copy), ContractFrom (copy), u35 (copy), MaxRadius (copy), u33 (ref), u36 (ref)
+        local v37 = clock() - u34;
+        u29.MinThicknessMultiplier = MinThicknessMultiplier + (-2 - MinThicknessMultiplier) * v37 / u32;
+
+        if v37 < u32 * 0.4 then
+            u29.MinTransparency = MinTransparency + (ContractFrom - MinTransparency) * (v37 / (u32 * 0.4));
+
+            return;
+        end;
+
+        if v37 >= u32 then
+            if clock() - u29._StartT < (u29.PulseLength + 1) / u29.PulseSpeed then
+                u29:Destroy();
+            end;
+
+            u36:Disconnect();
+            u36 = nil;
+
+            return;
+        end;
+
+        local v38 = (v37 - u32 * 0.4) / (u32 * 0.6);
+        u29.MinTransparency = ContractFrom + (u35 - ContractFrom) * v38;
+        u29.MaxRadius = MaxRadius * (1 + u33 * v38);
+        u29.MinRadius = u29.MinRadius + (u29.MaxRadius - u29.MinRadius) * v38;
+    end);
+end;
+
+function u23._UpdateGeometry(p39, p40, p41, p42, p43, p44, p45) -- Line: 204
+    -- upvalues: u21 (copy)
+    local v46 = p39.OpacityProfileFunction(p41, p42, p39.PulseSpeed, p39.PulseLength, p39.FadeLength, 1 - p39.MaxTransparency, 1 - p39.MinTransparency);
+    local v47 = p39.Thickness * p43 * v46;
+    local v48 = v47 > 0 and v46 and v46 or 0;
+    local v49 = 1 - p39.ContractFrom;
+    local v50 = #p39._Parts;
+
+    if v49 < v48 then
+        p40.Size = Vector3.new((p45 - p44).Magnitude, v47, v47);
+        p40.CFrame = CFrame.lookAt((p44 + p45) * 0.5, p45) * u21;
+        p40.Transparency = 1 - v48;
+
+        return;
+    end;
+
+    if v49 - 1 / (v50 * p39.FadeLength) >= v48 then
+        p40.Transparency = 1;
+
+        return;
+    end;
+
+    local v51 = (1 - (v48 - (v49 - 1 / (v50 * p39.FadeLength))) * v50 * p39.FadeLength) * (p41 < p42 * p39.PulseSpeed - 0.5 * p39.PulseLength and 1 or -1);
+    local v52 = (1 - math.abs(v51)) * (p45 - p44).Magnitude;
+    p40.Size = Vector3.new(v52, v47, v47);
+    p40.CFrame = CFrame.lookAt(p44 + (p45 - p44) * (math.max(0, v51) + (1 - math.abs(v51)) * 0.5), p45) * u21;
+    p40.Transparency = 1 - v48;
+end;
+
+function u23._UpdateColor(p53, p54, p55, p56) -- Line: 250
+    if typeof(p53.Color) == "Color3" then
+        p54.Color = p53.Color;
+
+        return;
+    end;
+
+    local v57 = (p53._RanNum + p55 - p56 * p53.ColorOffsetSpeed) % 1;
+    local Keypoints = p53.Color.Keypoints;
+
+    for i = 1, #Keypoints - 1 do
+        if Keypoints[i].Time < v57 and v57 < Keypoints[i + 1].Time then
+            p54.Color = Keypoints[i].Value:lerp(Keypoints[i + 1].Value, (v57 - Keypoints[i].Time) / (Keypoints[i + 1].Time - Keypoints[i].Time));
+
+            return;
+        end;
+    end;
+end;
+
+function u23._Disable(p58) -- Line: 268
+    p58.Enabled = false;
+
+    for _, v in ipairs(p58._Parts) do
+        v.Transparency = p58._DisabledTransparency;
+    end;
+end;
+
+RunService.Heartbeat:Connect(function() -- Line: 275
+    -- upvalues: u22 (copy), clock (copy)
+    pcall(function() -- Line: 276
+        -- upvalues: u22 (ref), clock (ref)
+        debug.profilebegin("LightningBolt");
+
+        for _, v in pairs(u22) do
+            if v.Enabled == true then
+                v._PartsHidden = false;
+                local MinRadius = v.MinRadius;
+                local MaxRadius = v.MaxRadius;
+                local _Parts = v._Parts;
+                local v59 = #_Parts;
+                local _RanNum = v._RanNum;
+                local AnimationSpeed = v.AnimationSpeed;
+                local Frequency = v.Frequency;
+                local MinThicknessMultiplier = v.MinThicknessMultiplier;
+                local MaxThicknessMultiplier = v.MaxThicknessMultiplier;
+                local v60 = clock() - v._StartT;
+                local SpaceCurveFunction = v.SpaceCurveFunction;
+                local RadialProfileFunction = v.RadialProfileFunction;
+                local v61 = (v.PulseLength + 1) / v.PulseSpeed;
+                local Attachment0 = v.Attachment0;
+                local Attachment1 = v.Attachment1;
+                local WorldPosition = Attachment0.WorldPosition;
+                local v62 = Attachment0.WorldPosition + Attachment0.WorldAxis * v.CurveSize0;
+                local v63 = Attachment1.WorldPosition - Attachment1.WorldAxis * v.CurveSize1;
+                local WorldPosition2 = Attachment1.WorldPosition;
+                local v64 = SpaceCurveFunction(0, WorldPosition, v62, v63, WorldPosition2);
+
+                if v60 < v61 then
+                    local v65 = v64;
+
+                    for i = 1, v59 do
+                        local v66 = _Parts[i];
+                        local v67 = i / v59;
+                        local v68 = AnimationSpeed * -v60 + Frequency * 10 * v67 - 0.2 + _RanNum * 4;
+                        local v69 = 5 * (AnimationSpeed * 0.01 * -v60 / 10 + Frequency * v67) + _RanNum * 4;
+                        local v70 = 0 + 0.6283185307179586 * (math.noise(5 * v68, 1.5, 1 * v69) + 0.5) + (0 + 5.654866776461628 * (math.noise(0.5 * v68, 1.5, 0.1 * v69) + 0.5));
+                        local v71 = (MinRadius + (MaxRadius - MinRadius) * (math.noise(3.4, v69, v68) + 0.5)) * RadialProfileFunction(v67);
+                        local v72 = MinThicknessMultiplier + (MaxThicknessMultiplier - MinThicknessMultiplier) * (math.noise(2.3, v69, v68) + 0.5);
+                        local v73 = SpaceCurveFunction(v67, WorldPosition, v62, v63, WorldPosition2);
+                        local v74;
+
+                        if i == v59 then
+                            v74 = v73;
+                        else
+                            local v75 = CFrame.new(v65, v73) * CFrame.Angles(0, 0, v70);
+                            local Angles = CFrame.Angles;
+                            local v76 = 6.123233995736766e-17 + 0.9999999999999999 * (math.noise(v69, v68, 2.7) + 0.5);
+                            local v77 = math.clamp(v76, -1, 1);
+                            v74 = (v75 * Angles(math.acos(v77), 0, 0) * CFrame.new(0, 0, -v71)).Position or v73;
+                        end;
+
+                        v:_UpdateGeometry(v66, v67, v60, v72, v64, v74);
+                        v:_UpdateColor(v66, v67, v60);
+                        v65 = v73;
+                        v64 = v74;
+                    end;
+                else
+                    v:Destroy();
+                end;
+            elseif v._PartsHidden == false then
+                v._PartsHidden = true;
+                v:_Disable();
+            end;
+        end;
+
+        debug.profileend();
+    end);
+end);
+
+return u23;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.RagdollHandler
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local CollectionService = game:GetService("CollectionService");
+local Players = game:GetService("Players");
+local RunService = game:GetService("RunService");
+local _ = {
+    [Enum.HumanoidStateType.Dead] = true,
+    [Enum.HumanoidStateType.Physics] = true
+};
+local u1 = {};
+
+function setRagdollEnabled(p2, u3)
+    local RagdollConstraints = p2.Parent:FindFirstChild("RagdollConstraints");
+
+    if RagdollConstraints then
+        for _, child in pairs(RagdollConstraints:GetChildren()) do
+            pcall(function() -- Line: 21
+                -- upvalues: child (copy), u3 (copy)
+                if child:IsA("Constraint") then
+                    local Value = child.RigidJoint.Value;
+                    local v4;
+
+                    if u3 then
+                        v4 = nil;
+                    else
+                        v4 = child.Attachment1.Parent or nil;
+                    end;
+
+                    if Value.Part1 ~= v4 then
+                        Value.Part1 = v4;
+                    end;
+                end;
+            end);
+        end;
+    end;
+end;
+
+function hasRagdollOwnership(p5)
+    -- upvalues: RunService (copy), Players (copy)
+    return RunService:IsServer() and true or Players:GetPlayerFromCharacter(p5.Parent) == Players.LocalPlayer;
+end;
+
+function ragdollAdded(u6)
+    -- upvalues: u1 (copy), RunService (copy)
+    u6:SetStateEnabled(Enum.HumanoidStateType.Dead, false);
+    u6:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false);
+    u6:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, false);
+    u6:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, false);
+    u6:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false);
+    u1[u6] = u6.StateChanged:Connect(function(p7, p8) -- Line: 53
+        -- upvalues: u6 (copy)
+        if hasRagdollOwnership(u6) then
+            if p8 == Enum.HumanoidStateType.Physics then
+                setRagdollEnabled(u6, true);
+
+                return;
+            end;
+
+            setRagdollEnabled(u6, false);
+        end;
+    end);
+
+    if RunService:IsServer() then
+        u6.HealthChanged:Connect(function(p9) -- Line: 63
+            -- upvalues: u6 (copy)
+            if p9 == 0 and u6:GetState() ~= Enum.HumanoidStateType.Physics then
+                setRagdollEnabled(u6, true);
+            end;
+        end);
+    end;
+end;
+
+function ragdollRemoved(p10)
+    -- upvalues: u1 (copy)
+    u1[p10]:Disconnect();
+    u1[p10] = nil;
+end;
+
+CollectionService:GetInstanceAddedSignal("Ragdoll"):Connect(ragdollAdded);
+CollectionService:GetInstanceRemovedSignal("Ragdoll"):Connect(ragdollRemoved);
+
+for _, v in pairs(CollectionService:GetTagged("Ragdoll")) do
+    ragdollAdded(v);
+end;
+
+return nil;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.ReplicatedTweening
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local u1 = {};
+local TweenService = game:GetService("TweenService");
+local RunService = game:GetService("RunService");
+local TweenEvent = script:WaitForChild("TweenEvent");
+
+local function TweenInfo_To_Table(p2) -- Line: 7
+    return {
+        p2.Time or 1,
+        p2.EasingStyle or Enum.EasingStyle.Quad,
+        p2.EasingDirection or Enum.EasingDirection.Out,
+        p2.RepeatCount or 0,
+        p2.Reverses or false,
+        p2.DelayTime or 0
+    };
+end;
+
+local function Table_To_TweenInfo(p3) -- Line: 18
+    return TweenInfo.new(unpack(p3));
+end;
+
+local function serverAssignProperties(p4, p5) -- Line: 22
+    for i, v in pairs(p5) do
+        p4[i] = v;
+    end;
+end;
+
+local u6 = {};
+
+function u1.GetTweenObject(p7, p8, p9, p10) -- Line: 32
+    -- upvalues: u1 (copy)
+    return u1:Create(p8, p9, p10);
+end;
+
+function u1.Create(p11, u12, p13, u14) -- Line: 36
+    -- upvalues: TweenInfo_To_Table (copy), u6 (copy), TweenEvent (copy)
+    local u15 = {
+        DontUpdate = {}
+    };
+    local u16 = TweenInfo_To_Table(p13);
+
+    local function Play(p17, p18, p19) -- Line: 41
+        -- upvalues: u16 (ref), u6 (ref), u12 (copy), u15 (copy), TweenEvent (ref), u14 (copy)
+        local v20 = os.time() + u16[1];
+        local u21 = u16[1];
+        u6[u12] = u6[u12] or os.time();
+        local v22 = p19 or false;
+        u15.Paused = false;
+
+        if p18 == nil and not v22 then
+            u6[u12] = v20;
+            TweenEvent:FireAllClients("RunTween", u12, u16, u14);
+        elseif v22 and p18 == nil then
+            u21 = u21 + (u6[u12] - os.time());
+            u6[u12] = v20 + (u6[u12] - os.time());
+            TweenEvent:FireAllClients("QueueTween", u12, u16, u14);
+        elseif v22 then
+            TweenEvent:FireClient("QueueTween", u12, u16, u14);
+        else
+            TweenEvent:FireClient("RunTween", u12, u16, u14);
+        end;
+
+        if not p17 or p18 ~= nil then
+            if p18 == nil then
+                task.spawn(function() -- Line: 72
+                    -- upvalues: u6 (ref), u12 (ref), u21 (ref), u15 (ref), u14 (ref)
+                    local v23 = u6[u12];
+                    local v24 = 0;
+
+                    repeat
+                        task.wait(1);
+                        v24 = v24 + 1;
+                    until u21 <= v24 or u15.Stopped;
+
+                    if u6[u12] == v23 then
+                        u6[u12] = nil;
+                    end;
+
+                    if u15.Paused == nil or u15.Paused == false then
+                        local v25 = u12;
+
+                        for i, v in pairs(u14) do
+                            v25[i] = v;
+                        end;
+                    end;
+                end);
+            end;
+
+            return;
+        end;
+
+        local v26 = u6[u12];
+        local v27 = 0;
+
+        repeat
+            task.wait(1);
+            v27 = v27 + 1;
+        until u21 <= v27 or u15.Stopped;
+
+        if u6[u12] == v26 then
+            u6[u12] = nil;
+        end;
+
+        if u15.Paused == nil or u15.Paused == false then
+            local v28 = u12;
+
+            for i, v in pairs(u14) do
+                v28[i] = v;
+            end;
+        end;
+    end;
+
+    function u15.Play(p29, p30, p31) -- Line: 85
+        -- upvalues: Play (copy)
+        Play(p30, p31);
+    end;
+
+    function u15.QueuePlay(p32, p33, p34) -- Line: 89
+        -- upvalues: Play (copy)
+        Play(p33, p34, true);
+    end;
+
+    function u15.Pause(p35, p36) -- Line: 93
+        -- upvalues: u15 (copy), TweenEvent (ref), u12 (copy)
+        if p36 == nil then
+            u15.Paused = true;
+            TweenEvent:FireAllClients("PauseTween", u12);
+
+            return;
+        end;
+
+        table.insert(u15.DontUpdate, p36);
+        TweenEvent:FireClient("PauseTween", u12);
+    end;
+
+    function u15.Stop(p37, p38) -- Line: 103
+        -- upvalues: u15 (copy), TweenEvent (ref), u12 (copy)
+        if p38 ~= nil then
+            TweenEvent:FireClient("StopTween", u12);
+
+            return;
+        end;
+
+        u15.Stopped = true;
+        TweenEvent:FireAllClients("StopTween", u12);
+    end;
+
+    return u15;
+end;
+
+if RunService:IsClient() then
+    local u39 = {};
+    TweenEvent.OnClientEvent:Connect(function(u40, u41, u42, u43) -- Line: 118
+        -- upvalues: u6 (copy), u39 (copy), TweenService (copy)
+        pcall(function() -- Line: 119
+            -- upvalues: u42 (ref), u6 (ref), u41 (copy), u39 (ref), TweenService (ref), u43 (copy), u40 (copy)
+            if u42 ~= nil then
+                u42 = TweenInfo.new(unpack(u42));
+            end;
+
+            local function runTween(p44) -- Line: 124
+                -- upvalues: u42 (ref), u6 (ref), u41 (ref), u39 (ref), TweenService (ref), u43 (ref)
+                local v45 = os.time() + u42.Time;
+                u6[u41] = u6[u41] or os.time();
+                local v46 = u6[u41];
+
+                if p44 and u6[u41] >= os.time() then
+                    local v47 = u6[u41] - os.time();
+                    u6[u41] = v45 + v47;
+                    v46 = u6[u41];
+                    task.wait(v47);
+                else
+                    u6[u41] = v45;
+                end;
+
+                if u39[u41] ~= nil then
+                    u39[u41]:Cancel();
+                end;
+
+                local v48 = TweenService:Create(u41, u42, u43);
+                u39[u41] = v48;
+                v48:Play();
+                task.wait(u42.Time or 1);
+
+                if u6[u41] == v46 then
+                    u6[u41] = nil;
+                end;
+
+                if u39[u41] == v48 then
+                    u39[u41] = nil;
+                end;
+            end;
+
+            if u40 == "RunTween" then
+                runTween();
+
+                return;
+            end;
+
+            if u40 == "QueueTween" then
+                runTween(true);
+
+                return;
+            end;
+
+            if u40 == "StopTween" then
+                if u39[u41] ~= nil then
+                    u39[u41]:Stop();
+                    u39[u41] = nil;
+                end;
+            elseif u40 == "PauseTween" and u39[u41] ~= nil then
+                u39[u41]:Pause();
+            end;
+        end);
+    end);
+end;
+
+return u1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.ShiftLock
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local v1 = {
+    Settings = {
+        CameraOffsetX = 1.75,
+        CameraOffsetY = 0.25,
+        MouseIconOnToggle = "",
+        CameraOffsetLerpSpeed = 3,
+        CharacterFacingLerpSpeed = 6,
+        RotateCharacter = true
+    }
+};
+local u2 = require(script:WaitForChild("ShiftLockController")).new(v1.Settings);
+
+function v1.Lock(p3, p4) -- Line: 28
+    -- upvalues: u2 (copy)
+    assert(p4 ~= nil, "Argument missing or is equal to nil.");
+    local v5 = typeof(p4) == "boolean";
+    assert(v5, "Argument is not a valid boolean.");
+    u2:Lock(p4);
+end;
+
+function v1.IsLocked(p6) -- Line: 34
+    -- upvalues: u2 (copy)
+    return u2.isShiftLockToggled;
+end;
+
+return v1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.SmartBone
+-- Took 0.01s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local Lighting = game:GetService("Lighting");
+local CollectionService = game:GetService("CollectionService");
+
+if not game:GetService("RunService"):IsClient() then
+    warn("Attempted to initialize SmartBone on Server.");
+
+    return nil;
+end;
+
+local Dependencies = script:WaitForChild("Dependencies");
+local Components = script:WaitForChild("Components");
+local Config = require(Dependencies.Config);
+local UnitConversion = require(Dependencies.UnitConversion);
+local DefaultSettings = require(Dependencies.DefaultSettings);
+local ParticleTree = require(Components.ParticleTree);
+local Particle = require(Components.Particle);
+local SettingsMath = require(Dependencies.SettingsMath);
+local Utilities = require(Dependencies.Utilities);
+local u1 = Random.new(12098135901304);
+local u2 = CollectionService:GetTagged("SmartBone");
+local Debug = Config.Debug;
+local u3;
+
+if Debug then
+    u3 = Instance.new("Model");
+    u3.Name = "SMARTBONE_DEBUGFOLDER";
+    u3.Parent = workspace;
+    local Highlight = Instance.new("Highlight");
+    Highlight.FillColor = Color3.fromRGB(255, 0, 0);
+    Highlight.OutlineTransparency = 1;
+    Highlight.FillTransparency = 0;
+    Highlight.Parent = u3;
+    Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;
+    Highlight.Enabled = true;
+else
+    u3 = nil;
+end;
+
+local u4 = {};
+local u5 = {};
+u5.__index = u5;
+
+function u5.new(p6, p7) -- Line: 118
+    -- upvalues: u1 (copy), UnitConversion (copy), u5 (copy), DefaultSettings (copy)
+    local v8 = {
+        Time = 0,
+        WindPreviousPosition = Vector3.new(0, 0, 0),
+        Removed = false,
+        InRange = false,
+        ID = u1:NextInteger(1, 10000000),
+        RootPart = p6,
+        ParticleTrees = {},
+        Connections = {},
+        RootList = p7,
+        ObjectScale = UnitConversion.Convert(math.abs(p6.Size.X), "Millimeter"),
+        RemovedEvent = Instance.new("BindableEvent"),
+        Settings = {}
+    };
+    local v9 = setmetatable(v8, u5);
+
+    for i, v in DefaultSettings do
+        v9.Settings[i] = p6:GetAttribute(i) or v;
+    end;
+
+    v9.Settings.BlendWeight = 1;
+    v9.Settings.UpdateRate = math.floor(v9.Settings.UpdateRate + 0.1);
+    v9:Init();
+    v9:UpdateParameters(v9.Settings);
+
+    return v9;
+end;
+
+function u5.Init(u10) -- Line: 149
+    -- upvalues: u4 (copy), Lighting (copy)
+    local RootPart = u10.RootPart;
+    u4[u10.ID] = u10;
+    u10.Connections.AttributeChanged = RootPart.AttributeChanged:ConnectParallel(function(p11) -- Line: 156
+        -- upvalues: u10 (copy), RootPart (copy)
+        if not u10.Settings[p11] then
+            return;
+        end;
+
+        u10:UpdateParameters(p11, RootPart:GetAttribute(p11));
+    end);
+    u10.Connections.LightingAttributeChanged = Lighting.AttributeChanged:ConnectParallel(function(p12) -- Line: 161
+        -- upvalues: u10 (copy), Lighting (ref)
+        if not u10.Settings[p12] then
+            return;
+        end;
+
+        u10:UpdateParameters(p12, Lighting:GetAttribute(p12));
+    end);
+
+    for _, descendant in RootPart:GetDescendants() do
+        if descendant:IsA("Bone") and (descendant.Parent:IsA("Bone") and #descendant:GetChildren() == 0) then
+            local v13 = descendant.WorldCFrame + descendant.WorldCFrame.UpVector.Unit * (descendant.WorldPosition - descendant.Parent.WorldPosition).Magnitude;
+            local Bone = Instance.new("Bone");
+            Bone.Parent = descendant;
+            Bone.Name = descendant.Name .. "_Tail";
+            Bone.WorldCFrame = v13;
+        end;
+    end;
+
+    for _, v in u10.RootList do
+        u10:AppendParticleTree(v);
+    end;
+
+    for _, v in u10.ParticleTrees do
+        u10:AppendParticles(v, v.Root, 0, 0);
+    end;
+end;
+
+function u5.AppendParticleTree(p14, p15) -- Line: 186
+    -- upvalues: ParticleTree (copy)
+    table.insert(p14.ParticleTrees, ParticleTree.new(p15, p14.RootPart, p14.Settings.Gravity));
+end;
+
+function u5.AppendParticles(p16, p17, p18, p19, p20) -- Line: 190
+    -- upvalues: Particle (copy), Debug (copy), u3 (ref), Utilities (copy)
+    local Settings = p16.Settings;
+    local v21 = Particle.new(p18, p17.Root, p16.RootPart, Settings);
+    local WorldPosition = p18.WorldPosition;
+    v21.Position = p18.WorldPosition;
+    v21.LastPosition = WorldPosition;
+    v21.ParentIndex = p19;
+    v21.BoneLength = p20;
+    v21.HeirarchyLength = 0;
+
+    if Debug == true then
+        v21.DebugPart = Instance.new("Part");
+        v21.DebugPart.Size = Vector3.new(0.1, 0.1, 0.1);
+        v21.DebugPart.Anchored = true;
+        v21.DebugPart.CanCollide = false;
+        v21.DebugPart.CastShadow = false;
+        v21.DebugPart.CanTouch = false;
+        v21.DebugPart.CanQuery = false;
+        v21.DebugPart.Color = Color3.fromRGB(255, 0, 0);
+        v21.DebugPart.Parent = u3;
+    end;
+
+    if p19 >= 1 then
+        p20 = (p17.Particles[p19].Bone.WorldPosition - v21.Position).Magnitude;
+        v21.BoneLength = p20;
+        v21.Weight = p20 * 0.7;
+        v21.HeirarchyLength = Utilities.GetHierarchyLength(p18, p17.Root);
+    end;
+
+    if v21.HeirarchyLength <= Settings.AnchorDepth then
+        v21.Anchored = true;
+    end;
+
+    table.insert(p17.Particles, v21);
+    local v22 = #p17.Particles;
+    local v23 = p18:GetChildren();
+
+    for i = 1, #v23 do
+        local v24 = v23[i];
+
+        if v24:IsA("Bone") then
+            p16:AppendParticles(p17, v24, v22, p20);
+        end;
+    end;
+end;
+
+function u5.UpdateParameters(p25, p26, p27) -- Line: 235
+    -- upvalues: SettingsMath (copy)
+    if not p25.Settings[p26] then
+        return;
+    end;
+
+    local Settings = p25.Settings;
+
+    if SettingsMath[p26] then
+        p27 = SettingsMath[p26](p27);
+    end;
+
+    Settings[p26] = p27;
+end;
+
+function u5.PreUpdate(p28, p29) -- Line: 240
+    local RootPart = p29.RootPart;
+    local Root = p29.Root;
+    p29.ObjectMove = RootPart.Position - p29.ObjectPreviousPosition;
+    p29.ObjectPreviousPosition = RootPart.Position;
+    p29.RestGravity = Root.CFrame:PointToWorldSpace(p29.LocalGravity);
+
+    for _, v in p29.Particles do
+        v.LastTransformOffset = v.TransformOffset;
+
+        if v.Bone == v.Root then
+            v.TransformOffset = RootPart.CFrame * v.RootTransform;
+        else
+            v.TransformOffset = Root.WorldCFrame * v.Transform;
+        end;
+
+        v.LocalTransformOffset = Root.CFrame * v.LocalTransform;
+    end;
+end;
+
+function u5.UpdateParticles(p30, p31, p32, p33) -- Line: 261
+    local Settings = p30.Settings;
+    local Damping = Settings.Damping;
+    local Gravity = Settings.Gravity;
+    local Unit = Settings.Gravity.Unit;
+    local v34 = p31.RestGravity:Dot(Unit);
+    local v35 = (Gravity - Unit * math.max(v34, 0) + Settings.Force) * (p30.ObjectScale * p32);
+    local v36 = p33 == 0 and (p31.ObjectMove or Vector3.new(0, 0, 0)) or Vector3.new(0, 0, 0);
+
+    for _, v in p31.Particles do
+        if v.ParentIndex >= 1 and v.Anchored == false then
+            local v37;
+
+            if Settings.WindInfluence > 0 then
+                local v38 = p31.WindOffset + (os.clock() - v.HeirarchyLength / 5) + (v.TransformOffset.Position - p31.Root.WorldPosition).Magnitude / 5 * Settings.WindInfluence;
+                local v39 = Settings.WindDirection.X + Settings.WindDirection.X * math.sin(v38 * Settings.WindSpeed);
+                local v40 = Settings.WindDirection.Y + math.sin(v38 * Settings.WindSpeed) * 0.05;
+                local v41 = Settings.WindDirection.Z + Settings.WindDirection.X * math.sin(v38 * Settings.WindSpeed);
+                v37 = Vector3.new(v39, v40, v41) / v.BoneLength * Settings.WindInfluence * (Settings.WindStrength / 100 * (math.clamp(v.HeirarchyLength, 1, 10) / 10)) * v.Weight;
+                p30.WindPreviousPosition = v37;
+            else
+                v37 = Vector3.new(0, 0, 0);
+            end;
+
+            local v42 = v.Position - v.LastPosition;
+            local v43 = v36 * Settings.Inertia;
+            v.LastPosition = v.Position + v43;
+            v.Position = v.Position + (v42 * (1 - Damping) + v35 + v43 + v37);
+        else
+            v.LastPosition = v.TransformOffset.Position;
+            v.Position = v.TransformOffset.Position;
+        end;
+    end;
+end;
+
+function u5.CorrectParticles(p44, p45, p46) -- Line: 326
+    local Settings = p44.Settings;
+    local Stiffness = Settings.Stiffness;
+
+    for _, v in p45.Particles do
+        local v47 = p45.Particles[v.ParentIndex];
+
+        if v47 and (v.ParentIndex >= 1 and v.Anchored == false) then
+            local Magnitude = (v47.TransformOffset.Position - v.TransformOffset.Position).Magnitude;
+
+            if Stiffness > 0 or Settings.Elasticity > 0 then
+                local Position = (CFrame.new(v47.Position) * v47.TransformOffset.Rotation * CFrame.new(v.LocalTransformOffset.Position)).Position;
+                v.Position = v.Position + (Position - v.Position) * (Settings.Elasticity * p46);
+
+                if Stiffness > 0 then
+                    local v48 = Position - v.Position;
+                    local Magnitude2 = v48.Magnitude;
+                    local v49 = Magnitude * (1 - Stiffness) * 2;
+
+                    if v49 < Magnitude2 then
+                        v.Position = v.Position + v48 * ((Magnitude2 - v49) / Magnitude2);
+                    end;
+                end;
+            end;
+
+            local v50 = v47.Position - v.Position;
+            local Magnitude2 = v50.Magnitude;
+
+            if Magnitude2 > 0 then
+                v.Position = v.Position + v50 * ((Magnitude2 - Magnitude) / Magnitude2);
+            end;
+        end;
+    end;
+end;
+
+function u5.SkipUpdateParticles(p51, p52) -- Line: 366
+    for _, v in p52.Particles do
+        if v.ParentIndex >= 1 and not v.Anchored then
+            v.LastPosition = v.LastPosition + p52.ObjectMove;
+            v.Position = v.Position + p52.ObjectMove;
+            local v53 = p52.Particles[v.ParentIndex];
+            local Magnitude = (v53.TransformOffset.Position - v.TransformOffset.Position).Magnitude;
+            local Stiffness = p51.Settings.Stiffness;
+
+            if Stiffness > 0 then
+                local v54 = v53.Position + CFrame.lookAt(v53.Position, v.Position).LookVector.Unit * (v53.Position - v.Position).Magnitude - v.Position;
+                local Magnitude2 = v54.Magnitude;
+                local v55 = Magnitude * (1 - Stiffness) * 2;
+
+                if v55 < Magnitude2 then
+                    v.Position = v.Position + v54 * ((Magnitude2 - v55) / Magnitude2);
+                end;
+            end;
+
+            local v56 = v53.Position - v.Position;
+            local Magnitude2 = v56.Magnitude;
+
+            if Magnitude < Magnitude2 then
+                v.Position = v.Position + v56 * ((Magnitude2 - Magnitude) / Magnitude2);
+            end;
+        else
+            v.LastPosition = v.TransformOffset.Position;
+            v.Position = v.TransformOffset.Position;
+        end;
+    end;
+end;
+
+function u5.CalculateTransforms(p57, p58, p59) -- Line: 404
+    -- upvalues: Utilities (copy)
+    if p57.InRange then
+        for _, v in p58.Particles do
+            if v.ParentIndex >= 1 and v.Anchored == false then
+                local v60 = p58.Particles[v.ParentIndex];
+                local Bone = v60.Bone;
+
+                if v60 and (Bone and (Bone:IsA("Bone") and Bone ~= p58.Root)) then
+                    local TransformOffset = v60.TransformOffset;
+                    local v61 = TransformOffset:PointToObjectSpace(v60.LocalTransformOffset.Position);
+                    local v62 = Utilities.GetRotationBetween(TransformOffset.UpVector, v.Position - v60.Position, v61).Rotation * TransformOffset.Rotation;
+                    v60.CalculatedWorldCFrame = Bone.WorldCFrame:Lerp(CFrame.new(v60.Position) * v62, 1 - 0.00001 ^ p59);
+                end;
+            end;
+        end;
+    end;
+end;
+
+function u5.TransformBones(p63, p64) -- Line: 432
+    if p63.InRange then
+        for _, v in p64.Particles do
+            if v.ParentIndex >= 1 and v.Anchored == false then
+                local v65 = p64.Particles[v.ParentIndex];
+                local Bone = v65.Bone;
+
+                if v65 and (Bone and (Bone:IsA("Bone") and Bone ~= p64.Root)) then
+                    if v65.Anchored and p63.Settings.AnchorsRotate == false then
+                        Bone.WorldCFrame = v65.TransformOffset;
+                    else
+                        Bone.WorldCFrame = v65.CalculatedWorldCFrame;
+                    end;
+                end;
+            end;
+        end;
+    end;
+end;
+
+function u5.DEBUG(p66, p67) -- Line: 453
+    for _, v in p67.Particles do
+        if v then
+            v.DebugPart.CFrame = CFrame.new(v.Position);
+        end;
+    end;
+end;
+
+function u5.RunLoop(p68, p69, p70, p71) -- Line: 461
+    local v72 = p70 * 10;
+    local v73;
+
+    if p71 > 0 then
+        p68.Time = p68.Time + p70;
+
+        if 1 / p71 <= p68.Time then
+            p68.Time = 0;
+            v73 = true;
+        else
+            v73 = false;
+        end;
+    else
+        v73 = true;
+    end;
+
+    if not v73 then
+        p68:SkipUpdateParticles(p69);
+
+        return;
+    end;
+
+    p68:UpdateParticles(p69, v72, 0);
+    p68:CorrectParticles(p69, v72);
+end;
+
+function u5.ResetParticles(p74, p75) -- Line: 484
+    for _, v in p75.Particles do
+        v.LastPosition = v.TransformOffset.Position;
+        v.Position = v.TransformOffset.Position;
+    end;
+end;
+
+function u5.ResetTransforms(p76, p77) -- Line: 491
+    for _, v in p77.Particles do
+        local v78;
+
+        if v.Bone == v.Root then
+            v78 = p77.RootPart.CFrame * v.RootTransform;
+        else
+            v78 = p77.Root.WorldCFrame * v.Transform;
+        end;
+
+        v.Bone.WorldCFrame = v78;
+    end;
+end;
+
+function u5.UpdateBones(p79, p80, p81) -- Line: 505
+    for _, v in p79.ParticleTrees do
+        p79:PreUpdate(v, p80);
+        p79:RunLoop(v, p80, p81);
+        p79:CalculateTransforms(v, p80);
+    end;
+end;
+
+function u5.Start() -- Line: 513
+    -- upvalues: Debug (copy), Utilities (copy), u4 (copy), CollectionService (copy), u2 (copy)
+    local LocalPlayer = game.Players.LocalPlayer;
+    local Folder = Instance.new("Folder");
+    Folder.Name = "Actors";
+    Folder.Parent = LocalPlayer:WaitForChild("PlayerScripts");
+
+    local function DebugPrint(p82) -- Line: 520
+        -- upvalues: Debug (ref)
+        if Debug then
+            warn(p82);
+        end;
+    end;
+
+    local u83 = {};
+    local u84 = {};
+
+    local function registerSmartBoneObject(p85) -- Line: 529
+        -- upvalues: Utilities (ref), Folder (copy), u83 (copy), u84 (copy), Debug (ref)
+        if p85:IsA("BasePart") and (Utilities.WaitForChildOfClass(p85, "Bone", 3) and workspace:IsAncestorOf(p85)) then
+            local v86 = {};
+
+            if p85:GetAttribute("Roots") and (p85:GetAttribute("Roots") ~= nil and typeof(p85:GetAttribute("Roots")) == "string") then
+                local v87 = string.split(p85:GetAttribute("Roots"), ",");
+
+                for _, v in ipairs(v87) do
+                    local v88 = p85:FindFirstChild(v, true);
+
+                    if v88 and v88:IsA("Bone") then
+                        table.insert(v86, v88);
+                    end;
+                end;
+            end;
+
+            if #v86 > 0 then
+                local Actor = Instance.new("Actor");
+                local BindableFunction = Instance.new("BindableFunction");
+                BindableFunction.Name = "Event";
+                BindableFunction.Parent = Actor;
+                local v89 = script.Dependencies.ActorScript:Clone();
+                v89.Name = "Runtime";
+                v89.Parent = Actor;
+                Actor.Parent = Folder;
+                v89.Enabled = true;
+                u83[p85] = Actor.Event:Invoke(p85, v86);
+                Actor.Name = p85.Name .. u83[p85].ID;
+                u83[p85].RemovedEvent.Event:Once(function() -- Line: 570
+                    -- upvalues: Actor (copy)
+                    Actor.Runtime.Enabled = false;
+                    Actor:Destroy();
+                end);
+                table.insert(u84, p85);
+                local v90 = "Created new SmartBone Object with ID: " .. u83[p85].ID;
+
+                if Debug then
+                    warn(v90);
+                end;
+            else
+                table.insert(u84, p85);
+                local v91 = "Failed to create SmartBone Object for " .. p85:GetFullName() .. "! Make sure you have defined the Root Bone(s) for this object!";
+
+                if Debug then
+                    warn(v91);
+                end;
+            end;
+        end;
+    end;
+
+    local function removeSmartBoneObject(u92) -- Line: 588
+        -- upvalues: u83 (copy), Debug (ref), u4 (ref)
+        if u83[u92] then
+            local v93 = "Removing SmartBone Object with ID: " .. u83[u92].ID;
+
+            if Debug then
+                warn(v93);
+            end;
+
+            task.spawn(function() -- Line: 591
+                -- upvalues: u83 (ref), u92 (copy), u4 (ref)
+                for _, v in pairs(u83[u92].Connections) do
+                    v:Disconnect();
+                end;
+
+                u83[u92].SimulationConnection:Disconnect();
+                task.wait();
+                u83[u92].RemovedEvent:Destroy();
+
+                for _, v in ipairs(u83[u92].ParticleTrees) do
+                    for _, v2 in v.Particles do
+                        for _, v3 in v2.RecyclingBin do
+                            v3:Destroy();
+                        end;
+                    end;
+                end;
+
+                task.wait();
+
+                if u4[u83[u92].ID] then
+                    u4[u83[u92].ID] = nil;
+                end;
+
+                u83[u92].Removed = true;
+                u83[u92].RemovedEvent:Fire();
+                u83[u92] = nil;
+            end);
+        end;
+    end;
+
+    CollectionService:GetInstanceAddedSignal("SmartBone"):Connect(registerSmartBoneObject);
+    CollectionService:GetInstanceRemovedSignal("SmartBone"):Connect(removeSmartBoneObject);
+
+    for _, v in pairs(u2) do
+        if not (u83[v] or table.find(u84, v)) then
+            task.spawn(function() -- Line: 629
+                -- upvalues: registerSmartBoneObject (copy), v (copy)
+                registerSmartBoneObject(v);
+            end);
+        end;
+    end;
+end;
+
+return u5;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.SpellsConfiguration
+-- Took 0.01s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+return {
+    Incendia = {
+        Launcher = "Incendia",
+        Cooldown = 25,
+        Magic = 60,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Incendia",
+        Description = "Sets the target on fire.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = { "burn" }
+    },
+    Motus = {
+        Launcher = "Motus",
+        Cooldown = 30,
+        Magic = 150,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Motus",
+        Description = "Generates a telekinetic blast that affects people near you.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = { "go away!" }
+    },
+    ["Sol circulum creaturae"] = {
+        Launcher = "Sol circulum creaturae",
+        Cooldown = 30,
+        Magic = 130,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = true,
+        Key = "Sol circulum creaturae",
+        Description = "Enchants a ring, protecting the wearer from sunlight with this spell.",
+        ToolLocked = "Ring",
+        Characters = {},
+        TargetSpecies = { "Vampires", "Heretics", "Originals", "UpgradedOGs", "OriginalHeretics" },
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Ossox = {
+        Launcher = "Ossox",
+        Cooldown = 30,
+        Magic = 90,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = true,
+        Key = "Ossox",
+        Description = "Breaks a target\'s bone.",
+        Characters = {},
+        TargetSpecies = { "Vampires", "Hybrids", "Tribrids", "Heretics", "Originals", "OriginalHybrids", "UpgradedOGs", "Gods", "Sirens" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Ad somnum"] = {
+        Launcher = "Ad Somnum",
+        Cooldown = 70,
+        Magic = 150,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Ad somnum",
+        Description = "Puts the target to sleep.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = { "good night" }
+    },
+    ["Errox femus"] = {
+        Launcher = "ErroxFemus",
+        Cooldown = 20,
+        Magic = 100,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Errox femus",
+        Description = "Breaks the target\'s bones.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Phasmatos incendiamos circulum"] = {
+        Launcher = "Phasmatos incendiamos",
+        Cooldown = 50,
+        Magic = 200,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos incendiamos circulum",
+        Description = "Prisons the target in a fire circle.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Corporis impetu"] = {
+        Launcher = "Corporis impetu",
+        Cooldown = 60,
+        Magic = 200,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Corporis impetu",
+        Description = "Freezes the target.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Icaeus = {
+        Launcher = "Icaeus",
+        Cooldown = 7,
+        Magic = 110,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Icaeus",
+        Description = "Telekinetic blast, shoves a target forward with immense force.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Tardus = {
+        Launcher = "Tardus",
+        Cooldown = 60,
+        Magic = 120,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Tardus",
+        Description = "Makes the target slower for a short time.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Silencio = {
+        Launcher = "Silencio",
+        Cooldown = 30,
+        Magic = 80,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Silencio",
+        Description = "Silence the target.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Phasmatos vis necto"] = {
+        Launcher = "Phasmatos vis necto",
+        Cooldown = 30,
+        Magic = 100,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = true,
+        Key = "Phasmatos vis necto",
+        Description = "Binds your power with the target\'s.",
+        Characters = {},
+        TargetSpecies = { "Witches", "Heretics", "Tribrids", "Psychics", "Siphoners", "Werewitches", "OriginalHeretics" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Menedek qual suurentaa"] = {
+        Launcher = "Suurenta",
+        Cooldown = 40,
+        Magic = 200,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Menedek qual suurentaa",
+        Description = "Mass neck breaking; Vampires only.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Sanitatem damnum"] = {
+        Launcher = "GlobalHeal",
+        Cooldown = 30,
+        Magic = 180,
+        Magnitude = 50,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Sanitatem damnum",
+        Description = "Heal someone.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Adiatuur = {
+        Launcher = "Adiatuur",
+        Cooldown = 60,
+        Magic = 200,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Adiatuur",
+        Description = "Extinguish someone on fire.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Magi somn et immortalis binde oss"] = {
+        Launcher = "PhasmatosImmortalis",
+        Cooldown = 300,
+        Magic = 800,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Magi somn et immortalis binde oss",
+        Description = "Linking spell",
+        Characters = { "Dahlia" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Regelo = {
+        Launcher = "Regelo",
+        Cooldown = 120,
+        Magic = 200,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Regelo",
+        Description = "Self Fire Extinguishing.",
+        Characters = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Post tenebras spero lucem"] = {
+        Launcher = "PostTenebras",
+        Cooldown = 60,
+        Magic = 60,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Post tenebras spero lucem",
+        Description = "Light orb spell.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Faire a voir la re"] = {
+        Launcher = "Faire a voir la re",
+        Cooldown = 60,
+        Magic = 120,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Faire a voir la re",
+        Description = "Locator spell, a ritual setup is needed",
+        ToolLocked = "Ritual Setup",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    Invisique = {
+        Launcher = "Invisique",
+        Cooldown = 40,
+        Magic = 100,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Invisique",
+        Description = "Hide yourself from view for a short time.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Harae tamai kioku yomigaerashi tamae"] = {
+        Launcher = "Harae",
+        Cooldown = 300,
+        Magic = 800,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Harae tamai kioku yomigaerashi tamae",
+        Description = "Purge spell; Dark magic.",
+        CustomLocked = true,
+        Characters = { "Dark Josie", "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H", "Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Lecutio = {
+        Launcher = "Lecutio",
+        Cooldown = 30,
+        Magic = 200,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Lecutio",
+        Description = "Radiates an energy blast of lightning towards a target.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Lecutio maxima"] = {
+        Launcher = "Lecutio",
+        Cooldown = 30,
+        Magic = 200,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Lecutio maxima",
+        Description = "Radiates an energy blast of dark lightning towards a target.",
+        CustomLocked = true,
+        Characters = { "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Ventus = {
+        Launcher = "Ventus",
+        Cooldown = 30,
+        Magic = 150,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ventus",
+        Description = "(Projectile) An immense gust of wind will send the target flying.",
+        CustomLocked = true,
+        Characters = { "Dark Josie", "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H", "Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Tempesta = {
+        Launcher = "Tempesta",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Tempesta",
+        Description = "Radiates a lightning on the target.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Pervenio Supervenio Advehor"] = {
+        Launcher = "Pervenio",
+        Cooldown = 130,
+        Magic = 400,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Pervenio supervenio advehor",
+        Description = "Summoning spell; Ritual Setup needed.",
+        ToolLocked = "Ritual Setup",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H", "Josie", "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    ["Delfan eoten cor"] = {
+        Launcher = "Delfan eoten cor",
+        Cooldown = 60,
+        Magic = 250,
+        Magnitude = 50,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Delfan eoten cor",
+        Description = "Dark magic. Grip your targets heart through telekinesis and summon it forth from their chest.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = { "heart." }
+    },
+    Somnus = {
+        Launcher = "Somnus",
+        Cooldown = 30,
+        Magic = 90,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Somnus",
+        Description = "Affects all in the near vicinity, sending them to sleep for a short time.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H", "Davina" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Venenum corpus"] = {
+        Launcher = "Venenum corpus",
+        Cooldown = 30,
+        Magic = 250,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Venenum corpus",
+        CustomLocked = true,
+        Description = "Injects the opponent with werewolf venom.",
+        Characters = { "Dahlia", "Qetsiyah" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Vitris = {
+        Launcher = "Vitris",
+        Cooldown = 300,
+        Magic = 540,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Vitris",
+        Description = "Creates a dagger out of blood",
+        CustomLocked = true,
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Immortalis Elixus"] = {
+        Launcher = "Immortalis Elixus",
+        Cooldown = 300,
+        Magic = 540,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Immortalis Elixus",
+        Description = "Conjure an elixir that cures immortality itself.",
+        Characters = { "Qetsiyah", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Autem = {
+        Launcher = "Autem",
+        Cooldown = 60,
+        Magic = 150,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Autem",
+        Description = "Unleash dark magic to summon an earthquake in the surrounding area.",
+        CustomLocked = true,
+        Characters = { "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Phasmatos ravaros on animum"] = {
+        Launcher = "Phasmatos ravaros on animum",
+        Cooldown = 120,
+        Magic = 700,
+        Magnitude = 30,
+        GhostCast = false,
+        CorpseTarget = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos ravaros on animum",
+        Description = "Resurrect spirits lingering on the other side.",
+        Characters = { "Bonnie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Spiritum revixit mortem"] = {
+        Launcher = "Spiritum revixit mortem",
+        Cooldown = 120,
+        Magic = 700,
+        Magnitude = 30,
+        GhostCast = false,
+        CorpseTarget = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Spiritum revixit mortem",
+        CustomLocked = true,
+        Description = "Resurrect spirits lingering on the other side.",
+        Characters = { "Davina", "Esther" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Yoli conipleya miqlitzi"] = {
+        Launcher = "Yoli conipleya miqlitzi",
+        Cooldown = 150,
+        Magic = 950,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = true,
+        SpiritAble = true,
+        Key = "Yoli conipleya miqlitzi",
+        Description = "Immortality overload spell",
+        CustomLocked = true,
+        Characters = { "Inadu", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = { "Originals", "UpgradedOGs", "OriginalHybrids", "OriginalHeretics" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Phasmatos tribum, nas ex veras"] = {
+        Launcher = "Phasmatos tribum nas ex veras",
+        Cooldown = 30,
+        Magic = 200,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos tribum, nas ex veras",
+        CustomLocked = true,
+        Description = "Fire locator spell.",
+        Characters = { "Bonnie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    ["?Opsero mori"] = {
+        Launcher = "Opsero mori",
+        Cooldown = 0,
+        Magic = 60,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?Opsero mori",
+        Description = "staff members know.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = { "u toxic" }
+    },
+    ["Hashi nvgidgia nvasdi"] = {
+        Launcher = "Hashi nvgidgia nvasdi",
+        Cooldown = 180,
+        Magic = 650,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Hashi nvgidgia nvasdi",
+        Description = "When casted, the target is reborn as a werewolf.",
+        Characters = { "Inadu" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Anular forte e les forte a las"] = {
+        Launcher = "Anular forte e les forte a las",
+        Cooldown = 180,
+        Magic = 650,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Anular forte e les forte a las",
+        CustomLocked = true,
+        Description = "Vampirism reversing spell",
+        Characters = { "Freya", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Lunar maledictum"] = {
+        Launcher = "Lunar maledictum",
+        Cooldown = 90,
+        Magic = 150,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = true,
+        Key = "Lunar maledictum",
+        CustomLocked = true,
+        Description = "Forces a wolf to turn into his werewolf side",
+        Characters = { "Inadu", "Esther" },
+        TargetSpecies = { "Werewolves", "Hybrids", "Werewitches", "Tribrids", "OriginalHybrids" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Bruciare supe terram, faciendo ignis ga praemium"] = {
+        Launcher = "Bruciare supe terram",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 120,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Bruciare supe terram, faciendo ignis ga praemium",
+        CustomLocked = true,
+        Description = "A violent fire spell that ignites an object and rapidly spread in it\'s immediate, localized vicinity, causing it to explode.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Victas ex melam, phasmatos vanem"] = {
+        Launcher = "Victas ex melam",
+        Cooldown = 150,
+        Magic = 950,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = true,
+        Key = "Victas ex melam, phasmatos vanem",
+        Description = "Immortality overload spell",
+        Characters = { "Bonnie" },
+        TargetSpecies = { "Originals", "OriginalHybrids", "OriginalHeretics", "UpgradedOGs" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Invidia = {
+        Launcher = "Invidia",
+        Cooldown = 50,
+        Magic = 60,
+        Magnitude = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Invidia",
+        CustomLocked = true,
+        Description = "Makes the target nosebleed",
+        Characters = { "Josie", "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Salis circuli"] = {
+        Launcher = "Salis circuli",
+        Cooldown = 60,
+        Magic = 200,
+        Magnitude = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Salis circuli",
+        CustomLocked = true,
+        Description = "Makes the target nosebleed",
+        Characters = { "Dahlia", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Phasmatos sanguis pluvia"] = {
+        Launcher = "Phasmatos sanguis pluvia",
+        Cooldown = 200,
+        Magic = 300,
+        Magnitude = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos sanguis pluvia",
+        Description = "Spell conjuring blood rain, inflicting temporary damage on all.",
+        Characters = { "Inadu" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Venenum sanguinis corpus"] = {
+        Launcher = "Venenum sanguinis corpus",
+        Cooldown = 210,
+        Magic = 250,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Venenum sanguinis corpus",
+        CustomLocked = true,
+        Description = "Renders your blood toxic, causing temporary harm to all it touches.",
+        Characters = { "Inadu" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Phasmatos incendia movet"] = {
+        Launcher = "Phasmatos incendia movet",
+        Cooldown = 150,
+        Magic = 850,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos incendia movet",
+        Description = "A powerful spell that utilized a large coven of Bennett witches to contain, control and prevent the unleashing of hellfire.",
+        Characters = { "Bonnie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Disrumpo vinculum"] = {
+        Launcher = "Disrumpo vinculum",
+        Cooldown = 30,
+        Magic = 50,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Disrumpo vinculum",
+        Description = "Unbinds your channeling.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Imperium = {
+        Launcher = "Imperium",
+        Cooldown = 90,
+        Magic = 180,
+        Magnitude = 50,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Imperium",
+        CustomLocked = true,
+        Description = "Mass mind control",
+        Characters = { "Dahlia", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["?StaffNoSpirit"] = {
+        Launcher = "StaffNoSpirit",
+        Cooldown = 0,
+        Magic = 0,
+        SpiritAble = true,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?StaffNoSpirit",
+        Description = "Staff only, removes spirit form",
+        StaffLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Tenebris anima vestra"] = {
+        Launcher = "Tenebris anima vestra",
+        Cooldown = 150,
+        Magic = 200,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Tenebris anima vestra",
+        Description = "Death spell.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Suctus incendia"] = {
+        Launcher = "Suctus incendia",
+        Cooldown = 60,
+        Magic = 150,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Suctus incendia",
+        CustomLocked = true,
+        Description = "Put out the fires of those nearby.",
+        Characters = { "Bonnie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["?storm"] = {
+        Launcher = "?storm",
+        Cooldown = 60,
+        Magic = 1000,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?storm",
+        Description = "?storm.",
+        StaffLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["?Vitae redivivus"] = {
+        Launcher = "Vitae redivivus",
+        Cooldown = 120,
+        Magic = 1000,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?Vitae redivivus",
+        Description = "Mass resurrection.",
+        StaffLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["?Comet"] = {
+        Launcher = "?Comet",
+        Cooldown = 125,
+        Magic = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?Comet",
+        Description = "?Comet.",
+        StaffLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["?selfres"] = {
+        Launcher = "selfres",
+        Cooldown = 60,
+        Magic = 0,
+        GhostCast = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?selfres",
+        Description = "self resurrection.",
+        StaffLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["?SelfPrison"] = {
+        Launcher = "?SelfPrison",
+        Cooldown = 60,
+        Magic = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "?SelfPrison",
+        Description = "?SelfPrison.",
+        StaffLocked = true,
+        ToolLocked = "Ascendant",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["?res"] = {
+        Launcher = "res",
+        Cooldown = 60,
+        Magic = 0,
+        GhostCast = false,
+        CharacterLocked = true,
+        CorpseTarget = true,
+        WantedTargetSpecie = false,
+        Key = "?res",
+        Description = " resurrection.",
+        StaffLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Crescere arbor"] = {
+        Launcher = "Crescere arbor",
+        Cooldown = 35,
+        Magic = 100,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Crescere arbor",
+        Description = "Summons vines from the ground that immobilize the target",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Venenum vitis"] = {
+        Launcher = "Venenum vitis",
+        Cooldown = 35,
+        Magic = 100,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Venenum vitis",
+        CustomLocked = true,
+        Description = "Summons venomous vines from the ground that immobilize and poison the target.",
+        Characters = { "Inadu" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Finitis = {
+        Launcher = "Finitis",
+        Cooldown = 40,
+        Magic = 100,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Finitis",
+        Description = "Binds the target to the ground, immobilizing them.",
+        Characters = { "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Venez sanguis au moi"] = {
+        Launcher = "Venez sanguis au moi",
+        Cooldown = 60,
+        Magic = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Venez sanguis au moi",
+        Description = "Blood gathering spell, bowl needed",
+        Characters = { "Esther" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Tenebras est Lamia et malo donec"] = {
+        Launcher = "Tenebras est Lamia et malo donec",
+        Cooldown = 600,
+        Magic = 1500,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Tenebras est Lamia et malo donec",
+        Description = "Original vampire curse spell",
+        Characters = { "Esther", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Conserva corpus et animum"] = {
+        Launcher = "Conserva corpus et animum",
+        Cooldown = 600,
+        Magic = 1500,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Conserva corpus et animum",
+        CustomLocked = true,
+        Description = "Self preservation spell",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Aperi ianuam spiritus ad vitam"] = {
+        Launcher = "Aperi ianuam spiritus ad vitam",
+        Cooldown = 600,
+        Magic = 1500,
+        GhostCast = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Aperi ianuam spiritus ad vitam",
+        Description = "Opens a door on the other side to come back in physical form.",
+        Characters = { "Esther" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Phasmatos manex dimensio mortalis"] = {
+        Launcher = "Phasmatos manex dimensio mortalis",
+        Cooldown = 900,
+        Magic = 800,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos manex dimensio mortalis",
+        Description = "Binds your life to your psychic dimension.",
+        Characters = { "Bonnie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Externo cornadus"] = {
+        Launcher = "Externo cornadus",
+        Cooldown = 35,
+        Magic = 350,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Externo cornadus",
+        CustomLocked = true,
+        Description = "Generates a telekinetic blast that affects people near you.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Ah sha lana"] = {
+        Launcher = "Ah sha lana",
+        Cooldown = 60,
+        Magic = 400,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ah sha lana",
+        CustomLocked = true,
+        Description = "Generates a telekinetic blast that affects people near you.",
+        Characters = { "Qetsiyah" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Confuso fatina, ignos et ignos mortefina"] = {
+        Launcher = "Confuso fatina, ignos et ignos mortefina",
+        Cooldown = 60,
+        Magic = 400,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Confuso fatina, ignos et ignos mortefina, incendia",
+        Description = "Generates a telekinetic blast that affects people near you.",
+        Characters = { "Mary Louise", "Nora", "Valerie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Phasmatos salves nas ex malon"] = {
+        Launcher = "Phasmatos salves nas ex malon",
+        Cooldown = 60,
+        Magic = 300,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos salves nas ex malon",
+        Description = "Tomb opening spell.",
+        Characters = { "Bonnie", "Sheila", "Qetsiyah", "Emily", "Lucy" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Diviser ak konkeri"] = {
+        Launcher = "Diviser ak konkeri",
+        Cooldown = 600,
+        Magic = 2000,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Diviser ak konkeri",
+        Description = "hollow splitting spell.",
+        Characters = { "Vincent" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Ascendo = {
+        Launcher = "Ascendo",
+        Cooldown = 60,
+        Magic = 180,
+        Magnitude = 25,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ascendo",
+        Description = "Telekinetic lift, lifts a target and smacks it on the ground with immense force.",
+        Characters = { "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Advivom datum es reversus morti"] = {
+        Launcher = "Advivom datum es reversus morti",
+        Cooldown = 600,
+        Magic = 1500,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Advivom datum es reversus morti",
+        Description = "Upgraded Original vampire curse spell",
+        Characters = { "Vincent" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Emrae = {
+        Launcher = "Emrae",
+        Cooldown = 60,
+        Magic = 300,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Emrae",
+        Description = "Blood darts spell.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Arréter majik sa a"] = {
+        Launcher = "Arréter majik sa a",
+        Cooldown = 600,
+        Magic = 700,
+        Magnitude = 25,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Arréter majik sa a",
+        Description = "Inadu\'s book needed; Hollow death spell.",
+        ToolLocked = "Hollow book",
+        Characters = { "Vincent" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Lupus, extractionem venenum"] = {
+        Launcher = "Lupus, extractionem venenum",
+        Cooldown = 180,
+        Magic = 110,
+        Magnitude = 25,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = true,
+        Key = "Lupus, extractionem venenum",
+        Description = "Telekinetic extracts wolf venom from the target",
+        Characters = { "Vincent" },
+        TargetSpecies = { "Tribrids" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Nemo unus animabus carnem"] = {
+        Launcher = "Nemo unus animabus carnem",
+        Cooldown = 300,
+        Magic = 800,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = true,
+        Key = "Nemo unus animabus carnem",
+        Description = "Sireline Unlinking Spell.",
+        Characters = { "Davina", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = { "Originals", "Tribrids", "OriginalHybrids", "OriginalHeretics", "UpgradedOGs" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Imitantor pupulus"] = {
+        Launcher = "Imitantor pupulus",
+        Cooldown = 100,
+        Magic = 300,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Imitantor pupulus",
+        Description = "Mimic spell.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Avita exari"] = {
+        Launcher = "Avita exari",
+        Cooldown = 200,
+        Magic = 350,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Avita exari",
+        Description = "Heart stopping spell.",
+        CustomLocked = true,
+        Characters = { "Qetsiyah", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Coniunctio vorti nexus"] = {
+        Launcher = "Coniunctio vorti nexus",
+        Cooldown = 100,
+        Magic = 1,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Coniunctio vorti nexus",
+        Description = "Nexus vorti channeling spell.",
+        NexusVortiLocked = true,
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Sangiema meam, et nos mundo carcerema"] = {
+        Launcher = "Sangiema meam, et nos mundo carcerema",
+        Cooldown = 200,
+        Magic = 350,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Sangiema meam, et nos mundo carcerema",
+        Description = "Prison world spell.",
+        CustomLocked = true,
+        ToolLocked = "Ascendant",
+        NexusVortiLocked = true,
+        Characters = { "Kai", "Josie", "Dark Josie", "Lizzie", "Phoebe", "Madison", "Madison M", "Phoebe H", "Olivia" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["O se kwe pe se"] = {
+        Launcher = "O se kwe pe se",
+        Cooldown = 300,
+        Magic = 450,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "O se kwe pe se",
+        Description = "Induces slow death of target.",
+        Characters = { "Vincent" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Phasmatos tribum, melan veras"] = {
+        Launcher = "Crescere arbor",
+        Cooldown = 35,
+        Magic = 100,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos tribum, melan veras",
+        Description = "Summons vines from the ground that immobilize the target",
+        Characters = { "Bonnie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["I said hey"] = {
+        Launcher = "I said hey",
+        Cooldown = 100,
+        Magic = 1,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "I said hey",
+        Description = "Mass pain infliction.",
+        Characters = { "Dark Josie", "Josie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Tenebris lapsus"] = {
+        Launcher = "Tenebris lapsus",
+        Cooldown = 25,
+        Magic = 120,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Tenebris lapsus",
+        Description = "Breaks the target\'s bones.",
+        Characters = { "Josie", "Dark Josie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Vis sera portus"] = {
+        Launcher = "Vis sera portus",
+        Cooldown = 130,
+        Magic = 200,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Vis sera portus",
+        Description = "Boundary spell.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Come in"] = {
+        Launcher = "Come in",
+        Cooldown = 25,
+        Magic = 0,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Come in",
+        Description = "Invitation.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    ["Dissera portus"] = {
+        Launcher = "Dissera portus",
+        Cooldown = 70,
+        Magic = 90,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Dissera portus",
+        Description = "Boundary reversal spell.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Sanguinem desimilus! Sanguinem generis fiantus!"] = {
+        Launcher = "Merge",
+        Cooldown = 25,
+        Magic = 120,
+        Magnitude = 15,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Sanguinem desimilus! Sanguinem generis fiantus!",
+        Description = "Merge spell.",
+        Characters = { "Lizzie", "Josie", "Dark Josie", "Kai", "Nora", "Valerie", "Mary Louise", "Beau", "Malcolm", "Luke", "Phoebe", "Madison", "Madison M", "Phoebe H", "Olivia" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Palo Exsplosio"] = {
+        Launcher = "Palo Exsplosio",
+        Cooldown = 80,
+        Magic = 250,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Palo Exsplosio",
+        Description = "Stake explosion spell.",
+        Characters = { "Dahlia" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Ce corps est maintenant le mien"] = {
+        Launcher = "Ce corps est maintenant le mien",
+        Cooldown = 600,
+        Magic = 700,
+        Magnitude = 30,
+        GhostCast = false,
+        CorpseTarget = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ce corps est maintenant le mien",
+        Description = "Consacrates a corpse to body jump on death.",
+        Characters = { "Esther" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Vados = {
+        Launcher = "Vados",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 120,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Vados",
+        CustomLocked = true,
+        Description = "A violent fire spell that ignites an object and rapidly spread in it\'s immediate, localized vicinity, causing it to explode.",
+        Characters = { "Bonnie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Aliases = {}
+    },
+    Incendium = {
+        Launcher = "Incendium",
+        Cooldown = 80,
+        Magic = 250,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Incendium",
+        Description = "Stake explosion spell.",
+        Characters = { "Tony" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Sang Bis Najit Trouver"] = {
+        Launcher = "Sang Bis Najit Trouver",
+        Cooldown = 250,
+        Magic = 350,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Sang Bis Najit Trouver",
+        Description = "An astral projection spell. While using it you are immune to all attacks (except AOE ones)",
+        CustomLocked = true,
+        Characters = { "Freya", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Mortem fero, virtutem et robur O thánatos den échei simasía"] = {
+        Launcher = "ATEST",
+        Cooldown = 600,
+        Magic = 350,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Mortem fero, virtutem et robur O thánatos den échei simasía",
+        Description = "Immortality serum creation",
+        ToolLocked = "Heart",
+        Global = true,
+        Characters = { "Qetsiyah" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Impulsa = {
+        Launcher = "Impulsa",
+        Cooldown = 35,
+        Magic = 250,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Impulsa",
+        Description = "Generates an energetic blast that affects people near you.",
+        Characters = { "Lizzie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Dissulta = {
+        Launcher = "Dissulta",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 120,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Dissulta",
+        CustomLocked = true,
+        Description = "Generates a blast that affects people near it.",
+        Characters = { "Lizzie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Aliases = {}
+    },
+    ["Imperium monstra"] = {
+        Launcher = "Imperium monstra",
+        Cooldown = 25,
+        Magic = 120,
+        Magnitude = 35,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Imperium monstra",
+        Description = "Summons a barrier that imprisons the target.",
+        Characters = { "Lizzie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Mei tu me le"] = {
+        Launcher = "Mei tu me le",
+        Cooldown = 155,
+        Magic = 255,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Mei tu me le",
+        Description = "Astral projection",
+        Characters = { "Davina", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    ["Phasmatos inta grum callus famalon callagius accodum"] = {
+        Launcher = "Phasmatos inta grum callus famalon callagius accodum",
+        Cooldown = 500,
+        Magic = 1200,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos inta grum callus famalon callagius accodum",
+        Description = "Links the originals brother killing them if one of them dies",
+        Global = true,
+        Characters = { "Esther" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Din merkke otimo sekre"] = {
+        Launcher = "Din merkke otimo sekre",
+        Cooldown = 300,
+        Magic = 600,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Din merkke otimo sekre",
+        Description = "Hollow summoning spell.",
+        Characters = { "Freya", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Tenebris immortalitas in corpre at carvera"] = {
+        Launcher = "Tenebris immortalitas in corpre at carvera",
+        Cooldown = 700,
+        Magic = 850,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Tenebris immortalitas in corpre at carvera",
+        Description = "Totem incantation",
+        ToolLocked = "Protective Totem",
+        Characters = { "Inadu" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Ina pran khos suptheia jhen ai pada khey rassattan"] = {
+        Launcher = "Ina pran khos suptheia jhen ai pada khey rassattan",
+        Cooldown = 600,
+        Magic = 700,
+        Magnitude = 30,
+        GhostCast = false,
+        CorpseTarget = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ina pran khos suptheia jhen ai pada khey rassattan",
+        CustomLocked = true,
+        Description = "Resurrect someone on the other side making them the anchor.",
+        Global = true,
+        Characters = { "Qetsiyah" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Linking = {
+        Launcher = "Linking",
+        Cooldown = 25,
+        Magic = 120,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Linking",
+        Description = "Links your life with your target\'s.",
+        Characters = { "Tony" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Aleora subsitos"] = {
+        Launcher = "Aleora subsitos",
+        Cooldown = 100,
+        Magic = 260,
+        Magnitude = 50,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Aleora subsitos",
+        Description = "Remote heart stop",
+        Characters = { "Bonnie", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Phasmatos praeligo animum"] = {
+        Launcher = "LinkingEmily",
+        Cooldown = 600,
+        Magic = 900,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Phasmatos praeligo animum",
+        Description = "Links your life with your target\'s.",
+        Characters = { "Emily" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    ["Sispann la agrese"] = {
+        Launcher = "Sispann la agrese",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 130,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Sispann la agrese",
+        Description = "A violent fire spell that explodes an area and rapidly spread in it\'s immediate, localized vicinity, causing it to explode.",
+        Characters = { "Vincent", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Aliases = {}
+    },
+    ["Spasiti animam sunam"] = {
+        Launcher = "Spasiti animam sunam",
+        Cooldown = 180,
+        Magic = 650,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Spasiti animam sunam",
+        Description = "Traps a weak body\'s soul",
+        Characters = { "Freya", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Tilata ulaaz"] = {
+        Launcher = "Tilata ulaaz",
+        Cooldown = 60,
+        Magic = 250,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Tilata ulaaz",
+        Description = "Visits the trapped soul in your pendants",
+        ToolLocked = "Ritual Setup",
+        Characters = { "Freya", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Apne en vrata"] = {
+        Launcher = "Apne en vrata",
+        Cooldown = 180,
+        Magic = 250,
+        GhostCast = false,
+        Toggle = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Apne en vrata",
+        Description = "Temporarily breaks a barrier",
+        Characters = { "Freya", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Verha hel igjen"] = {
+        Launcher = "Verha hel igjen",
+        Cooldown = 120,
+        Magic = 450,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Verha hel igjen",
+        Description = "Resurrects someone trapped in a pendant",
+        Characters = { "Freya" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Descanto = {
+        Launcher = "Descanto",
+        Cooldown = 80,
+        Magic = 150,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Descanto",
+        Description = "Summons a light ball that will deal damage to the target if hit.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Calibus vis anulix peros corpeo meum"] = {
+        Launcher = "Calibus vis anulix peros corpeo meum",
+        Cooldown = 30,
+        Magic = 130,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        Key = "Calibus vis anulix peros corpeo meum",
+        Description = "Overloads the phoenix\'s gem, making it explode.",
+        ToolLocked = "Phoenix sword",
+        Characters = { "Valerie", "Nora", "Mary Louise", "Beau", "Malcolm", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Vido = {
+        Launcher = "Vido",
+        Cooldown = 80,
+        Magic = 150,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Vido",
+        Description = "Telekinetic lift, effortlessly brings the target in front of you.",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["In umbris aeternitatis, sit mortalitas te complexa"] = {
+        Launcher = "In umbris aeternitatis, sit mortalitas te complexa",
+        Cooldown = 150,
+        Magic = 950,
+        Magnitude = 60,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = true,
+        Key = "In umbris aeternitatis, sit mortalitas te complexa",
+        Description = "Disintegrates an hell ruler\'s follower.",
+        CustomLocked = false,
+        Characters = { "Cade" },
+        TargetSpecies = { "Sirens" },
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Vidau = {
+        Launcher = "Vidau",
+        Cooldown = 50,
+        Magic = 60,
+        Magnitude = 100,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Vidau",
+        CustomLocked = true,
+        Description = "Makes the target loose magic for 30 seconds.",
+        Characters = { "Dahlia", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    Ignarious = {
+        Launcher = "Ignarious",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 130,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ignarious",
+        Description = "A violent fire ball that explodes an area and rapidly spread in it\'s immediate, localized vicinity, causing it to explode.",
+        Characters = { "Josie", "Dark Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Aliases = {}
+    },
+    Aqualia = {
+        Launcher = "Aqualia",
+        Cooldown = 30,
+        Magic = 200,
+        Magnitude = 21.6,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Aqualia",
+        Description = "Radiates a blast of water towards a target.",
+        Characters = { "Hope", "Phoebe", "Madison", "Madison M", "Phoebe H" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Spiritus virtutem tuam invoco"] = {
+        Launcher = "Spiritus virtutem tuam invoco",
+        Cooldown = 180,
+        Magic = 800,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Spiritus virtutem tuam invoco",
+        Description = "Lets you channel the Bennett bloodline.",
+        Characters = { "Bonnie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Vitas phasmatis, ex salito, revertas phasmatis"] = {
+        Launcher = "Vitas phasmatis, ex salito, revertas phasmatis",
+        Cooldown = 600,
+        Magic = 800,
+        GhostCast = true,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Vitas phasmatis, ex salito, revertas phasmatis",
+        Description = "Self resurrection, needs a strong bind in the living side.",
+        Characters = { "Emily" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    Mittem = {
+        Launcher = "Mittem",
+        Cooldown = 100,
+        Magic = 110,
+        Magnitude = 30,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Mittem",
+        Description = "Telekinetic blast, shoves a target forward with immense force.",
+        Characters = { "Hope" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton1,
+        Aliases = {}
+    },
+    ["Ohto eestanay as vazat esvet ohnaz eespalit"] = {
+        Launcher = "Ohto eestanay as vazat esvet ohnaz eespalit",
+        Cooldown = 600,
+        Magic = 900,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ohto eestanay as vazat esvet ohnaz eespalit",
+        Description = "Opens a portal on the other side to come back in physical form.",
+        Characters = { "Olivia" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Mitto nuntium"] = {
+        Launcher = "Mitto nuntium",
+        Cooldown = 120,
+        Magic = 100,
+        Magnitude = 80,
+        GhostCast = false,
+        CharacterLocked = false,
+        WantedTargetSpecie = false,
+        Key = "Mitto nuntium",
+        Description = "Send a message to someone",
+        Characters = {},
+        TargetSpecies = {},
+        Input = Enum.UserInputType.InputMethod,
+        Aliases = {}
+    },
+    ["Ohun pada"] = {
+        Launcher = "Ohun pada",
+        Cooldown = 60,
+        Magic = 200,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Ohun pada",
+        Description = "Generates a telekinetic blast that affects people near you.",
+        Characters = { "Cleo" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.TextInput,
+        Aliases = {}
+    },
+    ["Fiante fulguris"] = {
+        Launcher = "Fiante fulguris",
+        Cooldown = 60,
+        Magic = 150,
+        Magnitude = 120,
+        GhostCast = false,
+        CharacterLocked = true,
+        WantedTargetSpecie = false,
+        Key = "Fiante fulguris",
+        CustomLocked = true,
+        Description = "Summons 3 dark lightnings that deals a good amount of damage.",
+        Characters = { "Dark Josie", "Josie" },
+        TargetSpecies = {},
+        Input = Enum.UserInputType.MouseButton2,
+        Aliases = {}
+    }
+};
+-- Script Path: game:GetService("ReplicatedStorage").Modules.TypeWriter
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local LocalizationService = game:GetService("LocalizationService");
+local LocalPlayer = game:GetService("Players").LocalPlayer;
+local u1 = nil;
+pcall(function() -- Line: 9
+    -- upvalues: u1 (ref), LocalizationService (copy), LocalPlayer (copy)
+    u1 = LocalizationService:GetTranslatorForPlayerAsync(LocalPlayer);
+end);
+
+if not u1 then
+    pcall(function() -- Line: 13
+        -- upvalues: u1 (ref), LocalizationService (copy)
+        u1 = LocalizationService:GetTranslatorForLocaleAsync("en");
+    end);
+end;
+
+local u2 = {
+    isTyping = false
+};
+local u3 = {
+    delayTime = 0.015,
+    extraDelayOnSpace = false
+};
+
+function u2.configure(p4) -- Line: 27
+    -- upvalues: u3 (copy)
+    for i, _ in pairs(u3) do
+        local v5 = p4[i];
+
+        if v5 == nil then
+            warn(i .. " is not a valid configuration for TypeWriter module");
+        else
+            u3[i] = v5;
+        end;
+    end;
+end;
+
+function u2.typeWrite(p6, p7) -- Line: 38
+    -- upvalues: u1 (ref), u2 (copy), u3 (copy)
+    p6.AutoLocalize = false;
+    p6.Text = "";
+
+    if u1 then
+        p7 = u1:Translate(p6, p7);
+    end;
+
+    u2.isTyping = true;
+
+    for i, v in utf8.graphemes(p7) do
+        local v8 = string.sub(p7, i, v);
+        p6.Text = p6.Text .. v8;
+
+        if u3.extraDelayOnSpace and v8 == " " then
+            wait(u3.delayTime);
+        end;
+
+        wait(u3.delayTime);
+
+        if p6.Text == p7 then
+            u2.isTyping = false;
+        end;
+    end;
+end;
+
+return u2;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.Utility
+-- Took 0.01s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local u1 = {};
+local LocalPlayer = game.Players.LocalPlayer;
+local CurrentCamera = workspace.CurrentCamera;
+local u2 = LocalPlayer:GetMouse();
+local UserInputService = game:GetService("UserInputService");
+local PlayerInteraction = game.ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("PlayerInteraction");
+local AbilityEvent = game.ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("AbilityEvent");
+local AbilityHandler = require(game.ReplicatedStorage:WaitForChild("Modules"):WaitForChild("AbilityHandler"));
+local u3 = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait();
+local Cooldowns = LocalPlayer:WaitForChild("Cooldowns", 999);
+Cooldowns.ChildAdded:Connect(function(u4) -- Line: 11
+    -- upvalues: LocalPlayer (copy), Cooldowns (copy)
+    local v5 = {};
+
+    for _, child in pairs(LocalPlayer.PlayerGui:WaitForChild("Ability Gui"):WaitForChild("Holder"):GetChildren()) do
+        table.insert(v5, child);
+    end;
+
+    for _, child in pairs(LocalPlayer.PlayerGui:WaitForChild("MobileControls"):WaitForChild("Holder"):GetChildren()) do
+        table.insert(v5, child);
+    end;
+
+    for _, v in pairs(v5) do
+        if v.Name == u4.Name then
+            spawn(function() -- Line: 21
+                -- upvalues: v (copy), u4 (copy), Cooldowns (ref)
+                v:FindFirstChild("Cooldown").Visible = true;
+                v.Ability.TextTransparency = 0.5;
+
+                for i = u4.Value, 0, -1 do
+                    if v ~= nil and v:FindFirstChild("Cooldown") then
+                        v.Cooldown.Text = i;
+                    end;
+
+                    if not Cooldowns:FindFirstChild(v.Name) then
+                        break;
+                    end;
+
+                    task.wait(1);
+                end;
+
+                if v ~= nil and v:FindFirstChild("Cooldown") then
+                    v:FindFirstChild("Cooldown").Visible = false;
+                    v.Ability.TextTransparency = 0;
+                end;
+            end);
+        end;
+    end;
+end);
+
+game.ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("GetClientInfo").OnClientInvoke = function(p6) -- Line: 42
+    -- upvalues: u2 (copy), CurrentCamera (copy)
+    if p6 == "MouseHitP" then
+        return u2.Hit.Position;
+    end;
+
+    if p6 == "MouseHit" then
+        return u2.Hit;
+    end;
+
+    if p6 == "Camera" then
+        return workspace.CurrentCamera;
+    end;
+
+    if p6 == "LookV" then
+        return CurrentCamera.CFrame.LookVector;
+    end;
+end;
+
+local u7 = false;
+
+local function onchadded() -- Line: 55
+    -- upvalues: u3 (ref), LocalPlayer (copy), u7 (ref)
+    u3 = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait();
+
+    if u3:FindFirstChild("Stats") then
+        local Stats = u3:FindFirstChild("Stats");
+        setability();
+        Stats:WaitForChild("CharacterName"):GetPropertyChangedSignal("Value"):Connect(function() -- Line: 60
+            setability();
+        end);
+        Stats:WaitForChild("Specie"):GetPropertyChangedSignal("Value"):Connect(function() -- Line: 63
+            -- upvalues: u7 (ref)
+            setability();
+
+            if u7 then
+                Senses();
+            end;
+        end);
+    end;
+
+    u3.ChildAdded:Connect(function(p8) -- Line: 70
+        -- upvalues: u7 (ref)
+        if p8.Name == "Sensesing" then
+            Senses();
+
+            return;
+        end;
+
+        if p8.Name == "Expression" then
+            setability();
+
+            return;
+        end;
+
+        if p8.Name == "Psychic" then
+            setability();
+
+            return;
+        end;
+
+        if p8.Name == "Stats" then
+            setability();
+            p8:WaitForChild("CharacterName"):GetPropertyChangedSignal("Value"):Connect(function() -- Line: 80
+                setability();
+            end);
+            p8:WaitForChild("Specie"):GetPropertyChangedSignal("Value"):Connect(function() -- Line: 83
+                -- upvalues: u7 (ref)
+                setability();
+
+                if u7 then
+                    Senses();
+                end;
+            end);
+        end;
+    end);
+    u3.ChildRemoved:Connect(function(p9) -- Line: 91
+        -- upvalues: u7 (ref)
+        if p9.Name == "Sensesing" and u7 then
+            Senses();
+        end;
+    end);
+    u3:WaitForChild("Humanoid").HealthChanged:Connect(function(p10) -- Line: 96
+        -- upvalues: u7 (ref)
+        if p10 <= 0 and u7 then
+            Senses();
+        end;
+    end);
+end;
+
+LocalPlayer.CharacterAdded:Connect(function() -- Line: 102
+    -- upvalues: onchadded (copy)
+    onchadded();
+end);
+onchadded();
+local u11 = {};
+
+function Senses()
+    -- upvalues: u7 (ref), LocalPlayer (copy), u11 (copy)
+    if u7 then
+        u7 = false;
+
+        return;
+    end;
+
+    u7 = true;
+    game.SoundService.Heartbeat:Play();
+    game.TweenService:Create(game.Lighting.Senses, TweenInfo.new(0.5), {
+        TintColor = Color3.fromRGB(117, 51, 52)
+    }):Play();
+
+    while u7 do
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v ~= LocalPlayer and (v.Character and (v.Character:FindFirstChild("Stats") and not (v.Character:FindFirstChild("Ghost") or v.Character:FindFirstChild("Highlight")))) then
+                local v12 = game.ReplicatedStorage.Assets.shared.Highlight:Clone();
+                v12.Parent = v.Character;
+                table.insert(u11, v12);
+            end;
+        end;
+
+        task.wait(0.2);
+    end;
+
+    for _, v in pairs(u11) do
+        if v then
+            v:Destroy();
+        end;
+    end;
+
+    game.SoundService.Heartbeat:Stop();
+    u7 = false;
+    game.TweenService:Create(game.Lighting.Senses, TweenInfo.new(0.5), {
+        TintColor = Color3.fromRGB(255, 255, 255)
+    }):Play();
+end;
+
+local u13 = nil;
+local u14 = nil;
+local u15 = false;
+
+function setability()
+    -- upvalues: u15 (ref), UserInputService (copy), LocalPlayer (copy), AbilityHandler (copy), u3 (ref), u1 (copy), Cooldowns (copy), u13 (ref), u14 (ref), PlayerInteraction (copy), AbilityEvent (copy)
+    if u15 then
+        local v16 = 0;
+
+        repeat
+            wait(0.1);
+            v16 = v16 + 0.1;
+        until not u15 or v16 >= 5;
+    end;
+
+    u15 = true;
+    local v17 = UserInputService.TouchEnabled and LocalPlayer.PlayerGui.MobileControls or LocalPlayer.PlayerGui["Ability Gui"];
+
+    for _, child in pairs(v17.Holder:GetChildren()) do
+        if child:IsA("ImageButton") then
+            child:Destroy();
+        end;
+    end;
+
+    v17.Enabled = true;
+    local Stats = LocalPlayer.Character:WaitForChild("Stats", 5);
+    local Specie = Stats:WaitForChild("Specie", 5);
+    local CharacterName = Stats:WaitForChild("CharacterName", 5);
+
+    for i, v in pairs(AbilityHandler) do
+        local v18 = (not v.SpecieLocked or table.find(v.WantedSpecie, Specie.Value)) and true or false;
+
+        if v.CharacterLocked and not table.find(v.Characters, CharacterName.Value) then
+            v18 = false;
+        end;
+
+        if v.Remote == "noremote" then
+            v18 = false;
+        end;
+
+        if Specie.Value == "Gods" and (CharacterName.Value == "Ben" and (v.SpecieLocked and table.find(v.WantedSpecie, "Gods"))) then
+            v18 = false;
+        end;
+
+        local v19 = v.CustomLocked and (CharacterName:GetAttribute("Custom") and (v.SpecieLocked and table.find(v.WantedSpecie, Specie.Value))) and true or v18;
+        local v20 = v.Expression and (CharacterName.Value == "Bonnie" and not u3:FindFirstChild("Expression")) and true or false;
+        local v21 = v.Psychic and (CharacterName.Value == "Bonnie" and not u3:FindFirstChild("Psychic")) and true or v20;
+
+        if v.WolfLocked and not u3:FindFirstChild("WolfForm") then
+            v19 = false;
+        end;
+
+        if u3:FindFirstChild("WolfForm") and (not v.WolfLocked and v.Remote ~= "TurnIntoWerewolfForm") then
+            v19 = false;
+        end;
+
+        if v.InfoOnly then
+            v19 = false;
+        end;
+
+        if v.StaffAccess and u1.IsStaff(LocalPlayer) and true or v19 then
+            local u22 = game.ReplicatedStorage.UIAssets.AbilityTemplate:Clone();
+            u22.Parent = v17.Holder;
+            u22.Ability.Text = i;
+            u22.Name = v.Remote;
+
+            if v21 then
+                u22:FindFirstChild("Padlock").Visible = true;
+            end;
+
+            local v23 = UserInputService:GetStringForKeyCode(v.Keycode);
+
+            if v.Keycode == Enum.KeyCode.LeftControl then
+                u22.Keybind.TextWrapped = false;
+                u22.Keybind.TextScaled = false;
+                u22.Keybind.TextSize = 10;
+                v23 = "CTRL";
+            elseif v.Keycode == Enum.KeyCode.LeftAlt then
+                u22.Keybind.TextWrapped = false;
+                u22.Keybind.TextScaled = false;
+                u22.Keybind.TextSize = 10;
+                v23 = "ALT";
+            elseif v.Keycode == Enum.KeyCode.Zero then
+                u22.Keybind.TextWrapped = false;
+                u22.Keybind.TextScaled = false;
+                u22.Keybind.TextSize = 10;
+                v23 = "ZERO";
+            end;
+
+            u22.Keybind.Text = v23;
+
+            if (table.find(v.WantedSpecie, "Vampires") or table.find(v.WantedSpecie, "Originals")) and Specie.Value ~= "Sirens" then
+                u22.UIGradient.Color = u1.getcolor("Vampires");
+                u22.LayoutOrder = 1;
+            elseif (table.find(v.WantedSpecie, "Witches") or (table.find(v.WantedSpecie, "Siphoners") or table.find(v.WantedSpecie, "Heretics"))) and (Specie.Value ~= "Gods" and Specie.Value ~= "Sirens") then
+                u22.UIGradient.Color = u1.getcolor("Witches");
+                u22.LayoutOrder = 3;
+            elseif (table.find(v.WantedSpecie, "Werewolves") or (table.find(v.WantedSpecie, "Gods") or v.WolfLocked)) and Specie.Value ~= "Sirens" then
+                u22.UIGradient.Color = u1.getcolor("Gods");
+                u22.LayoutOrder = 2;
+            elseif (table.find(v.WantedSpecie, "Tribrids") or table.find(v.WantedSpecie, "Werewitches")) and Specie.Value ~= "Sirens" then
+                u22.UIGradient.Color = u1.getcolor("Tribrids");
+                u22.LayoutOrder = 4;
+            elseif table.find(v.WantedSpecie, "Sirens") then
+                u22.UIGradient.Color = u1.getcolor("Sirens");
+                u22.LayoutOrder = 5;
+            elseif table.find(v.WantedSpecie, "Psychics") then
+                u22.UIGradient.Color = u1.getcolor("Psychics");
+                u22.LayoutOrder = 6;
+            else
+                u22.LayoutOrder = 0;
+            end;
+
+            if v.Expression and CharacterName.Value == "Bonnie" then
+                u22.LayoutOrder = 6;
+            end;
+
+            if v.Psychic and CharacterName.Value == "Bonnie" then
+                u22.UIGradient.Color = u1.getcolor("Psychics");
+                u22.LayoutOrder = 6;
+            end;
+
+            local u24 = Cooldowns:FindFirstChild(v.Remote);
+
+            if u24 then
+                spawn(function() -- Line: 237
+                    -- upvalues: u22 (copy), u24 (copy), Cooldowns (ref)
+                    u22:WaitForChild("Cooldown", 5).Visible = true;
+                    u22.Ability.TextTransparency = 0.5;
+
+                    for i2 = u24.Value, 0, -1 do
+                        if u22 ~= nil and u22:FindFirstChild("Cooldown") then
+                            u22.Cooldown.Text = i2;
+                        end;
+
+                        if not Cooldowns:FindFirstChild(u22.Name) then
+                            break;
+                        end;
+
+                        task.wait(1);
+                    end;
+
+                    if u22 ~= nil and u22:FindFirstChild("Cooldown") then
+                        u22:FindFirstChild("Cooldown").Visible = false;
+                        u22.Ability.TextTransparency = 0;
+                    end;
+                end);
+            end;
+
+            u22.Activated:Connect(function() -- Line: 255
+                -- upvalues: v (copy), u22 (copy), u13 (ref), u14 (ref), UserInputService (ref), u1 (ref), PlayerInteraction (ref), AbilityEvent (ref)
+                if v.InfoOnly then
+                    return;
+                end;
+
+                if v.Input then
+                    if u22:WaitForChild("Ability", 999):WaitForChild("Hold").Enabled then
+                        if u13 ~= nil then
+                            u13:Disconnect();
+                        end;
+
+                        u22:WaitForChild("Ability", 999):WaitForChild("Hold").Enabled = false;
+
+                        return;
+                    end;
+
+                    if u13 ~= nil then
+                        u13:Disconnect();
+                    end;
+
+                    if u14 then
+                        u14.Enabled = false;
+                    end;
+
+                    u22:WaitForChild("Ability", 999):WaitForChild("Hold").Enabled = true;
+                    u14 = u22:WaitForChild("Ability", 999):WaitForChild("Hold");
+
+                    if v.Input == Enum.UserInputType.MouseButton1 then
+                        u13 = UserInputService.InputBegan:Connect(function(p25, p26) -- Line: 269
+                            -- upvalues: u1 (ref), PlayerInteraction (ref), AbilityEvent (ref), v (ref), u13 (ref), u22 (ref)
+                            if p26 then
+                                return;
+                            end;
+
+                            if p25.UserInputType == Enum.UserInputType.MouseButton1 or p25.UserInputType == Enum.UserInputType.Touch then
+                                local v27 = u1.IsACharacter();
+
+                                if v27 ~= nil then
+                                    if v27.Parent == workspace.Map.Boundaries then
+                                        PlayerInteraction:FireServer("SiphonBarrier", {
+                                            Target = v27
+                                        });
+                                    end;
+
+                                    AbilityEvent:FireServer({
+                                        Action = v.Remote,
+                                        Target = v27
+                                    });
+                                    u13:Disconnect();
+                                    u22:WaitForChild("Ability", 999):WaitForChild("Hold").Enabled = false;
+                                end;
+                            end;
+                        end);
+
+                        return;
+                    end;
+
+                    if v.Input == Enum.UserInputType.MouseButton2 then
+                        u13 = UserInputService.InputBegan:Connect(function(p28, p29) -- Line: 284
+                            -- upvalues: u1 (ref), AbilityEvent (ref), v (ref), u13 (ref), u22 (ref)
+                            if p29 then
+                                return;
+                            end;
+
+                            if p28.UserInputType == Enum.UserInputType.MouseButton1 or p28.UserInputType == Enum.UserInputType.Touch then
+                                local v30, v31 = u1.IsACharacter();
+
+                                if v31 then
+                                    AbilityEvent:FireServer({
+                                        Action = v.Remote,
+                                        Target = v30,
+                                        Position = v31
+                                    });
+                                    u13:Disconnect();
+                                    u22:WaitForChild("Ability", 999):WaitForChild("Hold").Enabled = false;
+                                end;
+                            end;
+                        end);
+                    end;
+                else
+                    AbilityEvent:FireServer({
+                        Action = v.Remote
+                    });
+                end;
+            end);
+        end;
+    end;
+
+    u15 = false;
+end;
+
+function u1.getcolor(p32) -- Line: 306
+    return script:FindFirstChild(p32).Color;
+end;
+
+function u1.CheckForInfluency(p33) -- Line: 311
+    return p33:FindFirstChild("Influenced");
+end;
+
+function u1.IsRagolled(p34) -- Line: 314
+    if p34 ~= nil then
+        if p34:FindFirstChildOfClass("Humanoid") == nil then
+            return false;
+        end;
+
+        local v35 = p34:FindFirstChildOfClass("Humanoid");
+
+        return v35:GetState() == Enum.HumanoidStateType.Physics or v35:GetState() == Enum.HumanoidStateType.Dead;
+    end;
+end;
+
+function u1.IsSpecie(p36) -- Line: 327
+    -- upvalues: u3 (ref)
+    if u3:FindFirstChild("Stats") ~= nil then
+        local Stats = u3.Stats;
+        local v37 = false;
+
+        for _, v in pairs(p36) do
+            if Stats.Specie.Value == tostring(v) then
+                v37 = true;
+            end;
+        end;
+
+        return v37;
+    end;
+end;
+
+function u1.CheckState() -- Line: 339
+    -- upvalues: LocalPlayer (copy)
+    local Humanoid = LocalPlayer.Character:WaitForChild("Humanoid", 5);
+
+    if Humanoid then
+        return Humanoid:GetState() == Enum.HumanoidStateType.RunningNoPhysics or Humanoid:GetState() == Enum.HumanoidStateType.Running;
+    end;
+
+    return false;
+end;
+
+function u1.IsACharacter() -- Line: 349
+    -- upvalues: LocalPlayer (copy), CurrentCamera (copy), u2 (copy)
+    local v38 = RaycastParams.new();
+    v38.FilterDescendantsInstances = { LocalPlayer.Character, workspace.Map.Borders, workspace.Otherside };
+    v38.FilterType = Enum.RaycastFilterType.Exclude;
+    local v39 = CurrentCamera:ScreenPointToRay(u2.X, u2.Y);
+    local v40 = workspace:Raycast(v39.Origin, v39.Direction * 50000, v38);
+
+    if not (v40 and (v40.Instance and v40.Position)) then
+        return;
+    end;
+
+    local Instance = v40.Instance;
+
+    if Instance then
+        if Instance.Parent == workspace.Map.Boundaries then
+            return Instance, v40.Position;
+        end;
+
+        if Instance:IsDescendantOf(workspace:WaitForChild("Corpses")) then
+            for _, child in pairs(workspace.Corpses:GetChildren()) do
+                if Instance:IsDescendantOf(child) then
+                    return child, v40.Position;
+                end;
+            end;
+        end;
+
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v ~= LocalPlayer and (v.Character and (v.Character:FindFirstChild("Stats") and Instance:IsDescendantOf(v.Character))) then
+                return v.Character, v40.Position;
+            end;
+        end;
+
+        return nil, v40.Position;
+    end;
+end;
+
+function u1.CharCheck(p41) -- Line: 378
+    -- upvalues: LocalPlayer (copy)
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v ~= LocalPlayer and (v.Character and (v.Character:FindFirstChild("Stats") and p41:IsDescendantOf(v.Character))) then
+            return v.Character;
+        end;
+    end;
+end;
+
+function u1.FindTarget(p42) -- Line: 388
+    -- upvalues: LocalPlayer (copy)
+    local v43 = nil;
+
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v ~= LocalPlayer and (v.Character and v.Character:FindFirstChild("HumanoidRootPart")) then
+            local Character = v.Character;
+
+            if v43 == nil then
+                v43 = Character;
+            elseif (LocalPlayer.Character.HumanoidRootPart.Position - Character.PrimaryPart.Position).Magnitude < (LocalPlayer.Character.HumanoidRootPart.Position - v43.PrimaryPart.Position).Magnitude then
+                v43 = Character;
+            end;
+        end;
+    end;
+
+    if p42 then
+        for _, child in pairs(workspace.Corpses:GetChildren()) do
+            if v43 == nil then
+                v43 = child;
+            elseif (LocalPlayer.Character.HumanoidRootPart.Position - child.PrimaryPart.Position).Magnitude < (LocalPlayer.Character.HumanoidRootPart.Position - v43.PrimaryPart.Position).Magnitude then
+                v43 = child;
+            end;
+        end;
+    end;
+
+    return v43;
+end;
+
+function u1.GetNearSiphonable() -- Line: 417
+    -- upvalues: LocalPlayer (copy)
+    local v44 = false;
+    local v45 = nil;
+
+    for _, descendant in pairs(workspace:GetDescendants()) do
+        if v44 then
+            return v45;
+        end;
+
+        if descendant.Name == "Siphonable" and (descendant:IsA("BoolValue") and descendant.Value == true) then
+            local Parent = descendant.Parent;
+
+            if (LocalPlayer.Character.HumanoidRootPart.Position - Parent.Position).Magnitude < 5 then
+                v45 = Parent;
+                v44 = true;
+            end;
+        end;
+    end;
+end;
+
+function u1.IsStaff(u46) -- Line: 436
+    local success, result = pcall(function() -- Line: 437
+        -- upvalues: u46 (copy)
+        return u46:GetRankInGroup(15227438);
+    end);
+
+    return success and result >= 35 and true or false;
+end;
+
+return u1;
+-- Script Path: game:GetService("ReplicatedStorage").Modules.Zone
+-- Took 0.02s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local Players = game:GetService("Players");
+local RunService = game:GetService("RunService");
+local Heartbeat = RunService.Heartbeat;
+local u1 = RunService:IsClient() and Players.LocalPlayer;
+game:GetService("ReplicatedStorage");
+local HttpService = game:GetService("HttpService");
+local enums = require(script.Enum).enums;
+local Janitor = require(script.Janitor);
+local Signal = require(script.Signal);
+local ZonePlusReference = require(script.ZonePlusReference);
+local v2 = ZonePlusReference.getObject();
+local ZoneController = script.ZoneController;
+local Tracker = ZoneController.Tracker;
+local CollectiveWorldModel = ZoneController.CollectiveWorldModel;
+local u3 = require(ZoneController);
+local v4 = game:GetService("RunService"):IsClient() and "Client" or "Server";
+local v5;
+
+if v2 then
+    v5 = v2:FindFirstChild(v4);
+else
+    v5 = v2;
+end;
+
+if v5 then
+    return require(v2.Value);
+end;
+
+local u6 = {};
+u6.__index = u6;
+
+if not v5 then
+    ZonePlusReference.addToReplicatedStorage();
+end;
+
+u6.enum = enums;
+
+function u6.new(p7) -- Line: 34
+    -- upvalues: u6 (copy), enums (copy), Janitor (copy), HttpService (copy), u3 (copy), Signal (copy), u1 (copy)
+    local u8 = {};
+    setmetatable(u8, u6);
+    local v9 = typeof(p7);
+
+    if v9 ~= "table" and v9 ~= "Instance" then
+        error("The zone container must be a model, folder, basepart or table!");
+    end;
+
+    u8.accuracy = enums.Accuracy.High;
+    u8.autoUpdate = true;
+    u8.respectUpdateQueue = true;
+    local v10 = Janitor.new();
+    u8.janitor = v10;
+    u8._updateConnections = v10:add(Janitor.new(), "destroy");
+    u8.container = p7;
+    u8.zoneParts = {};
+    u8.overlapParams = {};
+    u8.region = nil;
+    u8.volume = nil;
+    u8.boundMin = nil;
+    u8.boundMax = nil;
+    u8.recommendedMaxParts = nil;
+    u8.zoneId = HttpService:GenerateGUID();
+    u8.activeTriggers = {};
+    u8.occupants = {};
+    u8.trackingTouchedTriggers = {};
+    u8.enterDetection = enums.Detection.Centre;
+    u8.exitDetection = enums.Detection.Centre;
+    u8._currentEnterDetection = nil;
+    u8._currentExitDetection = nil;
+    u8.totalPartVolume = 0;
+    u8.allZonePartsAreBlocks = true;
+    u8.trackedItems = {};
+    u8.settingsGroupName = nil;
+    u8.worldModel = workspace;
+    u8.onItemDetails = {};
+    u8.itemsToUntrack = {};
+    u3.updateDetection(u8);
+    u8.updated = v10:add(Signal.new(), "destroy");
+    local v11 = { "player", "part", "localPlayer", "item" };
+    local v12 = { "entered", "exited" };
+
+    for _, v in pairs(v11) do
+        local u13 = 0;
+        local u14 = 0;
+
+        for _, v3 in pairs(v12) do
+            local v15 = v10:add(Signal.new(true), "destroy");
+            local u16 = v3:sub(1, 1):upper() .. v3:sub(2);
+            u8[v .. u16] = v15;
+            v15.connectionsChanged:Connect(function(p17) -- Line: 105
+                -- upvalues: v (copy), u1 (ref), u16 (copy), u13 (ref), u14 (ref), u3 (ref), u8 (copy)
+                if v == "localPlayer" and (not u1 and p17 == 1) then
+                    error(("Can only connect to \'localPlayer%s\' on the client!"):format(u16));
+                end;
+
+                u13 = u14;
+                u14 = u14 + p17;
+
+                if u13 == 0 and u14 > 0 then
+                    u3._registerConnection(u8, v, u16);
+
+                    return;
+                end;
+
+                if u13 > 0 and u14 == 0 then
+                    u3._deregisterConnection(u8, v);
+                end;
+            end);
+        end;
+    end;
+
+    u6.touchedConnectionActions = {};
+
+    for _, v in pairs(v11) do
+        local u18 = u8[("_%sTouchedZone"):format(v)];
+
+        if u18 then
+            u8.trackingTouchedTriggers[v] = {};
+
+            u6.touchedConnectionActions[v] = function(p19) -- Line: 129
+                -- upvalues: u18 (copy), u8 (copy)
+                u18(u8, p19);
+            end;
+        end;
+    end;
+
+    u8:_update();
+    u3._registerZone(u8);
+    v10:add(function() -- Line: 140
+        -- upvalues: u3 (ref), u8 (copy)
+        u3._deregisterZone(u8);
+    end, true);
+
+    return u8;
+end;
+
+function u6.fromRegion(p20, p21) -- Line: 147
+    -- upvalues: u6 (copy)
+    local Model = Instance.new("Model");
+
+    local function createCube(p22, p23) -- Line: 150
+        -- upvalues: createCube (copy), Model (copy)
+        if p23.X <= 2024 and (p23.Y <= 2024 and p23.Z <= 2024) then
+            local Part = Instance.new("Part");
+            Part.CFrame = p22;
+            Part.Size = p23;
+            Part.Anchored = true;
+            Part.Parent = Model;
+
+            return;
+        end;
+
+        local v24 = p23 * 0.25;
+        local v25 = p23 * 0.5;
+        createCube(p22 * CFrame.new(-v24.X, -v24.Y, -v24.Z), v25);
+        createCube(p22 * CFrame.new(-v24.X, -v24.Y, v24.Z), v25);
+        createCube(p22 * CFrame.new(-v24.X, v24.Y, -v24.Z), v25);
+        createCube(p22 * CFrame.new(-v24.X, v24.Y, v24.Z), v25);
+        createCube(p22 * CFrame.new(v24.X, -v24.Y, -v24.Z), v25);
+        createCube(p22 * CFrame.new(v24.X, -v24.Y, v24.Z), v25);
+        createCube(p22 * CFrame.new(v24.X, v24.Y, -v24.Z), v25);
+        createCube(p22 * CFrame.new(v24.X, v24.Y, v24.Z), v25);
+    end;
+
+    createCube(p20, p21);
+    local v26 = u6.new(Model);
+    v26:relocate();
+
+    return v26;
+end;
+
+function u6._calculateRegion(p27, p28, p29) -- Line: 179
+    local v30 = {
+        Min = {},
+        Max = {}
+    };
+
+    for i, v in pairs(v30) do
+        v.Values = {};
+
+        function v.parseCheck(p31, p32) -- Line: 183
+            -- upvalues: i (copy)
+            if i == "Min" then
+                return p31 <= p32;
+            end;
+
+            if i == "Max" then
+                return p32 <= p31;
+            end;
+        end;
+
+        function v.parse(p33, p34) -- Line: 190
+            for i2, v3 in pairs(p34) do
+                if p33.parseCheck(v3, p33.Values[i2] or v3) then
+                    p33.Values[i2] = v3;
+                end;
+            end;
+        end;
+    end;
+
+    for _, v in pairs(p28) do
+        local v35 = v.Size * 0.5;
+        local v36 = {
+            v.CFrame * CFrame.new(-v35.X, -v35.Y, -v35.Z),
+            v.CFrame * CFrame.new(-v35.X, -v35.Y, v35.Z),
+            v.CFrame * CFrame.new(-v35.X, v35.Y, -v35.Z),
+            v.CFrame * CFrame.new(-v35.X, v35.Y, v35.Z),
+            v.CFrame * CFrame.new(v35.X, -v35.Y, -v35.Z),
+            v.CFrame * CFrame.new(v35.X, -v35.Y, v35.Z),
+            v.CFrame * CFrame.new(v35.X, v35.Y, -v35.Z),
+            v.CFrame * CFrame.new(v35.X, v35.Y, v35.Z)
+        };
+
+        for _, v3 in pairs(v36) do
+            local v37, v38, v39 = v3:GetComponents();
+            local v40 = { v37, v38, v39 };
+            v30.Min:parse(v40);
+            v30.Max:parse(v40);
+        end;
+    end;
+
+    local function roundToFour(p41) -- Line: 222
+        return math.floor((p41 + 2) / 4) * 4;
+    end;
+
+    local v42 = {};
+    local v43 = {};
+
+    for i, v in pairs(v30) do
+        for _, v3 in pairs(v.Values) do
+            if not p29 then
+                local v3 = math.floor((v3 + (i == "Min" and -2 or 2) + 2) / 4) * 4;
+            end;
+
+            table.insert(i == "Min" and v43 and v43 or v42, v3);
+        end;
+    end;
+
+    local v44 = Vector3.new(unpack(v43));
+    local v45 = Vector3.new(unpack(v42));
+
+    return Region3.new(v44, v45), v44, v45;
+end;
+
+function u6._displayBounds(p46) -- Line: 245
+    if not p46.displayBoundParts then
+        p46.displayBoundParts = true;
+
+        for i, v in pairs({
+            BoundMin = p46.boundMin,
+            BoundMax = p46.boundMax
+        }) do
+            local Part = Instance.new("Part");
+            Part.Anchored = true;
+            Part.CanCollide = false;
+            Part.Transparency = 0.5;
+            Part.Size = Vector3.new(1, 1, 1);
+            Part.Color = Color3.fromRGB(255, 0, 0);
+            Part.CFrame = CFrame.new(v);
+            Part.Name = i;
+            Part.Parent = workspace;
+            p46.janitor:add(Part, "Destroy");
+        end;
+    end;
+end;
+
+function u6._update(u47) -- Line: 264
+    -- upvalues: RunService (copy)
+    local container = u47.container;
+    local v48 = {};
+    local u49 = 0;
+    u47._updateConnections:clean();
+    local v50 = typeof(container);
+    local v51 = {};
+
+    if v50 == "table" then
+        for _, v in pairs(container) do
+            if v:IsA("BasePart") then
+                table.insert(v48, v);
+            end;
+        end;
+    elseif v50 == "Instance" then
+        if container:IsA("BasePart") then
+            table.insert(v48, container);
+        else
+            table.insert(v51, container);
+
+            for _, descendant in pairs(container:GetDescendants()) do
+                if descendant:IsA("BasePart") then
+                    table.insert(v48, descendant);
+                else
+                    table.insert(v51, descendant);
+                end;
+            end;
+        end;
+    end;
+
+    u47.zoneParts = v48;
+    u47.overlapParams = {};
+    local v52 = true;
+
+    for _, v in pairs(v48) do
+        local _, result = pcall(function() -- Line: 298
+            -- upvalues: v (copy)
+            return v.Shape.Name;
+        end);
+
+        if result ~= "Block" then
+            v52 = false;
+        end;
+    end;
+
+    u47.allZonePartsAreBlocks = v52;
+    local v53 = OverlapParams.new();
+    v53.FilterType = Enum.RaycastFilterType.Include;
+    v53.MaxParts = #v48;
+    v53.FilterDescendantsInstances = v48;
+    u47.overlapParams.zonePartsWhitelist = v53;
+    local v54 = OverlapParams.new();
+    v54.FilterType = Enum.RaycastFilterType.Exclude;
+    v54.FilterDescendantsInstances = v48;
+    u47.overlapParams.zonePartsIgnorelist = v54;
+
+    local function update() -- Line: 318
+        -- upvalues: u47 (copy), u49 (ref), RunService (ref)
+        if u47.autoUpdate then
+            local u55 = os.clock();
+
+            if u47.respectUpdateQueue then
+                u49 = u49 + 1;
+                u55 = u55 + 0.1;
+            end;
+
+            local u56 = nil;
+            u56 = RunService.Heartbeat:Connect(function() -- Line: 326
+                -- upvalues: u55 (ref), u56 (ref), u47 (ref), u49 (ref)
+                if u55 <= os.clock() then
+                    u56:Disconnect();
+
+                    if u47.respectUpdateQueue then
+                        u49 = u49 - 1;
+                    end;
+
+                    if u49 == 0 and u47.zoneId then
+                        u47:_update();
+                    end;
+                end;
+            end);
+        end;
+    end;
+
+    local function verifyDefaultCollision(p57) -- Line: 340
+        if p57.CollisionGroupId ~= 0 then
+            error("Zone parts must belong to the \'Default\' (0) CollisionGroup! Consider using zone:relocate() if you wish to move zones outside of workspace to prevent them interacting with other parts.");
+        end;
+    end;
+
+    local v58 = { "Size", "Position" };
+
+    for _, v in pairs(v48) do
+        for _, v3 in pairs(v58) do
+            u47._updateConnections:add(v:GetPropertyChangedSignal(v3):Connect(update), "Disconnect");
+        end;
+
+        if v.CollisionGroupId ~= 0 then
+            error("Zone parts must belong to the \'Default\' (0) CollisionGroup! Consider using zone:relocate() if you wish to move zones outside of workspace to prevent them interacting with other parts.");
+        end;
+
+        u47._updateConnections:add(v:GetPropertyChangedSignal("CollisionGroupId"):Connect(function() -- Line: 350
+            -- upvalues: v (copy)
+            if v.CollisionGroupId ~= 0 then
+                error("Zone parts must belong to the \'Default\' (0) CollisionGroup! Consider using zone:relocate() if you wish to move zones outside of workspace to prevent them interacting with other parts.");
+            end;
+        end), "Disconnect");
+    end;
+
+    local v59 = { "ChildAdded", "ChildRemoved" };
+
+    for _, _ in pairs(v51) do
+        for _, v in pairs(v59) do
+            u47._updateConnections:add(u47.container[v]:Connect(function(p60) -- Line: 357
+                -- upvalues: u47 (copy), u49 (ref), RunService (ref)
+                if p60:IsA("BasePart") and u47.autoUpdate then
+                    local u61 = os.clock();
+
+                    if u47.respectUpdateQueue then
+                        u49 = u49 + 1;
+                        u61 = u61 + 0.1;
+                    end;
+
+                    local u62 = nil;
+                    u62 = RunService.Heartbeat:Connect(function() -- Line: 326
+                        -- upvalues: u61 (ref), u62 (ref), u47 (ref), u49 (ref)
+                        if u61 <= os.clock() then
+                            u62:Disconnect();
+
+                            if u47.respectUpdateQueue then
+                                u49 = u49 - 1;
+                            end;
+
+                            if u49 == 0 and u47.zoneId then
+                                u47:_update();
+                            end;
+                        end;
+                    end);
+                end;
+            end), "Disconnect");
+        end;
+    end;
+
+    local v63, v64, v65 = u47:_calculateRegion(v48);
+    local v66, _, _ = u47:_calculateRegion(v48, true);
+    u47.region = v63;
+    u47.exactRegion = v66;
+    u47.boundMin = v64;
+    u47.boundMax = v65;
+    local Size = v63.Size;
+    u47.volume = Size.X * Size.Y * Size.Z;
+    u47:_updateTouchedConnections();
+    u47.updated:Fire();
+end;
+
+function u6._updateOccupants(p67, p68, p69) -- Line: 393
+    local v70 = p67.occupants[p68];
+
+    if not v70 then
+        v70 = {};
+        p67.occupants[p68] = v70;
+    end;
+
+    local v71 = {};
+
+    for i, v in pairs(v70) do
+        local v72 = p69[i];
+
+        if v72 == nil or v72 ~= v then
+            v70[i] = nil;
+
+            if not v71.exited then
+                v71.exited = {};
+            end;
+
+            table.insert(v71.exited, i);
+        end;
+    end;
+
+    for i, _ in pairs(p69) do
+        if v70[i] == nil then
+            v70[i] = i:IsA("Player") and (i.Character or true) or true;
+
+            if not v71.entered then
+                v71.entered = {};
+            end;
+
+            table.insert(v71.entered, i);
+        end;
+    end;
+
+    return v71;
+end;
+
+function u6._formTouchedConnection(p73, p74) -- Line: 423
+    -- upvalues: Janitor (copy)
+    local v75 = "_touchedJanitor" .. p74;
+    local v76 = p73[v75];
+
+    if v76 then
+        v76:clean();
+    else
+        p73[v75] = p73.janitor:add(Janitor.new(), "destroy");
+    end;
+
+    p73:_updateTouchedConnection(p74);
+end;
+
+function u6._updateTouchedConnection(p77, p78) -- Line: 435
+    local v79 = p77["_touchedJanitor" .. p78];
+
+    if not v79 then
+        return;
+    end;
+
+    for _, v in pairs(p77.zoneParts) do
+        v79:add(v.Touched:Connect(p77.touchedConnectionActions[p78], p77), "Disconnect");
+    end;
+end;
+
+function u6._updateTouchedConnections(p80) -- Line: 444
+    for i, _ in pairs(p80.touchedConnectionActions) do
+        local v81 = p80["_touchedJanitor" .. i];
+
+        if v81 then
+            v81:cleanup();
+            p80:_updateTouchedConnection(i);
+        end;
+    end;
+end;
+
+function u6._disconnectTouchedConnection(p82, p83) -- Line: 455
+    local v84 = "_touchedJanitor" .. p83;
+    local v85 = p82[v84];
+
+    if v85 then
+        v85:cleanup();
+        p82[v84] = nil;
+    end;
+end;
+
+local function round(p86, p87) -- Line: 464
+    return math.round(p86 * 10 ^ p87) * 10 ^ (-p87);
+end;
+
+function u6._partTouchedZone(u88, u89) -- Line: 467
+    -- upvalues: Janitor (copy), Heartbeat (copy), enums (copy)
+    local part = u88.trackingTouchedTriggers.part;
+
+    if part[u89] then
+        return;
+    end;
+
+    local u90 = 0;
+    local u91 = false;
+    local Position = u89.Position;
+    local u92 = os.clock();
+    local u93 = u88.janitor:add(Janitor.new(), "destroy");
+    part[u89] = u93;
+
+    if not ({
+        Seat = true,
+        VehicleSeat = true
+    })[u89.ClassName] and ({
+        HumanoidRootPart = true
+    })[u89.Name] then
+        u89.CanTouch = false;
+    end;
+
+    local u94 = math.round(u89.Size.X * u89.Size.Y * u89.Size.Z * 100000) * 0.00001;
+    u88.totalPartVolume = u88.totalPartVolume + u94;
+    u93:add(Heartbeat:Connect(function() -- Line: 485
+        -- upvalues: u90 (ref), enums (ref), u88 (copy), u89 (copy), u91 (ref), Position (ref), u92 (ref), u93 (copy)
+        local v95 = os.clock();
+
+        if u90 <= v95 then
+            local v96 = enums.Accuracy.getProperty(u88.accuracy);
+            u90 = v95 + v96;
+            local v97 = u88:findPoint(u89.CFrame) or u88:findPart(u89);
+
+            if u91 then
+                if not v97 then
+                    u91 = false;
+                    Position = u89.Position;
+                    u92 = os.clock();
+                    u88.partExited:Fire(u89);
+                end;
+            else
+                if v97 then
+                    u91 = true;
+                    u88.partEntered:Fire(u89);
+
+                    return;
+                end;
+
+                if (u89.Position - Position).Magnitude > 1.5 and v96 <= v95 - u92 then
+                    u93:cleanup();
+                end;
+            end;
+        end;
+    end), "Disconnect");
+    u93:add(function() -- Line: 516
+        -- upvalues: part (copy), u89 (copy), u88 (copy), u94 (copy)
+        part[u89] = nil;
+        u89.CanTouch = true;
+        u88.totalPartVolume = math.round((u88.totalPartVolume - u94) * 100000) * 0.00001;
+    end, true);
+end;
+
+local u101 = {
+    Ball = function(p98) -- Line: 524
+        return "GetPartBoundsInRadius", { p98.Position, p98.Size.X };
+    end,
+
+    Block = function(p99) -- Line: 527
+        return "GetPartBoundsInBox", { p99.CFrame, p99.Size };
+    end,
+
+    Other = function(p100) -- Line: 530
+        return "GetPartsInPart", { p100 };
+    end
+};
+
+function u6._getRegionConstructor(p102, u103, p104) -- Line: 534
+    -- upvalues: u101 (copy)
+    local success, result = pcall(function() -- Line: 535
+        -- upvalues: u103 (copy)
+        return u103.Shape.Name;
+    end);
+    local v105 = nil;
+    local v106 = nil;
+
+    if success and p102.allZonePartsAreBlocks then
+        local v107 = u101[result];
+
+        if v107 then
+            v105, v106 = v107(u103);
+        end;
+    end;
+
+    if not v105 then
+        v106 = { u103 };
+        v105 = "GetPartsInPart";
+    end;
+
+    if p104 then
+        table.insert(v106, p104);
+    end;
+
+    return v105, v106;
+end;
+
+function u6.findLocalPlayer(p108) -- Line: 555
+    -- upvalues: u1 (copy)
+    if not u1 then
+        error("Can only call \'findLocalPlayer\' on the client!");
+    end;
+
+    return p108:findPlayer(u1);
+end;
+
+function u6._find(p109, p110, p111) -- Line: 562
+    -- upvalues: u3 (copy)
+    u3.updateDetection(p109);
+    local v112 = u3.getTouchingZones(p111, false, p109._currentEnterDetection, u3.trackers[p110]);
+
+    for _, v in pairs(v112) do
+        if v == p109 then
+            return true;
+        end;
+    end;
+
+    return false;
+end;
+
+function u6.findPlayer(p113, p114) -- Line: 574
+    local Character = p114.Character;
+
+    if Character then
+        Character = Character:FindFirstChildOfClass("Humanoid");
+    end;
+
+    if Character then
+        return p113:_find("player", p114.Character);
+    end;
+
+    return false;
+end;
+
+function u6.findItem(p115, p116) -- Line: 583
+    return p115:_find("item", p116);
+end;
+
+function u6.findPart(p117, p118) -- Line: 587
+    local v119, v120 = p117:_getRegionConstructor(p118, p117.overlapParams.zonePartsWhitelist);
+    local v121 = p117.worldModel[v119](p117.worldModel, unpack(v120));
+
+    if #v121 > 0 then
+        return true, v121;
+    end;
+
+    return false;
+end;
+
+function u6.getCheckerPart(p122) -- Line: 597
+    -- upvalues: u3 (copy)
+    local checkerPart = p122.checkerPart;
+
+    if not checkerPart then
+        checkerPart = p122.janitor:add(Instance.new("Part"), "Destroy");
+        checkerPart.Size = Vector3.new(0.1, 0.1, 0.1);
+        checkerPart.Name = "ZonePlusCheckerPart";
+        checkerPart.Anchored = true;
+        checkerPart.Transparency = 1;
+        checkerPart.CanCollide = false;
+        p122.checkerPart = checkerPart;
+    end;
+
+    local worldModel = p122.worldModel;
+
+    if worldModel == workspace then
+        worldModel = u3.getWorkspaceContainer();
+    end;
+
+    if checkerPart.Parent ~= worldModel then
+        checkerPart.Parent = worldModel;
+    end;
+
+    return checkerPart;
+end;
+
+function u6.findPoint(p123, p124) -- Line: 618
+    if typeof(p124) == "Vector3" then
+        p124 = CFrame.new(p124);
+    end;
+
+    local v125 = p123:getCheckerPart();
+    v125.CFrame = p124;
+    local v126, v127 = p123:_getRegionConstructor(v125, p123.overlapParams.zonePartsWhitelist);
+    local v128 = p123.worldModel[v126](p123.worldModel, unpack(v127));
+
+    if #v128 > 0 then
+        return true, v128;
+    end;
+
+    return false;
+end;
+
+function u6._getAll(p129, p130) -- Line: 635
+    -- upvalues: u3 (copy)
+    u3.updateDetection(p129);
+    local v131 = {};
+    local v132 = u3._getZonesAndItems(p130, {
+        self = true
+    }, p129.volume, false, p129._currentEnterDetection)[p129];
+
+    if v132 then
+        for i, _ in pairs(v132) do
+            table.insert(v131, i);
+        end;
+    end;
+
+    return v131;
+end;
+
+function u6.getPlayers(p133) -- Line: 648
+    return p133:_getAll("player");
+end;
+
+function u6.getItems(p134) -- Line: 652
+    return p134:_getAll("item");
+end;
+
+function u6.getParts(p135) -- Line: 656
+    local v136 = {};
+
+    if p135.activeTriggers.part then
+        for i, _ in pairs(p135.trackingTouchedTriggers.part) do
+            table.insert(v136, i);
+        end;
+
+        return v136;
+    end;
+
+    local v137 = p135.worldModel:GetPartBoundsInBox(p135.region.CFrame, p135.region.Size, p135.overlapParams.zonePartsIgnorelist);
+
+    for _, v in pairs(v137) do
+        if p135:findPart(v) then
+            table.insert(v136, v);
+        end;
+    end;
+
+    return v136;
+end;
+
+function u6.getRandomPoint(p138) -- Line: 677
+    local exactRegion = p138.exactRegion;
+    local Size = exactRegion.Size;
+    local CFrame2 = exactRegion.CFrame;
+    local v139 = Random.new();
+    local v140 = nil;
+    local v141, v142;
+
+    repeat
+        v141 = CFrame2 * CFrame.new(v139:NextNumber(-Size.X / 2, Size.X / 2), v139:NextNumber(-Size.Y / 2, Size.Y / 2), v139:NextNumber(-Size.Z / 2, Size.Z / 2));
+        local v143;
+        v143, v142 = p138:findPoint(v141);
+        v140 = v143 and true or v140;
+    until v140;
+
+    return v141.Position, v142;
+end;
+
+function u6.setAccuracy(p144, p145) -- Line: 696
+    -- upvalues: enums (copy)
+    local v146 = tonumber(p145);
+
+    if v146 then
+        if not enums.Accuracy.getName(v146) then
+            error(("%s is an invalid enumId!"):format(v146));
+        end;
+    else
+        v146 = enums.Accuracy[p145];
+
+        if not v146 then
+            error(("\'%s\' is an invalid enumName!"):format(p145));
+        end;
+    end;
+
+    p144.accuracy = v146;
+end;
+
+function u6.setDetection(p147, p148) -- Line: 712
+    -- upvalues: enums (copy)
+    local v149 = tonumber(p148);
+
+    if v149 then
+        if not enums.Detection.getName(v149) then
+            error(("%s is an invalid enumId!"):format(v149));
+        end;
+    else
+        v149 = enums.Detection[p148];
+
+        if not v149 then
+            error(("\'%s\' is an invalid enumName!"):format(p148));
+        end;
+    end;
+
+    p147.enterDetection = v149;
+    p147.exitDetection = v149;
+end;
+
+function u6.trackItem(u150, u151) -- Line: 729
+    -- upvalues: Janitor (copy), Tracker (copy)
+    local v152 = u151:IsA("BasePart");
+    local v153;
+
+    if v152 then
+        v153 = false;
+    else
+        v153 = u151:FindFirstChildOfClass("Humanoid") and u151:FindFirstChild("HumanoidRootPart");
+    end;
+
+    assert(v152 or v153, "Only BaseParts or Characters/NPCs can be tracked!");
+
+    if u150.trackedItems[u151] then
+        return;
+    end;
+
+    if u150.itemsToUntrack[u151] then
+        u150.itemsToUntrack[u151] = nil;
+    end;
+
+    local v154 = u150.janitor:add(Janitor.new(), "destroy");
+    local v155 = {
+        janitor = v154,
+        item = u151,
+        isBasePart = v152,
+        isCharacter = v153
+    };
+    u150.trackedItems[u151] = v155;
+    v154:add(u151.AncestryChanged:Connect(function() -- Line: 754
+        -- upvalues: u151 (copy), u150 (copy)
+        if not u151:IsDescendantOf(game) then
+            u150:untrackItem(u151);
+        end;
+    end), "Disconnect");
+    require(Tracker).itemAdded:Fire(v155);
+end;
+
+function u6.untrackItem(p156, p157) -- Line: 764
+    -- upvalues: Tracker (copy)
+    local v158 = p156.trackedItems[p157];
+
+    if v158 then
+        v158.janitor:destroy();
+    end;
+
+    p156.trackedItems[p157] = nil;
+    require(Tracker).itemRemoved:Fire(v158);
+end;
+
+function u6.bindToGroup(p159, p160) -- Line: 775
+    -- upvalues: u3 (copy)
+    p159:unbindFromGroup();
+    (u3.getGroup(p160) or u3.setGroup(p160))._memberZones[p159.zoneId] = p159;
+    p159.settingsGroupName = p160;
+end;
+
+function u6.unbindFromGroup(p161) -- Line: 782
+    -- upvalues: u3 (copy)
+    if p161.settingsGroupName then
+        local v162 = u3.getGroup(p161.settingsGroupName);
+
+        if v162 then
+            v162._memberZones[p161.zoneId] = nil;
+        end;
+
+        p161.settingsGroupName = nil;
+    end;
+end;
+
+function u6.relocate(p163) -- Line: 792
+    -- upvalues: CollectiveWorldModel (copy)
+    if p163.hasRelocated then
+        return;
+    end;
+
+    local v164 = require(CollectiveWorldModel).setupWorldModel(p163);
+    p163.worldModel = v164;
+    p163.hasRelocated = true;
+    local container = p163.container;
+
+    if typeof(container) == "table" then
+        container = Instance.new("Folder");
+
+        for _, v in pairs(p163.zoneParts) do
+            v.Parent = container;
+        end;
+    end;
+
+    p163.relocationContainer = p163.janitor:add(container, "Destroy", "RelocationContainer");
+    container.Parent = v164;
+end;
+
+function u6._onItemCallback(u165, p166, p167, u168, u169) -- Line: 813
+    local v170 = u165.onItemDetails[u168];
+
+    if not v170 then
+        v170 = {};
+        u165.onItemDetails[u168] = v170;
+    end;
+
+    if #v170 == 0 then
+        u165.itemsToUntrack[u168] = true;
+    end;
+
+    table.insert(v170, u168);
+    u165:trackItem(u168);
+
+    local function triggerCallback() -- Line: 825
+        -- upvalues: u169 (copy), u165 (copy), u168 (copy)
+        u169();
+
+        if u165.itemsToUntrack[u168] then
+            u165.itemsToUntrack[u168] = nil;
+            u165:untrackItem(u168);
+        end;
+    end;
+
+    if u165:findItem(u168) == p167 then
+        u169();
+
+        if u165.itemsToUntrack[u168] then
+            u165.itemsToUntrack[u168] = nil;
+            u165:untrackItem(u168);
+        end;
+    else
+        local u171 = nil;
+        u171 = u165[p166]:Connect(function(p172) -- Line: 838
+            -- upvalues: u171 (ref), u168 (copy), u169 (copy), u165 (copy)
+            if u171 and p172 == u168 then
+                u171:Disconnect();
+                u171 = nil;
+                u169();
+
+                if u165.itemsToUntrack[u168] then
+                    u165.itemsToUntrack[u168] = nil;
+                    u165:untrackItem(u168);
+                end;
+            end;
+        end);
+    end;
+end;
+
+function u6.onItemEnter(p173, ...) -- Line: 860
+    p173:_onItemCallback("itemEntered", true, ...);
+end;
+
+function u6.onItemExit(p174, ...) -- Line: 864
+    p174:_onItemCallback("itemExited", false, ...);
+end;
+
+function u6.destroy(p175) -- Line: 868
+    p175:unbindFromGroup();
+    p175.janitor:destroy();
+end;
+
+u6.Destroy = u6.destroy;
+
+return u6;
+-- Script Path: game:GetService("ReplicatedStorage").ModuleScript
+-- Took 0s to decompile.
+-- Executor: Potassium (v2.4.2)
+
+-- Decompiled with Potassium's decompiler.
+
+local Characters = game:GetService("ServerStorage").Characters;
+local Faces = Characters.Faces;
+local Idle = Characters.Animations.Idle;
+local Walk = Characters.Animations.Walk;
+local Characters2 = game.ReplicatedStorage.Assets.Characters;
+local Voicelines = game.SoundService.Voicelines;
+local Customs = Voicelines:FindFirstChild("Customs");
+
+return {
+    Alaric = {
+        Description = "Once a lethal vampire hunter and Enhanced Original, now the protective mortal headmaster of the Salvatore School.",
+        Specie = "Mortal",
+        Gender = "Male",
+        Health = 200,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Alaric,
+        Face = Faces.Green.Alaric
+    },
+    Aurora = {
+        Description = "The first vampire sired by Rebekah Mikaelson, a chaotic and deeply unpredictable soul plagued by centuries of heartbreak and madness.",
+        Specie = "Vampire",
+        Gender = "Female",
+        Health = 380,
+        Energy = 750,
+        Thirst = 500,
+        MainOutfit = "Legacies",
+        Outfits = Characters2.Aurora,
+        Face = Faces.Green.GreenF,
+        Sound = Voicelines.Vampires.aurora
+    },
+    Ben = {
+        Description = "A cursed demigod who brought the magic of the gods to humanity, enduring centuries of torment for his defiance.",
+        Specie = "God",
+        Gender = "Male",
+        Health = 550,
+        Energy = 1200,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Ben,
+        Face = Faces.Blue.Ben,
+        Sound = Voicelines.Gods.ben
+    },
+    Beyonce = {
+        Description = "A legendary custom tribrid wielding unparalleled magical prowess, commanding the room with a dominant and fierce aura.",
+        Specie = "Tribrid",
+        Gender = "Female",
+        Health = 900,
+        Magic = 5500,
+        Energy = 4500,
+        Thirst = 3000,
+        MainOutfit = "Grammys 25",
+        WolfModel = "White",
+        Outfits = Characters2.Beyonce,
+        Face = Faces.Brown.Beyonce,
+        Color = Color3.fromRGB(255, 190, 147),
+        UserId = { 603167332 },
+        Except = {
+            Dark = {
+                Face = Faces.Brown.Beyonce2
+            }
+        },
+        Sound = Customs.Beyonce
+    },
+    Bonnie = {
+        Description = "An extraordinarily powerful Bennett witch who has repeatedly saved Mystic Falls, willing to sacrifice her own life for those she loves.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 500,
+        Magic = 3500,
+        MainOutfit = "Expression",
+        Coins = 95000,
+        ImageID = "rbxassetid://77410094564427",
+        Outfits = Characters2.Bonnie,
+        Face = Faces.Green.Bonnie,
+        Sound = Voicelines.Witches.Bonnie.itdoesntmatter
+    },
+    Caroline = {
+        Description = "A highly controlled, perfectionist vampire who found her true strength and confidence only after transitioning.",
+        Specie = "Vampire",
+        Gender = "Female",
+        Health = 320,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Caroline,
+        Face = Faces.Green.GreenF,
+        Sound = Voicelines.Vampires.CarolineForbes
+    },
+    Celeste = {
+        Description = "A vengeful witch of the French Quarter whose enduring hatred for the Mikaelsons drove her to possess others for centuries.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 280,
+        Magic = 1200,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Celeste,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Witches.Celeste.Celeste
+    },
+    Cleo = {
+        Description = "A Muse and exceptionally gifted witch. Her magic inspires legendary creations, making her a target for those seeking power.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 270,
+        Magic = 1100,
+        MainOutfit = "Woolen",
+        Coins = 10000,
+        ImageID = "rbxassetid://76435359316772",
+        Outfits = Characters2.Cleo,
+        Face = Faces.Brown.Qetsiyah,
+        Sound = Voicelines.Witches.Cleo.Cleo
+    },
+    Dahlia = {
+        Description = "A tremendously powerful and dark Norwegian witch, bound by a twisted pact to claim every firstborn of the Mikaelson bloodline.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 480,
+        Magic = 4000,
+        MainOutfit = "Dark coat",
+        Coins = 85000,
+        ImageID = "rbxassetid://82832106872346",
+        Outfits = Characters2.Dahlia,
+        Face = Faces.Brown.Dahlia,
+        Sound = Voicelines.Witches.Dahlia.MinorPlayer,
+        Color = Color3.fromRGB(46, 94, 14)
+    },
+    Damon = {
+        Description = "A cynical and impulsive vampire who hides his deeply passionate and fiercely loyal nature behind a facade of reckless cruelty.",
+        Specie = "Vampire",
+        Gender = "Male",
+        Health = 350,
+        Energy = 900,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Damon,
+        Face = Faces.Blue.BlueM,
+        Sound = Voicelines.Vampires.Damon
+    },
+    ["Dark Josie"] = {
+        Description = "The manifestation of Josie Saltzman\'s repressed dark magic, a ruthless and terrifyingly powerful siphoner stripped of all empathy.",
+        Specie = "Siphoner",
+        Gender = "Female",
+        Health = 400,
+        Magic = 3000,
+        MainOutfit = "Dark lace",
+        SpawnLocked = true,
+        Outfits = Characters2["Dark Josie"],
+        Face = Faces.Brown.DarkJosie,
+        Color = Color3.fromRGB(214, 117, 255),
+        Sound = Voicelines.Witches.DarkJosie.Weak
+    },
+    Davina = {
+        Description = "A fiercely independent French Quarter witch and former Harvest Girl who mastered ancestral magic to stand against vampires.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 370,
+        Magic = 2000,
+        MainOutfit = "Red jacket",
+        Coins = 80000,
+        ImageID = "rbxassetid://103772783773314",
+        Outfits = Characters2.Davina,
+        Face = Faces.Blue.Hope,
+        Sound = Voicelines.Witches.Davina.Davina
+    },
+    Elijah = {
+        Description = "The noble Original brother, bound by a profound sense of honor and an unending quest to redeem his fractured family.",
+        Specie = "Original",
+        Gender = "Male",
+        Health = 600,
+        Energy = 1400,
+        Thirst = 900,
+        MainOutfit = "Formal",
+        Coins = 25000,
+        ImageID = "rbxassetid://75139655037706",
+        Outfits = Characters2.Elijah,
+        Face = Faces.Brown.Elijah,
+        Sound = Voicelines.Originals.elijah
+    },
+    Elena = {
+        Description = "The Petrova doppelgänger whose compassion and resilience kept her anchored while caught in a deadly supernatural love triangle.",
+        Specie = "Mortal",
+        Gender = "Female",
+        Health = 100,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Elena,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Vampires.Elena
+    },
+    Emily = {
+        Description = "A profoundly powerful Bennett ancestor and Salem witch who crafted the original daylight rings to protect vampires she deemed worthy.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 360,
+        Magic = 2200,
+        MainOutfit = "1848",
+        Coins = 65000,
+        ImageID = "rbxassetid://121923734273987",
+        Outfits = Characters2.Emily,
+        Face = Faces.Brown.Qetsiyah,
+        Sound = Voicelines.Witches.Emily.emily,
+        Idle = Idle.Emily,
+        Walk = Walk.Emily
+    },
+    Enzo = {
+        Description = "A charming, fiercely loyal vampire hardened by decades of Augustine torture, who fights relentlessly for the ones he loves.",
+        Specie = "Vampire",
+        Gender = "Male",
+        Health = 360,
+        Energy = 850,
+        Thirst = 500,
+        MainOutfit = "Death",
+        Outfits = Characters2.Enzo,
+        Face = Faces.Brown.BrownM
+    },
+    Esther = {
+        Description = "The Original Witch. Driven by a mother\'s grief, she created the vampire species—a mistake she returned from the dead to erase.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 400,
+        Magic = 3200,
+        MainOutfit = "Casual",
+        ImageID = "rbxassetid://97755947250173",
+        Outfits = Characters2.Esther,
+        Face = Faces.Brown.Esther,
+        Sound = Voicelines.Witches.Esther.Esther,
+        Idle = Idle.Esther
+    },
+    Finn = {
+        Description = "The eldest Mikaelson brother, a devout Original who loathes his own vampirism and eagerly conspired to end his own species.",
+        BundleDesc = "The polarized sons of the Original family. One, a devout martyr who loathes his own immortal nature; the other, a chaotic prodigy who revels in the magic he lost. Together, they represent the tragic duality of the Mikaelson bloodline—bound by a centuries-old history of resentment, yet inseparable in their shared pursuit of a place in a world that fears them.",
+        Specie = "Original",
+        Gender = "Male",
+        Health = 500,
+        Energy = 1000,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        ImageID = "rbxassetid://134923136648351",
+        Coins = 40000,
+        Outfits = Characters2.Finn,
+        Face = Faces.Brown.BrownM,
+        Sound = Voicelines.Originals.fin,
+        Bundle = { "Finn", "Kol" }
+    },
+    Freya = {
+        Description = "The long-lost, immortal Mikaelson sister. A remarkably powerful firstborn witch who spent centuries fleeing her tyrannical aunt.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 420,
+        Magic = 2800,
+        MainOutfit = "Blue jacket",
+        ImageID = "rbxassetid://111848983216929",
+        Coins = 85000,
+        Outfits = Characters2.Freya,
+        Face = Faces.Green.Freya,
+        Sound = Voicelines.Witches.Freya.Freya
+    },
+    Hayley = {
+        Description = "A fiercely protective Crescent pack alpha and unsired hybrid, the resilient mother who would move heaven and earth for her daughter.",
+        Specie = "Hybrid",
+        Gender = "Female",
+        Health = 300,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        WolfModel = "Brown",
+        Outfits = Characters2.Hayley,
+        Face = Faces.Green.GreenF,
+        Sound = Voicelines.Vampires.Hayley
+    },
+    Hope = {
+        Description = "The world\'s only fully activated tribrid. Bearing the combined might of witches, werewolves, and vampires, she is nature\'s ultimate loophole.",
+        Specie = "Werewitch",
+        Gender = "Female",
+        Health = 500,
+        Magic = 3500,
+        Energy = 800,
+        Thirst = 800,
+        MainOutfit = "Casual",
+        WolfModel = "White",
+        Coins = 100000,
+        ImageID = "rbxassetid://110344285437962",
+        Outfits = Characters2.Hope,
+        Face = Faces.Blue.Hope,
+        Sound = Voicelines.Witches.Hope.NoMonster,
+        Except = {
+            Funeral = {
+                Walk = Walk.CatWalk
+            }
+        }
+    },
+    Inadu = {
+        Description = "The Hollow. An ancient, malevolent spirit of pure, insatiable dark magic that destroyed the very tribe that birthed her.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 500,
+        Magic = 4500,
+        MainOutfit = "Dark outfit",
+        Coins = 110000,
+        ImageID = "rbxassetid://136260439713243",
+        Outfits = Characters2.Inadu,
+        Face = Faces.Brown.BrownF,
+        Color = Color3.fromRGB(46, 189, 255),
+        Sound = Voicelines.Witches.Inadu.Inadu
+    },
+    Jen = {
+        Description = "A Vulcan-like god and master blacksmith of the divine, quietly forging the weapons of the gods while hiding from her family.",
+        Specie = "God",
+        Gender = "Female",
+        Health = 600,
+        Energy = 1500,
+        MainOutfit = "Casual",
+        Coins = 50000,
+        ImageID = "rbxassetid://82851769490983",
+        Outfits = Characters2.Jen,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Gods.Jen
+    },
+    Jeremy = {
+        Description = "A member of the Brotherhood of the Five. A mortal destined to be a supernatural hunter, fiercely protective of his sister.",
+        Specie = "Mortal",
+        Gender = "Male",
+        Health = 180,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Jeremy,
+        Face = Faces.Brown.BrownM,
+        Sound = Voicelines.jeremy
+    },
+    Josie = {
+        Description = "A deeply compassionate Gemini siphoner, constantly battling her codependency and the allure of dark magic to protect her coven.",
+        Specie = "Siphoner",
+        Gender = "Female",
+        Health = 250,
+        Magic = 800,
+        MainOutfit = "Pink turtleneck",
+        Coins = 80000,
+        ImageID = "rbxassetid://77467372767863",
+        Outfits = Characters2.Josie,
+        Face = Faces.Brown.Josie,
+        Sound = Voicelines.Witches.Josie.Josie
+    },
+    Kai = {
+        Description = "A charming but entirely sociopathic Gemini siphoner who revels in chaos, murder, and the absorption of boundless magical power.",
+        Specie = "Siphoner",
+        Gender = "Male",
+        Health = 380,
+        Magic = 2500,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Legacies",
+        Outfits = Characters2.Kai,
+        Face = Faces.Blue.BlueM,
+        Sound = Voicelines.Heretics.Kai
+    },
+    Katherine = {
+        Description = "Katerina Petrova, the ultimate survivor. A manipulative, cunning vampire who spends centuries staying one step ahead of her enemies.",
+        Specie = "Vampire",
+        Gender = "Female",
+        Health = 370,
+        Energy = 900,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Katherine,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Vampires.Katherine,
+        Idle = Idle.Katherine,
+        Except = {
+            Ball = {
+                Walk = Walk.CatWalk
+            }
+        }
+    },
+    Keelin = {
+        Description = "A brilliant doctor and the last surviving werewolf of the Malraux pack, whose resilience and scientific mind saved her life.",
+        Specie = "Werewolf",
+        Gender = "Female",
+        Health = 220,
+        Energy = 350,
+        MainOutfit = "Casual",
+        WolfModel = "Brown",
+        Outfits = Characters2.Keelin,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Vampires.kee
+    },
+    Ken = {
+        Description = "The supreme ruler of the Gods. A ruthless, lightning-wielding deity demanding absolute worship and obedience.",
+        Specie = "God",
+        Gender = "Male",
+        Health = 700,
+        Energy = 2000,
+        MainOutfit = "Armor",
+        Coins = 95000,
+        ImageID = "rbxassetid://133585148229112",
+        Outfits = Characters2.Ken,
+        Face = Faces.Blue.Ken,
+        Color = Color3.fromRGB(255, 162, 69),
+        Sound = Voicelines.Gods.Ken
+    },
+    Kol = {
+        Description = "The wild, unpredictable Original brother. A former witch prodigy who misses magic and lashes out with violent, chaotic flair.",
+        BundleDesc = "The polarized sons of the Original family. One, a devout martyr who loathes his own immortal nature; the other, a chaotic prodigy who revels in the magic he lost. Together, they represent the tragic duality of the Mikaelson bloodline—bound by a centuries-old history of resentment, yet inseparable in their shared pursuit of a place in a world that fears them.",
+        Specie = "Original",
+        Gender = "Male",
+        Health = 550,
+        Energy = 1100,
+        Thirst = 600,
+        MainOutfit = "Casual",
+        ImageID = "rbxassetid://134923136648351",
+        Coins = 40000,
+        Outfits = Characters2.Kol,
+        Face = Faces.Brown.BrownM,
+        Sound = Voicelines.Originals.kol,
+        Bundle = { "Finn", "Kol" }
+    },
+    Landon = {
+        Description = "A supernatural Phoenix created by Malivore to be his perfect vessel, armed with a heroic heart and the power of resurrection.",
+        Specie = "Phoenix",
+        Gender = "Male",
+        Health = 250,
+        Energy = 1000,
+        MainOutfit = "Casual",
+        ImageID = "rbxassetid://114573503175224",
+        Outfits = Characters2.Landon,
+        Face = Faces.Green.GreenM,
+        Sound = Voicelines.landon
+    },
+    Lexi = {
+        Description = "A wise, fiercely loyal, and fun-loving vampire who spent over three centuries keeping her best friend Stefan on the straight and narrow.",
+        Specie = "Vampire",
+        Gender = "Female",
+        Health = 360,
+        Energy = 850,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Lexi,
+        Face = Faces.Blue.BlueF
+    },
+    Lizzie = {
+        Description = "A fiercely outspoken Gemini siphoner struggling with her mental health, hiding a deeply vulnerable heart beneath a sharp tongue.",
+        Specie = "Siphoner",
+        Gender = "Female",
+        Health = 280,
+        Magic = 950,
+        Energy = 500,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Lizzie,
+        Face = Faces.Blue.BlueF,
+        Sound = Voicelines.Heretics.Lizzie
+    },
+    Lucien = {
+        Description = "The first vampire ever sired. He manipulated the ancestors to become the Beast—an Upgraded Original with a lethal werewolf bite.",
+        Specie = "Upgraded Original",
+        Gender = "Male",
+        Health = 700,
+        Energy = 1600,
+        Thirst = 1100,
+        MainOutfit = "Casual",
+        Coins = 35000,
+        ImageID = "rbxassetid://126078458214284",
+        Outfits = Characters2.Lucien,
+        Face = Faces.Brown.BrownM,
+        Sound = Voicelines.Originals.Lucien
+    },
+    Luke = {
+        Description = "A selfless Gemini witch deeply devoted to his twin sister, Olivia, willing to alter the course of the Merge to save her life.",
+        Specie = "Witch",
+        Gender = "Male",
+        Health = 260,
+        Magic = 1300,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Luke,
+        Face = Faces.Green.GreenM
+    },
+    Marcel = {
+        Description = "The charismatic King of New Orleans who evolved from Klaus\'s protégé into the Beast, a lethal weapon against his own sires.",
+        Specie = "Upgraded Original",
+        Gender = "Male",
+        Health = 750,
+        Energy = 1800,
+        Thirst = 1200,
+        MainOutfit = "Casual",
+        Coins = 40000,
+        ImageID = "rbxassetid://127394794552030",
+        Outfits = Characters2.Marcel,
+        Face = Faces.Brown.Marcel,
+        Sound = Voicelines.Originals.Marcel,
+        Idle = Idle.Marcel
+    },
+    ["Mary Louise"] = {
+        Description = "A traditional, fiercely passionate Heretic whose devotion to her partner Nora is matched only by her deadly magical temper.",
+        BundleDesc = "A century spent in the shadows of the Armory only strengthened the bond between these two Heretics. Combining traditional, fierce passion with a rebellious, modern spirit, they move as a single, lethal force of siphoned magic. To cross one is to invite the wrath of both, for their loyalty to each other is the only law they acknowledge in their new-found freedom.",
+        Specie = "Heretic",
+        Gender = "Female",
+        Health = 300,
+        Magic = 1200,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Funeral",
+        Coins = 65000,
+        ImageID = "rbxassetid://89476208282829",
+        Outfits = Characters2["Mary Louise"],
+        Face = Faces.Green.GreenF,
+        Sound = Voicelines.Heretics.Mary,
+        Bundle = { "Mary Louise", "Nora" }
+    },
+    Melisandre = {
+        Description = "A mysterious and incredibly powerful custom tribrid harboring ancient secrets and wielding formidable magical authority.",
+        Specie = "Tribrid",
+        Gender = "Female",
+        Health = 850,
+        Magic = 5000,
+        Energy = 4000,
+        Thirst = 2500,
+        MainOutfit = "Casual",
+        WolfModel = "White",
+        Rank = 40,
+        Outfits = Characters2.Melisandre,
+        Face = Faces.Blue.Melisandre,
+        Color = Color3.fromRGB(87, 0, 5),
+        Sound = Customs.phoebe,
+        Idle = Idle.Melisandre
+    },
+    Mikael = {
+        Description = "The Destroyer. The fearsome Original who feeds on vampires, driven by an unyielding, centuries-long hatred for his stepson, Klaus.",
+        Specie = "Original",
+        Gender = "Male",
+        Health = 650,
+        Energy = 1500,
+        Thirst = 950,
+        MainOutfit = "Formal",
+        Coins = 35000,
+        ImageID = "rbxassetid://101434408141699",
+        Outfits = Characters2.Mikael,
+        Face = Faces.Blue.Mikael,
+        Sound = Voicelines.Originals.mikael
+    },
+    Niklaus = {
+        Description = "The Original Hybrid. A deeply paranoid and wrathful king, yet bound by a fierce, underlying love for his family and daughter.",
+        Specie = "Original Hybrid",
+        Gender = "Male",
+        Health = 700,
+        Energy = 1800,
+        Thirst = 1200,
+        MainOutfit = "Casual",
+        WolfModel = "Brown",
+        Coins = 30000,
+        ImageID = "rbxassetid://93739446452318",
+        Outfits = Characters2.Niklaus,
+        Face = Faces.Blue.Klaus,
+        Sound = Voicelines.Originals.klaus
+    },
+    Nora = {
+        Description = "A rebellious, modern-loving Heretic. Navigating her freedom with fierce style, lethal magic, and an unwavering loyalty to Mary Louise.",
+        BundleDesc = "A century spent in the shadows of the Armory only strengthened the bond between these two Heretics. Combining traditional, fierce passion with a rebellious, modern spirit, they move as a single, lethal force of siphoned magic. To cross one is to invite the wrath of both, for their loyalty to each other is the only law they acknowledge in their new-found freedom.",
+        Specie = "Heretic",
+        Gender = "Female",
+        Health = 300,
+        Magic = 1200,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Funeral",
+        Coins = 65000,
+        ImageID = "rbxassetid://89476208282829",
+        Outfits = Characters2.Nora,
+        Face = Faces.Green.GreenF,
+        Sound = Voicelines.Heretics.Nora,
+        Bundle = { "Mary Louise", "Nora" }
+    },
+    Olivia = {
+        Description = "A capable, sarcastic Gemini witch who desperately tried to escape the tragic destiny of her coven\'s Merge alongside her twin.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 270,
+        Magic = 1400,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Olivia,
+        Face = Faces.Green.GreenF,
+        Sound = Voicelines.Witches.olivia
+    },
+    Qetsiyah = {
+        Description = "One of the most powerful witches in antiquity. Betrayed by Silas, she created the Immortality Cure and the Other Side out of spite.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 470,
+        Magic = 3800,
+        MainOutfit = "Wedding",
+        ImageID = "rbxassetid://92941785754318",
+        Coins = 85000,
+        Outfits = Characters2.Qetsiyah,
+        Face = Faces.Brown.Qetsiyah,
+        Color = Color3.fromRGB(0, 115, 255),
+        Sound = Voicelines.Witches.Qetsiyah.qetsiyah,
+        Except = {
+            Cleopatra = {
+                Face = Faces.Brown.QetsiyahGold
+            }
+        }
+    },
+    Rayna = {
+        Description = "A relentless supernatural huntress granted multiple lives by shamans, bound eternally to the Phoenix Sword to trap vampire souls.",
+        Specie = "Hunter",
+        Gender = "Female",
+        Health = 350,
+        Energy = 1000,
+        MainOutfit = "Casual",
+        Coins = 75000,
+        ImageID = "rbxassetid://70639847744906",
+        Outfits = Characters2.Rayna,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.rayna
+    },
+    Rebekah = {
+        Description = "The fierce Original sister who hides a deeply romantic and vulnerable heart, longing desperately for an ordinary, human life.",
+        Specie = "Original",
+        Gender = "Female",
+        Health = 600,
+        Energy = 1200,
+        Thirst = 600,
+        MainOutfit = "Casual",
+        Coins = 25000,
+        ImageID = "rbxassetid://123754017875165",
+        Outfits = Characters2.Rebekah,
+        Face = Faces.Blue.BlueF,
+        Sound = Voicelines.Originals.Rebekah
+    },
+    Seline = {
+        Description = "An ancient Siren bound to Arcadius. A master manipulator who infiltrated Mystic Falls to offer innocent souls to Hell.",
+        Specie = "Siren",
+        Gender = "Female",
+        Health = 320,
+        Energy = 850,
+        MainOutfit = "Casual",
+        Coins = 60000,
+        ImageID = "rbxassetid://99579524908781",
+        Outfits = Characters2.Seline,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Sirens.seline
+    },
+    Sheila = {
+        Description = "Grams. A wise and protective Bennett matriarch who guided her granddaughter into the world of magic, sacrificing herself in the process.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 220,
+        Magic = 900,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Sheila,
+        Face = Faces.Brown.Sheila,
+        Sound = Voicelines.Witches.sheila
+    },
+    Silas = {
+        Description = "The world\'s first truly immortal being. A vastly powerful psychic who spent two millennia entombed, searching relentlessly for his true love.",
+        Specie = "Psychic",
+        Gender = "Male",
+        Health = 380,
+        Magic = 2000,
+        Thirst = 700,
+        Energy = 600,
+        MainOutfit = "Wedding",
+        Coins = 90000,
+        ImageID = "rbxassetid://134297284591998",
+        Outfits = Characters2.Silas,
+        Face = Faces.Green.GreenM,
+        Sound = Voicelines.Witches.Silas
+    },
+    Stefan = {
+        Description = "A deeply compassionate, brooding vampire constantly fighting the burden of his Ripper past and his desire to do the right thing.",
+        Specie = "Vampire",
+        Gender = "Male",
+        Health = 340,
+        Energy = 850,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Stefan,
+        Face = Faces.Green.GreenM,
+        Sound = Voicelines.Vampires.Stefan
+    },
+    Sybil = {
+        Description = "The Armory\'s monster. A cruel, manipulative Siren who uses her psychic abilities to rewrite memories and twist minds for sport.",
+        Specie = "Siren",
+        Gender = "Female",
+        Health = 350,
+        Energy = 950,
+        MainOutfit = "Casual",
+        Coins = 75000,
+        ImageID = "rbxassetid://91802073798551",
+        Outfits = Characters2.Sybil,
+        Face = Faces.Brown.BrownF,
+        Sound = Voicelines.Sirens.Sybil
+    },
+    Tony = {
+        Description = "A custom tribrid radiating immense power and a terrifyingly unique scarlet aura, blending brutal strength with dark magic.",
+        Specie = "Tribrid",
+        Gender = "Male",
+        Health = 950,
+        Magic = 6000,
+        Energy = 5000,
+        Thirst = 3500,
+        MainOutfit = "Manu",
+        WolfModel = "White",
+        Outfits = Characters2.Tony,
+        Face = Faces.Blue.BlueM,
+        Color = Color3.fromRGB(157, 0, 0),
+        Sound = Customs.DamonObsessed,
+        Idle = Idle.Tony,
+        UserId = { 124990230 }
+    },
+    Tyler = {
+        Description = "A fiercely loyal werewolf who endured the agony of turning to break his sire bond, evolving into a hybrid to reclaim his freedom.",
+        Specie = "Hybrid",
+        Gender = "Male",
+        Health = 280,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        WolfModel = "Black",
+        Outfits = Characters2.Tyler,
+        Face = Faces.Brown.BrownM,
+        Sound = Voicelines.Vampires.tyler
+    },
+    Valerie = {
+        Description = "The very first Heretic. She carries deep emotional scars from her past with Stefan, paired with immensely powerful and quiet magic.",
+        Specie = "Heretic",
+        Gender = "Female",
+        Health = 310,
+        Magic = 1300,
+        Energy = 800,
+        Thirst = 500,
+        MainOutfit = "Casual",
+        Coins = 65000,
+        ImageID = "rbxassetid://95660551795604",
+        Outfits = Characters2.Valerie,
+        Face = Faces.Blue.BlueF,
+        Sound = Voicelines.Heretics.valerie
+    },
+    Vincent = {
+        Description = "A brilliant New Orleans Regent who adamantly refuses to be corrupted by dark magic, serving as the city\'s moral compass.",
+        Specie = "Witch",
+        Gender = "Male",
+        Health = 320,
+        Magic = 1900,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Vincent,
+        Face = Faces.Brown.Vincent,
+        Sound = Voicelines.Witches.Vincent.vincentt
+    },
+    Paige = {
+        Description = "A remarkably gifted custom witch capable of pulling off tremendous magical feats with effortless grace.",
+        Specie = "Witch",
+        Gender = "Female",
+        Health = 500,
+        Magic = 5000,
+        MainOutfit = "Casual",
+        Outfits = Characters2.Paige,
+        Face = Faces.Brown.BrownF,
+        UserId = { 3006097208, 203051852 }
+    }
+};
